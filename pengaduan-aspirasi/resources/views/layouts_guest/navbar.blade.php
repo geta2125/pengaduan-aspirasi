@@ -1,0 +1,200 @@
+<nav class="navbar navbar-expand-lg navbar-light p-0">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-label="Toggle navigation">
+        <i class="ri-menu-3-line"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ml-auto navbar-list align-items-center">
+            <li class="nav-item nav-icon dropdown ml-3">
+                <a href="#" class="search-toggle dropdown-toggle" id="dropdownMenuButton2" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+                    <i class="las la-envelope"></i>
+                    <span class="badge badge-primary count-mail rounded-circle">2</span>
+                    <span class="bg-primary"></span>
+                </a>
+                <div class="iq-sub-dropdown dropdown-menu" aria-labelledby="dropdownMenuButton2">
+                    <div class="card shadow-none m-0">
+                        <div class="card-body p-0 ">
+                            <div class="cust-title p-3">
+                                <h5 class="mb-0">All Messages</h5>
+                            </div>
+                            <div class="p-2">
+                                <a href="#" class="iq-sub-card">
+                                    <div class="media align-items-center cust-card p-2">
+                                        <div class="">
+                                            <img class="avatar-40 rounded-small"
+                                                src="{{ asset('template_guest/assets/images/user/u-1.jpg') }}" alt="01">
+                                        </div>
+                                        <div class="media-body ml-3">
+                                            <h6 class="mb-0">Barry Emma Watson</h6>
+                                            <small class="mb-0">We Want to see you On..</small>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a href="#" class="iq-sub-card">
+                                    <div class="media align-items-center cust-card p-2">
+                                        <div class="">
+                                            <img class="avatar-40 rounded-small"
+                                                src="{{ asset('template_guest/assets/images/user/u-2.jpg') }}" alt="02">
+                                        </div>
+                                        <div class="media-body ml-3">
+                                            <h6 class="mb-0">Lorem Ipsum Watson</h6>
+                                            <small class="mb-0">Can we have a Call?</small>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a href="#" class="iq-sub-card">
+                                    <div class="media align-items-center cust-card p-2">
+                                        <div class="">
+                                            <img class="avatar-40 rounded-small"
+                                                src="{{ asset('template_guest/assets/images/user/u-3.jpg') }}" alt="03">
+                                        </div>
+                                        <div class="media-body ml-3">
+                                            <h6 class="mb-0">Why do we use it?</h6>
+                                            <small class="mb-0">Thank You but now we
+                                                Don't...</small>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            <a class="right-ic btn-block position-relative p-3 border-top text-center" href="#"
+                                role="button">
+                                View All
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li class="nav-item nav-icon dropdown">
+                <a href="#" class="search-toggle dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+                    <i class="las la-bell"></i>
+                    <span class="badge badge-primary count-mail rounded-circle">2</span>
+                    <span class="bg-primary"></span>
+                </a>
+                <div class="iq-sub-dropdown dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <div class="card shadow-none m-0">
+                        <div class="card-body p-0 ">
+                            <div class="cust-title p-3">
+                                <h5 class="mb-0">Notifications</h5>
+                            </div>
+                            <div class="p-2">
+                                <a href="#" class="iq-sub-card">
+                                    <div class="media align-items-center cust-card p-2">
+                                        <div class="">
+                                            <img class="avatar-40 rounded-small"
+                                                src="{{ asset('template_guest/assets/images/user/u-1.jpg') }}" alt="01">
+                                        </div>
+                                        <div class="media-body ml-3">
+                                            <div class="d-flex align-items-center justify-content-between">
+                                                <h6 class="mb-0">Anne Effit</h6>
+                                                <small class="mb-0">02 Min Ago</small>
+                                            </div>
+                                            <small class="mb-0">Manager</small>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a href="#" class="iq-sub-card">
+                                    <div class="media align-items-center cust-card p-2">
+                                        <div class="">
+                                            <img class="avatar-40 rounded-small"
+                                                src="{{ asset('template_guest/assets/images/user/u-2.jpg') }}" alt="02">
+                                        </div>
+                                        <div class="media-body ml-3">
+                                            <div class="d-flex align-items-center justify-content-between">
+                                                <h6 class="mb-0">Eric Shun</h6>
+                                                <small class="mb-0">05 Min Ago</small>
+                                            </div>
+                                            <small class="mb-0">Manager</small>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a href="#" class="iq-sub-card">
+                                    <div class="media align-items-center cust-card p-2">
+                                        <div class="">
+                                            <img class="avatar-40 rounded-small"
+                                                src="{{ asset('template_guest/assets/images/user/u-3.jpg') }}" alt="03">
+                                        </div>
+                                        <div class="media-body ml-3">
+                                            <div class="d-flex align-items-center justify-content-between">
+                                                <h6 class="mb-0">Ken Tucky</h6>
+                                                <small class="mb-0">10 Min Ago</small>
+                                            </div>
+                                            <small class="mb-0">Employee</small>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            <a class="right-ic btn-block position-relative p-3 border-top text-center" href="#"
+                                role="button">
+                                See All Notification
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li class="caption-content">
+                <a href="#" class="search-toggle dropdown-toggle d-flex align-items-center" id="dropdownMenuButton3"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <img src="{{ Auth::user()->foto ? asset('storage/' . Auth::user()->foto) : asset('template/assets/images/user/1.png') }}"
+                        class="avatar-40 img-fluid rounded" alt="user">
+                    <div class="caption ml-3">
+                        <h6 class="mb-0 line-height">{{ Auth::user()->nama }}<i class="las la-angle-down ml-3"></i></h6>
+                    </div>
+                </a>
+                <div class="iq-sub-dropdown dropdown-menu user-dropdown" aria-labelledby="dropdownMenuButton3">
+                    <div class="card m-0">
+                        <div class="card-body p-0">
+                            <div class="py-3">
+                                <a href="{{ asset('template_guest/app/user-profile.html') }}" class="iq-sub-card">
+                                    <div class="media align-items-center">
+                                        <i class="ri-user-line mr-3"></i>
+                                        <h6>Profil Saya</h6>
+                                    </div>
+                                </a>
+                                <a href="{{ asset('template_guest/backend/privacy-policy.html') }}" class="iq-sub-card">
+                                    <div class="media align-items-center">
+                                        <i class="ri-lock-line mr-3"></i>
+                                        <h6>Ubah Password</h6>
+                                    </div>
+                                </a>
+                            </div>
+                            <a class="right-ic p-3 border-top btn-block position-relative text-center"
+                                href="{{ route('logout') }}" data-confirm-logout role="button">
+                                Logout
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const logoutLinks = document.querySelectorAll('[data-confirm-logout]');
+
+        logoutLinks.forEach(function (link) {
+            link.addEventListener('click', function (e) {
+                e.preventDefault();
+
+                Swal.fire({
+                    title: 'Logout Sistem',
+                    text: 'Apakah Anda yakin ingin logout?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#6c757d',
+                    confirmButtonText: 'Ya, Logout',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Redirect ke route logout (GET)
+                        window.location.href = "{{ route('logout') }}";
+                    }
+                });
+            });
+        });
+    });
+</script>
