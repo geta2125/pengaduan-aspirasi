@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>BinaDesa | {{ $title }}</title>
+    <title>BinaDesa | {{ $title ?? 'Pengaduan Aspirasi' }}</title>
 
     <!-- Favicon -->
     <link rel="shortcut icon" href="{{ asset('template_guest/assets/images/favicon.ico') }}" />
@@ -21,7 +21,7 @@
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css"
         rel="stylesheet" />
-        <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
 
 </head>
 
@@ -68,7 +68,8 @@
                             <div class="form-group">
                                 <h6 class="form-label mb-3">Copy Your Link</h6>
                                 <div class="input-group">
-                                    <input type="text" class="form-control" readonly value="calendly.com/rickoshea1234">
+                                    <input type="text" class="form-control" readonly
+                                        value="calendly.com/rickoshea1234">
                                     <div class="input-group-append">
                                         <span class="input-group-text" id="basic-addon2"><i
                                                 class="las la-link"></i></span>
@@ -78,7 +79,8 @@
                             <div class="form-group">
                                 <h6 class="form-label mb-3">Email Your Link</h6>
                                 <div class="input-group">
-                                    <input type="text" class="form-control" readonly value="calendly.com/rickoshea1234">
+                                    <input type="text" class="form-control" readonly
+                                        value="calendly.com/rickoshea1234">
                                     <div class="input-group-append">
                                         <span class="input-group-text" id="basic-addon3"><i
                                                 class="las la-envelope"></i></span>
@@ -88,7 +90,8 @@
                             <div class="form-group">
                                 <h6 class="form-label mb-3">Add to Your Website</h6>
                                 <div class="input-group">
-                                    <input type="text" class="form-control" readonly value="calendly.com/rickoshea1234">
+                                    <input type="text" class="form-control" readonly
+                                        value="calendly.com/rickoshea1234">
                                     <div class="input-group-append">
                                         <span class="input-group-text" id="basic-addon4"><i
                                                 class="las la-code"></i></span>
@@ -119,7 +122,8 @@
                         <li class="list-inline-item"><a
                                 href="{{ asset('template_guest/backend/privacy-policy.html') }}">Privacy Policy</a></li>
                         <li class="list-inline-item"><a
-                                href="{{ asset('template_guest/backend/terms-of-service.html') }}">Terms of Use</a></li>
+                                href="{{ asset('template_guest/backend/terms-of-service.html') }}">Terms of Use</a>
+                        </li>
                     </ul>
                 </div>
                 <div class="col-lg-6 text-right">
