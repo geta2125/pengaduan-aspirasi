@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>BinaDesa | {{ $title ?? 'Pengaduan Aspirasi' }}</title>
+    <title>Calendify | Responsive Bootstrap 4 Admin Dashboard Template</title>
 
     <!-- Favicon -->
     <link rel="shortcut icon" href="{{ asset('template_guest/assets/images/favicon.ico') }}" />
@@ -16,13 +16,6 @@
     <link rel="stylesheet"
         href="{{ asset('template_guest/assets/vendor/line-awesome/dist/line-awesome/css/line-awesome.min.css') }}">
     <link rel="stylesheet" href="{{ asset('template_guest/assets/vendor/remixicon/fonts/remixicon.css') }}">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    {{-- Memastikan Select2 CSS dimuat --}}
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    <link href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css"
-        rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
-
 </head>
 
 <body class="fixed-top-navbar top-nav  ">
@@ -68,8 +61,7 @@
                             <div class="form-group">
                                 <h6 class="form-label mb-3">Copy Your Link</h6>
                                 <div class="input-group">
-                                    <input type="text" class="form-control" readonly
-                                        value="calendly.com/rickoshea1234">
+                                    <input type="text" class="form-control" readonly value="calendly.com/rickoshea1234">
                                     <div class="input-group-append">
                                         <span class="input-group-text" id="basic-addon2"><i
                                                 class="las la-link"></i></span>
@@ -79,8 +71,7 @@
                             <div class="form-group">
                                 <h6 class="form-label mb-3">Email Your Link</h6>
                                 <div class="input-group">
-                                    <input type="text" class="form-control" readonly
-                                        value="calendly.com/rickoshea1234">
+                                    <input type="text" class="form-control" readonly value="calendly.com/rickoshea1234">
                                     <div class="input-group-append">
                                         <span class="input-group-text" id="basic-addon3"><i
                                                 class="las la-envelope"></i></span>
@@ -90,8 +81,7 @@
                             <div class="form-group">
                                 <h6 class="form-label mb-3">Add to Your Website</h6>
                                 <div class="input-group">
-                                    <input type="text" class="form-control" readonly
-                                        value="calendly.com/rickoshea1234">
+                                    <input type="text" class="form-control" readonly value="calendly.com/rickoshea1234">
                                     <div class="input-group-append">
                                         <span class="input-group-text" id="basic-addon4"><i
                                                 class="las la-code"></i></span>
@@ -122,8 +112,7 @@
                         <li class="list-inline-item"><a
                                 href="{{ asset('template_guest/backend/privacy-policy.html') }}">Privacy Policy</a></li>
                         <li class="list-inline-item"><a
-                                href="{{ asset('template_guest/backend/terms-of-service.html') }}">Terms of Use</a>
-                        </li>
+                                href="{{ asset('template_guest/backend/terms-of-service.html') }}">Terms of Use</a></li>
                     </ul>
                 </div>
                 <div class="col-lg-6 text-right">
@@ -132,8 +121,6 @@
             </div>
         </div>
     </footer>
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-
     <!-- Backend Bundle JavaScript -->
     <script src="{{ asset('template_guest/assets/js/backend-bundle.min.js') }}"></script>
 
@@ -143,15 +130,9 @@
 
     <!-- app JavaScript -->
     <script src="{{ asset('template_guest/assets/js/app.js') }}"></script>
-    {{-- Memastikan jQuery dimuat sebelum Select2 --}}
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-
-
-    @stack('scripts')
     <script>
         // SweetAlert2 based on session
         @if (session('success'))
