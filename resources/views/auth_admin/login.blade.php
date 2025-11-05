@@ -1,61 +1,107 @@
 @extends('layouts_admin.auth')
+
 @section('konten')
-    <div class="container">
-        <div class="row align-items-center justify-content-center height-self-center">
-            <div class="col-lg-8">
-                <div class="card auth-card">
-                    <div class="card-body p-0">
-                        <div class="d-flex align-items-center auth-content">
-                            <div class="col-lg-7 align-self-center">
-                                <div class="p-3">
-                                    <h2 class="mb-2">Sign In</h2>
-                                    <p>Login to stay connected.</p>
+{{-- start css --}}
+@include('auth_admin.logincss')
+{{-- end css --}}
+    <div class="auth-page">
+        <div class="auth-card">
+            <div class="auth-grid">
+                <!-- Left: Form Section -->
+                <div class="auth-form">
+                    <div class="brand">
+                        <div class="brand-logo">
+                            <img src="{{ asset('template/assets/images/login/logo.png') }}" alt="Logo">
+                        </div>
+                        <h1 class="brand-title">Sistem Pengaduan</h1>
+                        <p class="brand-subtitle">Platform Aspirasi Masyarakat</p>
+                    </div>
 
-                                    <form method="POST" action="{{ route('login') }}">
-                                        @csrf
-                                        <div class="row">
-                                            <div class="col-lg-12">
-                                                <div class="floating-label form-group">
-                                                    {{-- 4. REPOPULATE FORM: 'value' diisi dengan old('username') --}}
-                                                    <input
-                                                        class="floating-input form-control @error('username') is-invalid @enderror"
-                                                        type="text" placeholder=" " name="username"
-                                                        value="{{ old('username') }}" required>
-                                                    <label>Username</label>
+                    <div class="form-header">
+                        <h2 class="form-title">Selamat Datang Kembali</h2>
+                        <p class="form-subtitle">Silakan masuk ke akun Anda untuk melanjutkan</p>
+                    </div>
 
-                                                    {{-- 2. VALIDATION ERROR: Menampilkan error untuk 'username' --}}
-                                                    @error('username')
-                                                        <span class="text-danger">{{ $message }}</span>
-                                                    @enderror
-                                                </div>
-                                            </div>
+                    <form method="POST" action="{{ route('login') }}">
+                        @csrf
 
-                                            <div class="col-lg-12">
-                                                <div class="floating-label form-group position-relative">
-                                                    <input id="password"
-                                                        class="floating-input form-control @error('password') is-invalid @enderror"
-                                                        name="password" type="password" placeholder=" " required>
-                                                    <label>Password</label>
-                                                    <span id="togglePassword"
-                                                        style="position:absolute; right:12px; top:7px; cursor:pointer;">
-                                                        <i class="fa fa-eye"></i>
-                                                    </span>
-
-                                                    {{-- 2. VALIDATION ERROR: Menampilkan error untuk 'password' --}}
-                                                    @error('password')
-                                                        <span class="text-danger">{{ $message }}</span>
-                                                    @enderror
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <button type="submit" class="btn btn-primary">Sign In</button>
-                                    </form>
+                        <!-- Username -->
+                        <div class="form-field">
+                            <label class="form-label">Username</label>
+                            <div class="input-wrapper">
+                                <i class="fa fa-user input-icon"></i>
+                                <input
+                                    type="text"
+                                    name="username"
+                                    class="form-control with-icon @error('username') is-invalid @enderror"
+                                    placeholder="Masukkan username"
+                                    value="{{ old('username') }}"
+                                    required
+                                    autofocus>
+                            </div>
+                            @error('username')
+                                <div class="error-message">
+                                    <i class="fa fa-exclamation-circle"></i>
+                                    <span>{{ $message }}</span>
                                 </div>
+                            @enderror
+                        </div>
+
+                        <!-- Password -->
+                        <div class="form-field">
+                            <label class="form-label">Password</label>
+                            <div class="input-wrapper">
+                                <i class="fa fa-lock input-icon"></i>
+                                <input
+                                    id="password"
+                                    type="password"
+                                    name="password"
+                                    class="form-control with-icon @error('password') is-invalid @enderror"
+                                    placeholder="Masukkan password"
+                                    required>
+                                <span class="toggle-password" id="togglePassword">
+                                    <i class="fa fa-eye"></i>
+                                </span>
                             </div>
-                            <div class="col-lg-5 content-right">
-                                <img src="{{ asset('template/assets/images/login/01.png') }}" class="img-fluid image-right"
-                                    alt="">
+                            @error('password')
+                                <div class="error-message">
+                                    <i class="fa fa-exclamation-circle"></i>
+                                    <span>{{ $message }}</span>
+                                </div>
+                            @enderror
+                        </div>
+
+                        <!-- Remember Me -->
+                        <div class="form-options">
+                            <div class="checkbox-wrapper">
+                                <input
+                                    type="checkbox"
+                                    name="remember"
+                                    id="remember"
+                                    {{ old('remember') ? 'checked' : '' }}>
+                                <label class="checkbox-label" for="remember">Ingat saya</label>
                             </div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <button type="submit" class="btn-primary">
+                            <i class="fa fa-sign-in-alt"></i>
+                            <span>Masuk ke Dashboard</span>
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Right: Visual Section -->
+                <div class="auth-visual">
+                    <div class="visual-content">
+                        <img src="{{ asset('template/assets/images/login/loginpengaduan.png') }}"
+                            alt="Ilustrasi" class="visual-image">
+                        <div class="visual-text">
+                            <h3 class="visual-title">Kelola Pengaduan dengan Mudah</h3>
+                            <p class="visual-desc">
+                                Sistem terintegrasi untuk mengelola<br>
+                                pengaduan dan aspirasi masyarakat
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -63,44 +109,44 @@
         </div>
     </div>
 
-    {{--
-    Penting: Pastikan SweetAlert2 JS sudah di-load di layout 'layouts.auth' Anda
-    agar script di bawah ini berfungsi.
-    --}}
     <script>
-        // Show/Hide Password
-        const togglePassword = document.querySelector('#togglePassword');
-        const password = document.querySelector('#password');
+        // Toggle Password
+        const togglePassword = document.getElementById('togglePassword');
+        const passwordInput = document.getElementById('password');
 
-        if (togglePassword) {
-            togglePassword.addEventListener('click', function () {
-                const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
-                password.setAttribute('type', type);
-                this.innerHTML = type === 'password' ?
-                    '<i class="fa fa-eye"></i>' :
-                    '<i class="fa fa-eye-slash"></i>';
-            });
-        }
+        togglePassword?.addEventListener('click', function() {
+            const type = passwordInput.type === 'password' ? 'text' : 'password';
+            passwordInput.type = type;
+            this.querySelector('i').className = type === 'password' ? 'fa fa-eye' : 'fa fa-eye-slash';
+        });
 
-        // 3. FLASH DATA (SUCCESS): Menampilkan pesan dari session 'success'
+        // SweetAlert Success
         @if (session('success'))
             Swal.fire({
                 icon: 'success',
-                title: 'Success',
+                title: 'Berhasil!',
                 text: '{{ session('success') }}',
-                timer: 2500,
-                showConfirmButton: false
+                timer: 3000,
+                showConfirmButton: false,
+                toast: true,
+                position: 'top-end',
+                background: '#10b981',
+                color: '#fff'
             });
         @endif
 
-        // 3. FLASH DATA (ERROR): Menampilkan pesan dari session 'error'
+        // SweetAlert Error
         @if (session('error'))
             Swal.fire({
                 icon: 'error',
-                title: 'Error',
+                title: 'Gagal!',
                 text: '{{ session('error') }}',
-                timer: 2500,
-                showConfirmButton: false
+                timer: 3000,
+                showConfirmButton: false,
+                toast: true,
+                position: 'top-end',
+                background: '#ef4444',
+                color: '#fff'
             });
         @endif
     </script>
