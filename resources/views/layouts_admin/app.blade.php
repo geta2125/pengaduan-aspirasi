@@ -94,7 +94,7 @@
 
         <!-- Floating WhatsApp Button (1 admin) -->
         <div class="floating-whatsapp-wrapper">
-            <a href="https://wa.me/6281234567890?text=Halo%20Admin,%20saya%20ingin%20bertanya%20tentang%20Bina%20Desa"
+            <a href="https://wa.me/6285979229792?text=Halo%20Admin,%20saya%20ingin%20bertanya%20tentang%20Bina%20Desa"
                 target="_blank" class="floating-whatsapp-btn">
                 <img src="https://cdn-icons-png.flaticon.com/512/124/124034.png" alt="WhatsApp" />
                 <span>Chat Admin</span>

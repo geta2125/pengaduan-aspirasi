@@ -1,12 +1,11 @@
 <?php
-
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Pengaduan;
 use App\Models\KategoriPengaduan;
 use App\Models\Media;
+use App\Models\Pengaduan;
 use App\Models\Tindak_Lanjut;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class PengaduanController extends Controller
@@ -16,14 +15,14 @@ class PengaduanController extends Controller
     // ==============================
     public function ajukan($pengaduan_id = null)
     {
-        $title = "Formulir Pengaduan";
+        $title    = "Formulir Pengaduan";
         $kategori = KategoriPengaduan::all();
 
         $pengaduan = $pengaduan_id
             ? Pengaduan::with('media')->findOrFail($pengaduan_id)
             : null;
 
-        return view('guest.pengaduan.form', compact('kategori', 'pengaduan','title'));
+        return view('guest.pengaduan.form', compact('kategori', 'pengaduan', 'title'));
     }
 
     // ==============================
@@ -31,12 +30,12 @@ class PengaduanController extends Controller
     // ==============================
     public function riwayat(Request $request)
     {
-        $title = "Riwayat Pengaduan";
+        $title     = "Riwayat Pengaduan";
         $pengaduan = Pengaduan::with(['warga', 'kategori', 'media'])
             ->where('warga_id', auth()->user()->warga->warga_id ?? 0)
             ->latest()->get();
 
-        return view('guest.pengaduan.index', compact('pengaduan','title'));
+        return view('guest.pengaduan.index', compact('pengaduan', 'title'));
     }
 
     // ==============================
@@ -54,36 +53,44 @@ class PengaduanController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'judul' => 'required|string|max:255',
+            'judul'       => 'required|string|max:255',
             'kategori_id' => 'required|exists:kategori_pengaduan,id',
-            'deskripsi' => 'required|string',
+            'deskripsi'   => 'required|string',
             'lokasi_text' => 'nullable|string|max:255',
-            'rt' => 'nullable|string|max:5',
-            'rw' => 'nullable|string|max:5',
-            'lampiran' => 'nullable|file|mimes:jpg,jpeg,png,pdf,docx,xlsx,pptx|max:5120',
+            'rt'          => 'nullable|string|max:5',
+            'rw'          => 'nullable|string|max:5',
+            'lampiran'    => 'nullable|file|mimes:jpg,jpeg,png,pdf,docx,xlsx,pptx|max:5120',
         ]);
 
+        // Admin bisa buat pengaduan tanpa login sebagai warga
         $wargaId = auth()->user()->warga->warga_id ?? null;
-        if (!$wargaId) {
-            return redirect()->route('warga.create')->with('error', 'Lengkapi data diri terlebih dahulu!');
-        }
 
         $pengaduan = Pengaduan::create([
             'nomor_tiket' => 'TIKET-' . time(),
-            'warga_id' => $wargaId,
+            'warga_id'    => $wargaId,
             'kategori_id' => $request->kategori_id,
-            'judul' => $request->judul,
-            'deskripsi' => $request->deskripsi,
+            'judul'       => $request->judul,
+            'deskripsi'   => $request->deskripsi,
             'lokasi_text' => $request->lokasi_text,
-            'rt' => $request->rt,
-            'rw' => $request->rw,
-            'status' => 'pending',
+            'rt'          => $request->rt,
+            'rw'          => $request->rw,
+            'status'      => $request->status ?? 'pending',
         ]);
 
-        // Simpan lampiran
-        $this->handleLampiran($request, $pengaduan);
+        // Simpan lampiran jika ada
+        if ($request->hasFile('lampiran')) {
+            $file = $request->file('lampiran');
+            $path = $file->store('pengaduan_lampiran', 'public');
 
-        return redirect()->route('guest.pengaduan.riwayat')->with('success', 'Pengaduan berhasil diajukan!');
+            Media::create([
+                'ref_table' => 'pengaduan',
+                'ref_id'    => $pengaduan->pengaduan_id,
+                'file_url'  => $path,
+                'mime_type' => $file->getClientMimeType(),
+            ]);
+        }
+
+        return redirect()->route('admin.pengaduan.semua')->with('success', 'Pengaduan baru berhasil ditambahkan!');
     }
 
     // ==============================
@@ -92,18 +99,18 @@ class PengaduanController extends Controller
     public function update(Request $request, Pengaduan $pengaduan)
     {
         $request->validate([
-            'judul' => 'required|string|max:255',
+            'judul'       => 'required|string|max:255',
             'kategori_id' => 'required|exists:kategori_pengaduan,id',
-            'deskripsi' => 'required|string',
+            'deskripsi'   => 'required|string',
             'lokasi_text' => 'nullable|string|max:255',
-            'rt' => 'nullable|string|max:5',
-            'rw' => 'nullable|string|max:5',
-            'lampiran' => 'nullable|file|mimes:jpg,jpeg,png,pdf,docx,xlsx,pptx|max:5120',
+            'rt'          => 'nullable|string|max:5',
+            'rw'          => 'nullable|string|max:5',
+            'lampiran'    => 'nullable|file|mimes:jpg,jpeg,png,pdf,docx,xlsx,pptx|max:5120',
         ]);
 
         $pengaduan->update($request->only('judul', 'kategori_id', 'deskripsi', 'lokasi_text', 'rt', 'rw'));
 
-        // Update lampiran
+        // Update lampiran jika ada
         $this->handleLampiran($request, $pengaduan);
 
         return redirect()->route('guest.pengaduan.riwayat')->with('success', 'Pengaduan berhasil diperbarui!');
@@ -125,14 +132,14 @@ class PengaduanController extends Controller
             if ($media) {
                 Storage::disk('public')->delete($media->file_url);
                 $media->update([
-                    'file_url' => $path,
+                    'file_url'  => $path,
                     'mime_type' => $file->getClientMimeType(),
                 ]);
             } else {
                 Media::create([
                     'ref_table' => 'pengaduan',
-                    'ref_id' => $pengaduan->pengaduan_id,
-                    'file_url' => $path,
+                    'ref_id'    => $pengaduan->pengaduan_id,
+                    'file_url'  => $path,
                     'mime_type' => $file->getClientMimeType(),
                 ]);
             }
@@ -140,16 +147,24 @@ class PengaduanController extends Controller
     }
 
     // ==============================
-    // ADMIN - Tampilkan semua pengaduan baru
-    // ==============================
+// ADMIN - Tampilkan semua pengaduan baru
+// ==============================
     public function pengaduanBaru(Request $request)
     {
+        // Mengambil data pengaduan yang berstatus 'pending'
+        // beserta relasinya (warga, kategori, media)
         $pengaduan = Pengaduan::with(['warga', 'kategori', 'media'])
-            ->where('status', 'pending') // hanya pengaduan baru
+            ->where('status', 'pending')
             ->latest()->get();
 
+        // Menyiapkan judul halaman
         $title = 'Pengaduan Baru';
-        return view('admin.pengaduan.baru', compact('pengaduan', 'title'));
+
+        // Ambil semua data kategori pengaduan
+        $kategori = KategoriPengaduan::all();
+
+        // Kirim data ke view
+        return view('admin.pengaduan.baru', compact('pengaduan', 'title', 'kategori'));
     }
 
     // ==============================
@@ -182,29 +197,33 @@ class PengaduanController extends Controller
         return view('admin.pengaduan.semua', compact('pengaduan', 'title'));
     }
 
-    // Form tindak lanjut
+    // ==============================
+    // ADMIN - Form tindak lanjut
+    // ==============================
     public function tindaklanjutForm($id)
     {
-        $title = 'Form Tindak Lanjut';
+        $title     = 'Form Tindak Lanjut';
         $pengaduan = Pengaduan::findOrFail($id);
         return view('admin.pengaduan.tindaklanjut', compact('pengaduan', 'title'));
     }
 
-    // Simpan tindak lanjut
+    // ==============================
+    // ADMIN - Simpan tindak lanjut
+    // ==============================
     public function tindaklanjutStore(Request $request, $id)
     {
         $request->validate([
             'petugas' => 'nullable|string|max:255',
-            'aksi' => 'required|string|max:255',
+            'aksi'    => 'required|string|max:255',
             'catatan' => 'nullable|string',
         ]);
 
         // Simpan tindak lanjut
         Tindak_Lanjut::create([
             'pengaduan_id' => $id,
-            'petugas' => $request->petugas,
-            'aksi' => $request->aksi,
-            'catatan' => $request->catatan,
+            'petugas'      => $request->petugas,
+            'aksi'         => $request->aksi,
+            'catatan'      => $request->catatan,
         ]);
 
         // Update status pengaduan berdasarkan aksi
