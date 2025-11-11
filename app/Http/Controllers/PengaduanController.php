@@ -90,7 +90,7 @@ class PengaduanController extends Controller
             ]);
         }
 
-        return redirect()->route('admin.pengaduan.semua')->with('success', 'Pengaduan baru berhasil ditambahkan!');
+        return redirect()->route('guest.pengaduan.riwayat')->with('success', 'Pengaduan baru berhasil ditambahkan!');
     }
 
     // ==============================
@@ -197,51 +197,5 @@ class PengaduanController extends Controller
         return view('admin.pengaduan.semua', compact('pengaduan', 'title'));
     }
 
-    // ==============================
-    // ADMIN - Form tindak lanjut
-    // ==============================
-    public function tindaklanjutForm($id)
-    {
-        $title     = 'Form Tindak Lanjut';
-        $pengaduan = Pengaduan::findOrFail($id);
-        return view('admin.pengaduan.tindaklanjut', compact('pengaduan', 'title'));
-    }
 
-    // ==============================
-    // ADMIN - Simpan tindak lanjut
-    // ==============================
-    public function tindaklanjutStore(Request $request, $id)
-    {
-        $request->validate([
-            'petugas' => 'nullable|string|max:255',
-            'aksi'    => 'required|string|max:255',
-            'catatan' => 'nullable|string',
-        ]);
-
-        // Simpan tindak lanjut
-        Tindak_Lanjut::create([
-            'pengaduan_id' => $id,
-            'petugas'      => $request->petugas,
-            'aksi'         => $request->aksi,
-            'catatan'      => $request->catatan,
-        ]);
-
-        // Update status pengaduan berdasarkan aksi
-        $pengaduan = Pengaduan::findOrFail($id);
-
-        switch ($request->aksi) {
-            case 'Diterima':
-            case 'Sedang Diproses':
-            case 'Ditugaskan Petugas':
-                $pengaduan->status = 'proses';
-                break;
-            case 'Selesai':
-                $pengaduan->status = 'selesai';
-                break;
-        }
-
-        $pengaduan->save();
-
-        return redirect()->route('admin.pengaduan.semua')->with('success', 'Tindak lanjut berhasil ditambahkan dan status pengaduan diperbarui.');
-    }
 }

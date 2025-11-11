@@ -73,7 +73,7 @@
 
                 {{-- Form Tindak Lanjut --}}
                 <h5 class="text-primary mt-5"><i class="bi bi-plus-circle me-2"></i> Tambah Tindak Lanjut</h5>
-                <form action="{{ route('admin.pengaduan.tindaklanjut.store', $pengaduan->pengaduan_id) }}" method="POST">
+                <form action="{{ route('admin.tindaklanjut.store', $pengaduan->pengaduan_id) }}" method="POST">
                     @csrf
                     <div class="mb-3">
                         <label for="aksi" class="form-label">Aksi <span class="text-danger">*</span></label>

@@ -47,7 +47,7 @@
                                             <div class="d-flex align-items-center justify-content-center list-action"
                                                 style="gap: 5px;">
                                                 <a href="{{ route('admin.kategori-pengaduan.show', $k->id) }}"
-                                                    class="badge badge-info" data-toggle="tooltip" title="View">
+                                                    class="badge badge-info" data-toggle="tooltip" title="Detail">
                                                     <i class="ri-eye-line"></i>
                                                 </a>
                                                 <a href="{{ route('admin.kategori-pengaduan.edit', $k->id) }}"

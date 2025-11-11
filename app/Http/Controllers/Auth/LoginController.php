@@ -121,7 +121,7 @@ class LoginController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        if ($role === 'guest' || $role === 'jamaah') {
+        if ($role === 'guest') {
             return Redirect::route('guest.login')->with('success', 'Logout berhasil, sampai jumpa lagi!');
         }
 

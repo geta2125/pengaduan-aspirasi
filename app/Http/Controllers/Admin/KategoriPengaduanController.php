@@ -10,7 +10,7 @@ class KategoriPengaduanController extends Controller
 {
     public function index()
     {
-        $kategori = KategoriPengaduan::all();
+        $kategori = KategoriPengaduan::latest()->get();
         $title = 'Daftar Kategori Pengaduan';
         return view('admin.kategori.index', compact('kategori', 'title'));
     }
