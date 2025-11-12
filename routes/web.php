@@ -13,7 +13,7 @@ use App\Http\Controllers\TindakLanjutController;
 
 
 // ==========================
-// REDIRECT KE LOGIN //route langsung ke login
+// REDIRECT KE LOGIN
 // ==========================
 Route::get('/', function () {
     return redirect()->route('login');
@@ -29,13 +29,13 @@ Route::middleware('guest')->group(function () {
     Route::get('/login', [LoginController::class, 'login'])->name('login');
     Route::post('/login', [LoginController::class, 'authenticate'])->name('login.process');
 
-    // // Login Guest
-    // Route::get('/guest/login', [LoginController::class, 'guestLogin'])->name('guest.login');
-    // Route::post('/guest/login', [LoginController::class, 'guestAuthenticate'])->name('guest.login.process');
+    // Login Guest
+    Route::get('/guest/login', [LoginController::class, 'guestLogin'])->name('guest.login');
+    Route::post('/guest/login', [LoginController::class, 'guestAuthenticate'])->name('guest.login.process');
 
-    // // Register Guest
-    // Route::get('/guest/register', [RegisterController::class, 'guestRegister'])->name('guest.register');
-    // Route::post('/guest/register', [RegisterController::class, 'guestStore'])->name('guest.register.store');
+    // Register Guest
+    Route::get('/guest/register', [RegisterController::class, 'guestRegister'])->name('guest.register');
+    Route::post('/guest/register', [RegisterController::class, 'guestStore'])->name('guest.register.store');
 });
 
 
@@ -81,6 +81,7 @@ Route::middleware('auth')->group(function () {
         // ---- Pengaduan Admin ----
         Route::prefix('pengaduan')->as('pengaduan.')->group(function () {
             Route::get('/baru', [PengaduanController::class, 'pengaduanBaru'])->name('baru');
+            Route::get('/semua', [PengaduanController::class, 'pengaduanSemua'])->name('semua');
         });
 
         // ---- Tindak Lanjut ----
@@ -137,5 +138,8 @@ Route::middleware('auth')->group(function () {
     // ==========================
     Route::get('/penilaian-layanan', [PenilaianController::class, 'index'])->name('penilaian.layanan');
     });
+
+
+
 
 });

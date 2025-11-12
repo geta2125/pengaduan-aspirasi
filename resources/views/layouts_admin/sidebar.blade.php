@@ -1,5 +1,3 @@
-{{-- bagian yang di gunakan untuk projcet ini  --}}
-
 <div class="iq-sidebar  sidebar-default ">
     <div class="iq-sidebar-logo d-flex align-items-center justify-content-between">
         <a href="{{ asset('template/backend/index.html') }}" class="header-logo">
@@ -92,7 +90,7 @@
                 </li>
 
                 <li class=" ">
-                    <a href="{{  route('admin.pengaduan.semua') }}" class="">
+                    <a href="{{  route('admin.tindaklanjut.index') }}" class="">
                         <svg class="svg-icon" id="p-dash6" width="20" height="20" xmlns="http://www.w3.org/2000/svg"
                             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                             stroke-linecap="round" stroke-linejoin="round">
