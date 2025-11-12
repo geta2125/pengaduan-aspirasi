@@ -1,3 +1,5 @@
+{{-- bagian yang di gunakan untuk projcet ini  --}}
+
 <div class="iq-sidebar  sidebar-default ">
     <div class="iq-sidebar-logo d-flex align-items-center justify-content-between">
         <a href="{{ asset('template/backend/index.html') }}" class="header-logo">
