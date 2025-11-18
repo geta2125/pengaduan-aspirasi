@@ -1,4 +1,4 @@
-@extends('layouts_guest.app') {{-- Sesuaikan dengan layout --}}
+@extends('layouts_admin.app') {{-- Sesuaikan dengan layout --}}
 
 @section('konten')
 <div class="container mt-5">
