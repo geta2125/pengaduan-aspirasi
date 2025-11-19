@@ -64,8 +64,34 @@ Route::middleware('auth')->group(function () {
     // ==========================
     Route::prefix('admin')->as('admin.')->group(function () {
 
-        // ---- Modul User ----
-        Route::resource('user', UserController::class);
+        Route::prefix('warga')->as('warga.')->group(function () {
+
+            // ==========================
+            // Halaman Index & Form
+            // ==========================
+            Route::get('/', [WargaController::class, 'index'])->name('index');
+            Route::get('/create', [WargaController::class, 'create'])->name('create');
+            Route::get('/{id}/edit', [WargaController::class, 'edit'])->name('edit');
+
+            // ==========================
+            // Step 1 & Step 2 Simpan
+            // ==========================
+            Route::post('/store-account', [WargaController::class, 'storeAccount'])
+                ->name('storeAccount'); // Step 1
+            Route::post('/store', [WargaController::class, 'store'])
+                ->name('store'); // Step 2
+
+            // ==========================
+            // Update & Delete
+            // ==========================
+            Route::put('/{id}', [WargaController::class, 'update'])->name('update');
+            Route::delete('/{id}', [WargaController::class, 'destroy'])->name('destroy');
+
+            // ==========================
+            // Show Detail Warga (letakkan paling terakhir!)
+            // ==========================
+            Route::get('/{id}', [WargaController::class, 'show'])->name('show');
+        });
 
         // ---- Modul Kategori Pengaduan ----
         Route::prefix('kategori-pengaduan')->as('kategori-pengaduan.')->group(function () {
@@ -80,7 +106,13 @@ Route::middleware('auth')->group(function () {
 
         // ---- Pengaduan Admin ----
         Route::prefix('pengaduan')->as('pengaduan.')->group(function () {
-            Route::get('/baru', [PengaduanController::class, 'pengaduanBaru'])->name('baru');
+            Route::get('/', [PengaduanController::class, 'index'])->name('index');
+            Route::get('/create', [PengaduanController::class, 'create'])->name('create');
+            Route::post('/', [PengaduanController::class, 'store'])->name('store');
+            Route::get('/{id}', [PengaduanController::class, 'show'])->name('show');
+            Route::get('/{id}/edit', [PengaduanController::class, 'edit'])->name('edit');
+            Route::put('/{id}', [PengaduanController::class, 'update'])->name('update');
+            Route::delete('/{id}', [PengaduanController::class, 'destroy'])->name('destroy');
             Route::get('/semua', [PengaduanController::class, 'pengaduanSemua'])->name('semua');
         });
 
@@ -112,8 +144,6 @@ Route::middleware('auth')->group(function () {
     // WARGA
     // -------------------------
     Route::prefix('guest')->as('guest.')->group(function () {
-        Route::get('/warga', [WargaController::class, 'create'])->name('warga.create');
-        Route::put('/warga/update', [WargaController::class, 'update'])->name('warga.update');
 
         // ==========================
         // ROUTE PENGADUAN
@@ -133,13 +163,9 @@ Route::middleware('auth')->group(function () {
             ->name('penilaian.store');
 
 
-    // ==========================
-    // ROUTE PENILAIAN LAYANAN
-    // ==========================
-    Route::get('/penilaian-layanan', [PenilaianController::class, 'index'])->name('penilaian.layanan');
+        // ==========================
+        // ROUTE PENILAIAN LAYANAN
+        // ==========================
+        Route::get('/penilaian-layanan', [PenilaianController::class, 'index'])->name('penilaian.layanan');
     });
-
-
-
-
 });

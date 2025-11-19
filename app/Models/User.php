@@ -27,8 +27,7 @@ class User extends Authenticatable
     // app/Models/User.php
     public function warga()
     {
-        return $this->hasOne(Warga::class, 'nama', 'nama');
-        // atau jika ada kolom user_id di tabel warga, lebih aman pakai foreign key
+        return $this->hasOne(Warga::class, 'user_id', 'id');
     }
 
 }

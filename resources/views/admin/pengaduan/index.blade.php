@@ -7,6 +7,9 @@
                 <div>
                     <h4 class="mb-3">{{ $title }}</h4>
                 </div>
+                <a class="btn btn-primary add-list" href="{{ route('admin.pengaduan.create') }}">
+                    <i class="las la-plus mr-3"></i> Tambah Pengaduan
+                </a>
             </div>
         </div>
 
@@ -28,36 +31,38 @@
                             </thead>
                             <tbody>
                                 @foreach ($pengaduan as $p)
-                                    <tr>
-                                        <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $p->judul }}</td>
-                                        <td>{{ $p->warga->nama ?? 'Anonim' }}</td>
-                                        <td class="text-center">{{ $p->created_at->format('d/m/Y') }}</td>
-                                        <td class="text-center">
-                                            @php
-                                                $statusClass = match (strtolower($p->status)) {
-                                                    'pending' => 'badge-secondary',
-                                                    'proses' => 'badge-warning',
-                                                    'selesai' => 'badge-success',
-                                                };
-                                            @endphp
-                                            <span class="badge {{ $statusClass }}">{{ ucfirst($p->status) }}</span>
-                                        </td>
-                                        <td class="text-center">
-                                            <div class="d-flex align-items-center justify-content-center list-action"
-                                                style="gap: 5px;"> <button type="button" class="btn btn-sm btn-info"
-                                                    data-toggle="modal" data-target="#detailModal{{ $p->id }}"
-                                                    title="Detail">
-                                                    <i class="ri-eye-line"></i>
-                                                </button>
-                                                <a href="{{ route('admin.tindaklanjut.create', $p->pengaduan_id) }}"
-                                                    class="btn btn-sm btn-danger" title="Tindak Lanjut">
-                                                    <i class="ri-check-double-line"></i>
-                                                </a>
+                                                                    <tr>
+                                                                        <td>{{ $loop->iteration }}</td>
+                                                                        <td>{{ $p->judul }}</td>
+                                                                        <td>{{ $p->warga->nama ?? 'Anonim' }}</td>
+                                                                        <td class="text-center">{{ $p->created_at->format('d/m/Y') }}</td>
+                                                                        <td class="text-center">
+                                                                            @php
+    $statusClass = match (strtolower($p->status)) {
+        'pending' => 'badge-light',
+        'proses' => 'badge-warning',
+        'selesai' => 'badge-success',
+    };
+                                                                            @endphp
+                                                                            <span class="badge {{ $statusClass }}">{{ ucfirst($p->status) }}</span>
+                                                                        </td>
+                                                                        <td class="text-center">
+                                                                            <div class="d-flex align-items-center justify-content-center list-action" style="gap: 5px;">
+                                                                                <button type="button" class="btn btn-sm btn-info" data-toggle="modal" data-target="#detailModal{{ $p->id }}"
+                                                                                    title="Detail">
+                                                                                    <i class="ri-eye-line"></i>
+                                                                                </button>
 
-                                            </div>
-                                        </td>
-                                    </tr>
+                                                                                @if (strtolower($p->status) === 'pending')
+                                                                                    <a href="{{ route('admin.tindaklanjut.create', $p->pengaduan_id) }}" class="btn btn-sm btn-danger"
+                                                                                        title="Tindak Lanjut">
+                                                                                        <i class="ri-check-double-line"></i>
+                                                                                    </a>
+                                                                                @endif
+                                                                            </div>
+                                                                        </td>
+
+                                                                    </tr>
                                 @endforeach
                             </tbody>
                         </table>
@@ -69,13 +74,7 @@
 
     <!-- Modal Detail -->
     @foreach ($pengaduan as $p)
-        @php
-            $statusClass = match (strtolower($p->status)) {
-                'pending' => 'badge-secondary',
-                'proses' => 'badge-warning',
-                'selesai' => 'badge-success',
-            };
-        @endphp
+
         <div class="modal fade" id="detailModal{{ $p->id }}" tabindex="-1" role="dialog">
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
@@ -100,8 +99,7 @@
                                 <strong>Tanggal:</strong> <span>{{ $p->created_at->format('d F Y, H:i') }}</span>
                             </li>
                             <li class="list-group-item d-flex justify-content-between">
-                                <strong>Status:</strong> <span
-                                    class="badge {{ $statusClass }}">{{ ucfirst($p->status) }}</span>
+                                <strong>Status:</strong> <span class="badge {{ $statusClass }}">{{ ucfirst($p->status) }}</span>
                             </li>
                             <li class="list-group-item d-flex justify-content-between">
                                 <strong>Lokasi:</strong> <span>{{ $p->lokasi_text ?? '-' }} (RT/RW:
@@ -114,13 +112,13 @@
                             <p class="mb-0">{{ $p->deskripsi }}</p>
                         </div>
 
-                       @if ($p->media)
-                                <a href="{{ asset('storage/'. $p->media->file_url) }}" target="_blank" class="btn btn-sm btn-info">
-                                    Lihat Lampiran
-                                </a>
-                            @else
-                                <span class="text-muted">Tidak ada lampiran</span>
-                            @endif
+                        @if ($p->media)
+                            <a href="{{ asset('storage/' . $p->media->file_url) }}" target="_blank" class="btn btn-sm btn-info">
+                                Lihat Lampiran
+                            </a>
+                        @else
+                            <span class="text-muted">Tidak ada lampiran</span>
+                        @endif
                     </div>
                 </div>
             </div>

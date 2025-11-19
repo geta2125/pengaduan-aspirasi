@@ -9,15 +9,12 @@ class Warga extends Model
 {
     use HasFactory;
 
-    // Nama tabel
     protected $table = 'warga';
-
-    // Nama kolom primary key
     protected $primaryKey = 'warga_id';
 
-    // Kolom yang boleh diisi (mass assignment)
     protected $fillable = [
         'no_ktp',
+        'user_id',
         'nama',
         'jenis_kelamin',
         'agama',
@@ -25,4 +22,9 @@ class Warga extends Model
         'telp',
         'email',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
 }

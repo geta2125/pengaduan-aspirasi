@@ -32,7 +32,7 @@
                                         <td>
                                             <span
                                                 class="badge
-                                            @if ($p->pengaduan->status == 'pending') badge-secondary
+                                            @if ($p->pengaduan->status == 'pending') badge-light
                                             @elseif($p->pengaduan->status == 'proses') badge-warning
                                             @elseif($p->pengaduan->status == 'selesai') badge-success
                                             @else badge-info @endif">

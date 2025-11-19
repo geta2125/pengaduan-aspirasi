@@ -13,11 +13,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        User::create([
-            'nama' => 'Admin',
-            'username' => 'admin',
-            'role' => 'admin',
-            'password' => Hash::make('admin123'), // password default
+        $this->call([
+            CreateFirstUser::class,
+            CreateWargaDummy::class,
+            CreateKategoriPengaduan::class,
+            CreatePengaduan::class,
+            CreateTindakLanjut::class
         ]);
     }
 }

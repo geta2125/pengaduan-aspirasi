@@ -1,123 +1,174 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\KategoriPengaduan;
 use App\Models\Media;
 use App\Models\Pengaduan;
-use App\Models\Tindak_Lanjut;
+use App\Models\Warga;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class PengaduanController extends Controller
 {
     // ==============================
-    // Halaman ajukan / edit pengaduan
+    // INDEX - Halaman daftar pengaduan
     // ==============================
-    public function ajukan($pengaduan_id = null)
+    public function index()
     {
-        $title    = "Formulir Pengaduan";
-        $kategori = KategoriPengaduan::all();
+        $title = 'Data Pengaduan';
 
-        $pengaduan = $pengaduan_id
-            ? Pengaduan::with('media')->findOrFail($pengaduan_id)
-            : null;
-
-        return view('guest.pengaduan.form', compact('kategori', 'pengaduan', 'title'));
-    }
-
-    // ==============================
-    // Halaman riwayat pengaduan
-    // ==============================
-    public function riwayat(Request $request)
-    {
-        $title     = "Riwayat Pengaduan";
         $pengaduan = Pengaduan::with(['warga', 'kategori', 'media'])
-            ->where('warga_id', auth()->user()->warga->warga_id ?? 0)
-            ->latest()->get();
+            ->latest()
+            ->get();
 
-        return view('guest.pengaduan.index', compact('pengaduan', 'title'));
+        return view('admin.pengaduan.index', compact('pengaduan', 'title'));
     }
 
     // ==============================
-    // Halaman detail pengaduan
+    // CREATE - Form tambah pengaduan
     // ==============================
-    public function show($id)
+    public function create()
     {
-        $pengaduan = Pengaduan::with('kategori')->findOrFail($id);
-        return view('guest.pengaduan.show', compact('pengaduan'));
+        $title = "Tambah Pengaduan";
+        $kategori = KategoriPengaduan::all();
+        $warga = Warga::all(); // TAMBAHKAN
+
+        return view('admin.pengaduan.form', compact('kategori', 'warga', 'title'));
     }
 
+
     // ==============================
-    // Store pengaduan
+    // STORE - Simpan pengaduan baru
     // ==============================
     public function store(Request $request)
     {
         $request->validate([
-            'judul'       => 'required|string|max:255',
+            'judul' => 'required|string|max:255',
             'kategori_id' => 'required|exists:kategori_pengaduan,id',
-            'deskripsi'   => 'required|string',
+            'deskripsi' => 'required|string',
             'lokasi_text' => 'nullable|string|max:255',
-            'rt'          => 'nullable|string|max:5',
-            'rw'          => 'nullable|string|max:5',
-            'lampiran'    => 'nullable|file|mimes:jpg,jpeg,png,pdf,docx,xlsx,pptx|max:5120',
+            'rt' => 'nullable|string|max:5',
+            'rw' => 'nullable|string|max:5',
+            'warga_id' => 'nullable|integer',
+            'lampiran' => 'nullable|file|mimes:jpg,jpeg,png,pdf,docx,xlsx,pptx|max:5120',
         ]);
 
-        // Admin bisa buat pengaduan tanpa login sebagai warga
-        $wargaId = auth()->user()->warga->warga_id ?? null;
-
+        // Buat record pengaduan
         $pengaduan = Pengaduan::create([
             'nomor_tiket' => 'TIKET-' . time(),
-            'warga_id'    => $wargaId,
+            'warga_id' => $request->warga_id,
             'kategori_id' => $request->kategori_id,
-            'judul'       => $request->judul,
-            'deskripsi'   => $request->deskripsi,
+            'judul' => $request->judul,
+            'deskripsi' => $request->deskripsi,
             'lokasi_text' => $request->lokasi_text,
-            'rt'          => $request->rt,
-            'rw'          => $request->rw,
-            'status'      => $request->status ?? 'pending',
+            'rt' => $request->rt,
+            'rw' => $request->rw,
+            'status' => 'pending',
         ]);
 
-        // Simpan lampiran jika ada
-        if ($request->hasFile('lampiran')) {
-            $file = $request->file('lampiran');
-            $path = $file->store('pengaduan_lampiran', 'public');
-
-            Media::create([
-                'ref_table' => 'pengaduan',
-                'ref_id'    => $pengaduan->pengaduan_id,
-                'file_url'  => $path,
-                'mime_type' => $file->getClientMimeType(),
-            ]);
-        }
-
-        return redirect()->route('guest.pengaduan.riwayat')->with('success', 'Pengaduan baru berhasil ditambahkan!');
-    }
-
-    // ==============================
-    // Update pengaduan
-    // ==============================
-    public function update(Request $request, Pengaduan $pengaduan)
-    {
-        $request->validate([
-            'judul'       => 'required|string|max:255',
-            'kategori_id' => 'required|exists:kategori_pengaduan,id',
-            'deskripsi'   => 'required|string',
-            'lokasi_text' => 'nullable|string|max:255',
-            'rt'          => 'nullable|string|max:5',
-            'rw'          => 'nullable|string|max:5',
-            'lampiran'    => 'nullable|file|mimes:jpg,jpeg,png,pdf,docx,xlsx,pptx|max:5120',
-        ]);
-
-        $pengaduan->update($request->only('judul', 'kategori_id', 'deskripsi', 'lokasi_text', 'rt', 'rw'));
-
-        // Update lampiran jika ada
+        // Upload lampiran
         $this->handleLampiran($request, $pengaduan);
 
-        return redirect()->route('guest.pengaduan.riwayat')->with('success', 'Pengaduan berhasil diperbarui!');
+        return redirect()->route('admin.pengaduan.index')->with('success', 'Pengaduan berhasil ditambahkan!');
     }
 
     // ==============================
-    // Fungsi bantu handle lampiran
+    // SHOW - Detail pengaduan
+    // ==============================
+    public function show($id)
+    {
+        $title = 'Detail Pengaduan';
+        $pengaduan = Pengaduan::with(['kategori', 'media', 'warga'])->findOrFail($id);
+
+        return view('admin.pengaduan.show', compact('pengaduan', 'title'));
+    }
+
+    // ==============================
+    // EDIT - Form edit pengaduan
+    // ==============================
+    public function edit($id)
+    {
+        $title = 'Edit Pengaduan';
+        $pengaduan = Pengaduan::with(['media', 'warga'])->findOrFail($id);
+        $kategori = KategoriPengaduan::all();
+        $warga = Warga::all(); // TAMBAHKAN
+
+        return view('admin.pengaduan.form', compact('pengaduan', 'kategori', 'title', 'warga'));
+    }
+
+    // ==============================
+    // UPDATE - Proses update data
+    // ==============================
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'judul' => 'required|string|max:255',
+            'kategori_id' => 'required|exists:kategori_pengaduan,id',
+            'deskripsi' => 'required|string',
+            'lokasi_text' => 'nullable|string|max:255',
+            'rt' => 'nullable|string|max:5',
+            'rw' => 'nullable|string|max:5',
+            'lampiran' => 'nullable|file|mimes:jpg,jpeg,png,pdf,docx,xlsx,pptx|max:5120',
+        ]);
+
+        $pengaduan = Pengaduan::findOrFail($id);
+
+        $pengaduan->update([
+            'judul' => $request->judul,
+            'kategori_id' => $request->kategori_id,
+            'deskripsi' => $request->deskripsi,
+            'lokasi_text' => $request->lokasi_text,
+            'rt' => $request->rt,
+            'rw' => $request->rw,
+        ]);
+
+        // Upload lampiran baru jika ada
+        $this->handleLampiran($request, $pengaduan);
+
+        return redirect()->route('admin.pengaduan.index')->with('success', 'Data pengaduan berhasil diupdate!');
+    }
+
+    // ==============================
+    // DESTROY - Hapus pengaduan
+    // ==============================
+    public function destroy($id)
+    {
+        $pengaduan = Pengaduan::findOrFail($id);
+
+        // Hapus lampiran juga
+        $media = Media::where('ref_table', 'pengaduan')
+            ->where('ref_id', $pengaduan->pengaduan_id)
+            ->first();
+
+        if ($media) {
+            Storage::disk('public')->delete($media->file_url);
+            $media->delete();
+        }
+
+        $pengaduan->delete();
+
+        return redirect()->route('admin.pengaduan.index')->with('success', 'Pengaduan berhasil dihapus!');
+    }
+
+    // ==============================
+    // UPDATE STATUS PENGADUAN (Admin)
+    // ==============================
+    public function updateStatus(Request $request, $id)
+    {
+        $request->validate([
+            'status' => 'required|in:pending,proses,selesai',
+        ]);
+
+        Pengaduan::where('pengaduan_id', $id)->update([
+            'status' => $request->status
+        ]);
+
+        return redirect()->back()->with('success', 'Status berhasil diperbarui!');
+    }
+
+    // ==============================
+    // HANDLE LAMPIRAN
     // ==============================
     protected function handleLampiran(Request $request, Pengaduan $pengaduan)
     {
@@ -132,70 +183,17 @@ class PengaduanController extends Controller
             if ($media) {
                 Storage::disk('public')->delete($media->file_url);
                 $media->update([
-                    'file_url'  => $path,
+                    'file_url' => $path,
                     'mime_type' => $file->getClientMimeType(),
                 ]);
             } else {
                 Media::create([
                     'ref_table' => 'pengaduan',
-                    'ref_id'    => $pengaduan->pengaduan_id,
-                    'file_url'  => $path,
+                    'ref_id' => $pengaduan->pengaduan_id,
+                    'file_url' => $path,
                     'mime_type' => $file->getClientMimeType(),
                 ]);
             }
         }
     }
-
-    // ==============================
-// ADMIN - Tampilkan semua pengaduan baru
-// ==============================
-    public function pengaduanBaru(Request $request)
-    {
-        // Mengambil data pengaduan yang berstatus 'pending'
-        // beserta relasinya (warga, kategori, media)
-        $pengaduan = Pengaduan::with(['warga', 'kategori', 'media'])
-            ->where('status', 'pending')
-            ->latest()->get();
-
-        // Menyiapkan judul halaman
-        $title = 'Pengaduan Baru';
-
-        // Ambil semua data kategori pengaduan
-        $kategori = KategoriPengaduan::all();
-
-        // Kirim data ke view
-        return view('admin.pengaduan.baru', compact('pengaduan', 'title', 'kategori'));
-    }
-
-    // ==============================
-    // ADMIN - Update status pengaduan
-    // ==============================
-    public function updateStatus(Request $request, Pengaduan $pengaduan)
-    {
-        $request->validate([
-            'status' => 'required|in:pending,proses,selesai',
-        ]);
-
-        $pengaduan->update([
-            'status' => $request->status,
-        ]);
-
-        return redirect()->back()->with('success', 'Status pengaduan berhasil diperbarui!');
-    }
-
-    // ==============================
-    // ADMIN - Tampilkan semua pengaduan
-    // ==============================
-    public function semuaPengaduan(Request $request)
-    {
-        $title = 'Pengaduan';
-
-        $pengaduan = Pengaduan::with(['warga', 'kategori', 'media', 'tindak_lanjut'])
-            ->latest()
-            ->get();
-
-        return view('admin.pengaduan.semua', compact('pengaduan', 'title'));
-    }
-
-
 }
