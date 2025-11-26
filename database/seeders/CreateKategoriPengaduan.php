@@ -2,42 +2,36 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\KategoriPengaduan;
+use Illuminate\Support\Facades\DB;
 
 class CreateKategoriPengaduan extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
-        $data = [
-            [
-                'nama' => 'Infrastruktur',
-                'sla_hari' => 4,
-                'prioritas' => 'Tinggi',
-            ],
-            [
-                'nama' => 'Kebersihan',
-                'sla_hari' => 3,
-                'prioritas' => 'Sedang',
-            ],
-            [
-                'nama' => 'Keamanan',
-                'sla_hari' => 1,
-                'prioritas' => 'Tinggi',
-            ],
-            [
-                'nama' => 'Administrasi',
-                'sla_hari' => 7,
-                'prioritas' => 'Rendah',
-            ],
+        $kategoriList = [
+            'Keamanan',
+            'Kebersihan',
+            'Infrastruktur',
+            'Fasilitas Umum',
+            'Lingkungan',
+            'Sosial',
+            'Drainase',
+            'Lampu Jalan',
+            'Sampah',
+            'Air Bersih',
+            'Kesehatan',
+            'Layanan Umum'
         ];
 
-        foreach ($data as $item) {
-            KategoriPengaduan::create($item);
+        for ($i = 1; $i <= 100; $i++) {
+            DB::table('kategori_pengaduan')->insert([
+                'nama' => $kategoriList[array_rand($kategoriList)], // ⬅ PENTING
+                'sla_hari' => rand(1, 10),
+                'prioritas' => ['Tinggi', 'Sedang', 'Rendah'][array_rand(['Tinggi', 'Sedang', 'Rendah'])],
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
         }
     }
 }

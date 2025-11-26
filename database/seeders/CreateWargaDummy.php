@@ -14,7 +14,7 @@ class CreateWargaDummy extends Seeder
     {
         $faker = \Faker\Factory::create('id_ID');
 
-        foreach (range(1, 20) as $index) {
+        foreach (range(1, end: 100) as $index) {
 
             // Insert ke tabel users
             $userId = DB::table('user')->insertGetId([

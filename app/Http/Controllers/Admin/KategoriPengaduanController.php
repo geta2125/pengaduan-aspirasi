@@ -8,10 +8,28 @@ use Illuminate\Http\Request;
 
 class KategoriPengaduanController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $kategori = KategoriPengaduan::latest()->get();
         $title = 'Daftar Kategori Pengaduan';
+
+        $query = KategoriPengaduan::query();
+
+        // Search berdasarkan nama
+        if ($request->search) {
+            $query->where('nama', 'like', '%' . $request->search . '%');
+        }
+
+        // Filter berdasarkan prioritas
+        if ($request->prioritas) {
+            $query->where('prioritas', $request->prioritas);
+        }
+
+        // Pagination (10 per halaman)
+        $kategori = $query->latest()->paginate(perPage: 9);
+
+        // Agar pagination tetap membawa filter & search
+        $kategori->appends($request->all());
+
         return view('admin.kategori.index', compact('kategori', 'title'));
     }
 

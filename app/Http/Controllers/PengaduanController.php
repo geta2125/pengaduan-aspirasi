@@ -14,13 +14,56 @@ class PengaduanController extends Controller
     // ==============================
     // INDEX - Halaman daftar pengaduan
     // ==============================
-    public function index()
+    public function index(Request $request)
     {
         $title = 'Data Pengaduan';
 
-        $pengaduan = Pengaduan::with(['warga', 'kategori', 'media'])
-            ->latest()
-            ->get();
+        // Mulai query
+        $query = Pengaduan::with(['warga', 'kategori', 'media']);
+
+        // Filter status jika ada
+        if ($request->status) {
+            $query->where('status', $request->status);
+        }
+
+        // Search berdasarkan judul atau nama pelapor
+        if ($request->search) {
+            $query->where(function ($q) use ($request) {
+                $q->where('judul', 'like', "%{$request->search}%")
+                    ->orWhereHas('warga', function ($q2) use ($request) {
+                        $q2->where('nama', 'like', "%{$request->search}%");
+                    });
+            });
+        }
+
+        // Pagination 10 data per halaman
+        $pengaduan = $query->latest()->paginate(10)->withQueryString();
+
+        // Mapping data untuk menambahkan badge class
+        $pengaduan->getCollection()->transform(function ($item) {
+            $statusClass = [
+                'pending' => 'badge-light',
+                'proses' => 'badge-warning',
+                'selesai' => 'badge-success'
+            ];
+
+            return (object) [
+                'id' => $item->id,
+                'pengaduan_id' => $item->pengaduan_id,
+                'judul' => $item->judul,
+                'pelapor' => $item->warga->nama ?? 'Anonim',
+                'kategori' => $item->kategori->nama ?? '-',
+                'tanggal' => $item->created_at->format('d/m/Y'),
+                'tanggal_full' => $item->created_at->format('d F Y, H:i'),
+                'status' => $item->status,
+                'statusClass' => $statusClass[strtolower($item->status)] ?? 'badge-secondary',
+                'lokasi_text' => $item->lokasi_text ?? '-',
+                'rt' => $item->rt ?? '-',
+                'rw' => $item->rw ?? '-',
+                'deskripsi' => $item->deskripsi,
+                'media' => $item->media?->file_url ?? null
+            ];
+        });
 
         return view('admin.pengaduan.index', compact('pengaduan', 'title'));
     }

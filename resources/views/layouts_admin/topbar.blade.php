@@ -3,11 +3,14 @@
         <nav class="navbar navbar-expand-lg navbar-light p-0">
             <div class="iq-navbar-logo d-flex align-items-center justify-content-between">
                 <i class="ri-menu-line wrapper-menu"></i>
-                <a href="{{ asset('template/backend/index.html') }}" class="header-logo">
-                    <img src="{{ asset('template/assets/images/logo.png') }}" class="img-fluid rounded-normal"
-                        alt="logo">
-                    <h5 class="logo-title ml-3">BinaDesa</h5>
-
+                <a href="{{ asset('template/backend/index.html') }}" class="header-logo d-flex align-items-center"
+                    style="gap: 1px; text-decoration: none;">
+                    <img src="{{ asset('template/assets/images/logoBinaDesa.png') }}"
+                        class="img-fluid rounded-normal light-logo" style="width: 60px; height: 60px;" alt="logo">
+                    <h5 class="logo-title light-logo mb-0"
+                        style="font-size: 22px; font-weight: 600; line-height: 1; white-space: nowrap;">
+                        Bina Desa
+                    </h5>
                 </a>
             </div>
             <div class="iq-search-bar device-search">

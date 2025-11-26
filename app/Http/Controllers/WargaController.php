@@ -9,14 +9,32 @@ use App\Models\Warga;
 
 class WargaController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $warga = Warga::with('user')->latest()->get();
+        $title = "Data Warga";
 
-        return view('admin.warga.index', [
-            'title' => 'Data Warga',
-            'warga' => $warga,
-        ]);
+        $search = $request->search;
+        $gender = $request->gender;
+
+        $query = Warga::with('user');
+
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('nama', 'like', "%$search%")
+                    ->orWhereHas('user', function ($u) use ($search) {
+                        $u->where('username', 'like', "%$search%");
+                    });
+            });
+        }
+
+        if ($gender) {
+            $query->where('jenis_kelamin', $gender);
+        }
+
+        $warga = $query->paginate(10);
+        $warga->appends($request->all());
+
+        return view('admin.warga.index', compact('title', 'warga'));
     }
 
     public function create()
