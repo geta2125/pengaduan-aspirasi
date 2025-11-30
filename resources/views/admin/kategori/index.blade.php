@@ -203,28 +203,5 @@
         searchInput.addEventListener('keydown', () => {
             clearTimeout(typingTimer);
         });
-
-        // Tambahkan script untuk konfirmasi delete jika menggunakan sweetalert/library lain
-        // Jika belum ada, Anda bisa tambahkan konfirmasi dasar
-        document.querySelectorAll('.delete-btn').forEach(button => {
-            button.addEventListener('click', function (e) {
-                e.preventDefault();
-                const url = this.getAttribute('href');
-                const kategoriId = this.getAttribute('data-id');
-
-                if (confirm('Apakah Anda yakin ingin menghapus kategori ini? Tindakan ini tidak dapat dibatalkan.')) {
-                    // Di sini Anda perlu menambahkan logika untuk mengirim permintaan DELETE
-                    // Karena ini adalah tautan, Anda harus menggunakan form tersembunyi atau AJAX
-                    // untuk mengirim permintaan DELETE sesuai standar Laravel.
-                    // Contoh menggunakan form:
-                    const form = document.createElement('form');
-                    form.setAttribute('method', 'POST');
-                    form.setAttribute('action', url);
-                    form.innerHTML = '@csrf @method("DELETE")';
-                    document.body.appendChild(form);
-                    form.submit();
-                }
-            });
-        });
     </script>
 @endpush
