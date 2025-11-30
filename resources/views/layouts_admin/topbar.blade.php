@@ -5,7 +5,7 @@
                 <i class="ri-menu-line wrapper-menu"></i>
                 <a href="{{ asset('template/backend/index.html') }}" class="header-logo d-flex align-items-center"
                     style="gap: 1px; text-decoration: none;">
-                    <img src="{{ asset('template/assets/images/logoBinaDesa.png') }}"
+                    <img src="{{ asset('template/assets/images/logobinadesa.png') }}"
                         class="img-fluid rounded-normal light-logo" style="width: 60px; height: 60px;" alt="logo">
                     <h5 class="logo-title light-logo mb-0"
                         style="font-size: 22px; font-weight: 600; line-height: 1; white-space: nowrap;">
