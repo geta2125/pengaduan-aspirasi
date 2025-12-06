@@ -113,12 +113,12 @@
                                     <i class="ri-folder-open-line kategori-icon"></i>
 
                                     @php
-    $badgeClass = match (strtolower($k->prioritas)) {
-        'tinggi' => 'bg-danger text-white',
-        'sedang' => 'bg-warning text-dark',
-        'rendah' => 'bg-success text-white',
-        default => 'bg-secondary text-white',
-    };
+                                        $badgeClass = match (strtolower($k->prioritas)) {
+                                            'tinggi' => 'bg-danger text-white',
+                                            'sedang' => 'bg-warning text-dark',
+                                            'rendah' => 'bg-success text-white',
+                                            default => 'bg-secondary text-white',
+                                        };
                                     @endphp
 
                                     <span class="badge badge-prioritas {{ $badgeClass }}">

@@ -9,7 +9,7 @@ return new class extends Migration {
     {
         Schema::create('user', function (Blueprint $table) {
             $table->id();
-            $table->string('username')->unique();
+            $table->string('email')->unique();
             $table->string('nama');
             $table->string('password');
             $table->enum('role', ['admin', 'guest']);
@@ -32,6 +32,6 @@ return new class extends Migration {
     public function down(): void
     {
         Schema::dropIfExists('sessions');
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('user');
     }
 };

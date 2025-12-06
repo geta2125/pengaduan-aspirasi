@@ -61,7 +61,7 @@ class PengaduanController extends Controller
                 'rt' => $item->rt ?? '-',
                 'rw' => $item->rw ?? '-',
                 'deskripsi' => $item->deskripsi,
-                'media' => $item->media?->file_url ?? null
+                'media' => $item->media?->file_name ?? null
             ];
         });
 
@@ -185,7 +185,7 @@ class PengaduanController extends Controller
             ->first();
 
         if ($media) {
-            Storage::disk('public')->delete($media->file_url);
+            Storage::disk('public')->delete($media->file_name);
             $media->delete();
         }
 
@@ -224,16 +224,16 @@ class PengaduanController extends Controller
                 ->first();
 
             if ($media) {
-                Storage::disk('public')->delete($media->file_url);
+                Storage::disk('public')->delete($media->file_name);
                 $media->update([
-                    'file_url' => $path,
+                    'file_name' => $path,
                     'mime_type' => $file->getClientMimeType(),
                 ]);
             } else {
                 Media::create([
                     'ref_table' => 'pengaduan',
                     'ref_id' => $pengaduan->pengaduan_id,
-                    'file_url' => $path,
+                    'file_name' => $path,
                     'mime_type' => $file->getClientMimeType(),
                 ]);
             }

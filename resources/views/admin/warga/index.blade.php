@@ -19,7 +19,7 @@
                 id="filterFormWarga">
 
                 {{-- Search --}}
-                <input type="text" name="search" class="form-control" placeholder="Cari nama / username..."
+                <input type="text" name="search" class="form-control" placeholder="Cari nama / email..."
                     value="{{ request('search') }}" style="max-width: 250px;" id="searchInputWarga">
 
                 {{-- Gender Filter --}}
@@ -47,7 +47,7 @@
                                 <tr class="ligth ligth-data">
                                     <th>No</th>
                                     <th>Foto</th>
-                                    <th>Username</th>
+                                    <th>email</th>
                                     <th>Nama</th>
                                     <th>Jenis Kelamin</th> {{-- Tambahan baru --}}
                                     <th>Role</th>
@@ -72,7 +72,7 @@
                                             @endif
                                                     </td>
 
-                                                    <td>{{ $w->user->username ?? '-' }}</td>
+                                                    <td>{{ $w->user->email ?? '-' }}</td>
                                                     <td>{{ $w->nama }}</td>
 
                                                     {{-- ===========================

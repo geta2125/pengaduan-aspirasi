@@ -14,7 +14,7 @@ class Media extends Model
     protected $fillable = [
         'ref_table',
         'ref_id',
-        'file_url',
+        'file_name',
         'caption',
         'mime_type',
         'sort_order',

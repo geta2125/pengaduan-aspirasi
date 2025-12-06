@@ -136,8 +136,8 @@
                                             <i class="fas fa-paperclip me-3"></i>
                                             <div>
                                                 **Lampiran Saat Ini:**
-                                                <a href="{{ asset('storage/' . $pengaduan->media->file_url) }}" target="_blank" class="alert-link fw-bold ms-2">
-                                                    {{ basename($pengaduan->media->file_url) }}
+                                                <a href="{{ asset('storage/' . $pengaduan->media->file_name) }}" target="_blank" class="alert-link fw-bold ms-2">
+                                                    {{ basename($pengaduan->media->file_name) }}
                                                 </a>
                                                 <small class="d-block text-muted">Abaikan jika ingin menggunakan lampiran ini. Pilih file baru
                                                     untuk mengganti.</small>
@@ -179,7 +179,7 @@
                             <thead class="bg-light text-uppercase">
                                 <tr>
                                     <th>No.</th>
-                                    <th>Username</th>
+                                    <th>email</th>
                                     <th>Nama</th>
                                     <th>NIK</th>
                                     <th width="120px">Aksi</th>
@@ -189,7 +189,7 @@
                                 @foreach ($warga as $w)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
-                                        <th>{{ $w->user->username }}</th>
+                                        <th>{{ $w->user->email }}</th>
                                         <td>{{ $w->nama }}</td>
                                         <td>{{ $w->no_ktp }}</td>
                                         <td>
@@ -374,8 +374,8 @@
             }
                 // 2. Cek jika ini mode Edit dan ada lampiran lama
             else if ('{{ isset($pengaduan) && $pengaduan->media ? "ada" : "" }}') {
-                const fileUrl = '{{ isset($pengaduan) && $pengaduan->media ? asset('storage/' . $pengaduan->media->file_url) : '' }}';
-                const fileName = '{{ isset($pengaduan) && $pengaduan->media ? basename($pengaduan->media->file_url) : '' }}';
+                const fileUrl = '{{ isset($pengaduan) && $pengaduan->media ? asset('storage/' . $pengaduan->media->file_name) : '' }}';
+                const fileName = '{{ isset($pengaduan) && $pengaduan->media ? basename($pengaduan->media->file_name) : '' }}';
 
                 // Buat link yang bisa diklik untuk melihat/mengunduh lampiran lama
                 lampiranStatus = `

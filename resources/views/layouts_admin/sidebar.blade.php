@@ -2,7 +2,7 @@
     <div class="iq-sidebar-logo d-flex align-items-center justify-content-between">
         <a href="{{ route('dashboard') }}" class="header-logo d-flex align-items-center"
             style="gap: 1px; text-decoration: none;">
-            <img src="{{ asset('template/assets/images/logoBinaDesa.png') }}" class="img-fluid rounded-normal light-logo"
+            <img src="{{ asset('storage/logobinadesa/logobinadesa.png') }}" class="img-fluid rounded-normal light-logo"
                 style="width: 60px; height: 60px;" alt="logo">
             <h5 class="logo-title light-logo mb-0"
                 style="font-size: 22px; font-weight: 600; line-height: 1; white-space: nowrap;">

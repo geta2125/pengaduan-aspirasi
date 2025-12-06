@@ -47,7 +47,7 @@
                             <dt class="col-sm-4 text-muted">Lampiran</dt>
                             <dd class="col-sm-8">
                                 @if ($pengaduan->media)
-                                    <a href="{{ asset('storage/' . $pengaduan->media->file_url) }}" target="_blank"
+                                    <a href="{{ asset('storage/' . $pengaduan->media->file_name) }}" target="_blank"
                                         class="btn btn-sm btn-info text-white d-inline-flex align-items-center">
                                         <i class="bi bi-file-earmark-image-fill me-1"></i> Lihat Lampiran
                                     </a>
@@ -73,13 +73,13 @@
                                                 <span class="fw-bold me-2">Aksi:</span>
                                                 {{-- Sesuaikan badge berdasarkan aksi --}}
                                                 @php
-                                                    $badgeClass = match ($tl->aksi) {
-                                                        'Diterima' => 'bg-info',
-                                                        'Sedang Diproses' => 'bg-warning text-dark',
-                                                        'Ditugaskan Petugas' => 'bg-primary',
-                                                        'Selesai' => 'bg-success',
-                                                        default => 'bg-secondary',
-                                                    };
+        $badgeClass = match ($tl->aksi) {
+            'Diterima' => 'bg-info',
+            'Sedang Diproses' => 'bg-warning text-dark',
+            'Ditugaskan Petugas' => 'bg-primary',
+            'Selesai' => 'bg-success',
+            default => 'bg-secondary',
+        };
                                                 @endphp
                                                 <span class="badge {{ $badgeClass }}">{{ $tl->aksi }}</span>
                                             </div>

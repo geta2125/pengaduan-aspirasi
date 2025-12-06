@@ -13,12 +13,10 @@ use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 
 class DashboardController extends Controller
 {
 
-    // --- Form Ubah Password ---
     // Form Edit Profile
     public function Profile()
     {
@@ -30,21 +28,29 @@ class DashboardController extends Controller
     public function index()
     {
         $title = 'Dashboard';
-
         $user = Auth::user();
 
+        // Jika admin -> dashboard admin
         if ($user->role == 'admin') {
+            // Hitung total data
+            $totalPengaduan = \App\Models\Pengaduan::count();
+            $totalKategori = \App\Models\KategoriPengaduan::count();
+            $totalPenilaian = \App\Models\Penilaian::count();
+            $totalTindaklanjut = \App\Models\Tindak_Lanjut::count();
+            $totalWarga = \App\Models\Warga::count();
             return view('admin.dashboard', compact(
-                'title',
-                'user'
-            ));
-        } else {
-            return view('guest.dashboard', compact(
-                'title',
-                'user'
-            ));
+            'title',
+            'user',
+            'totalPengaduan',
+            'totalKategori',
+            'totalPenilaian',
+            'totalTindaklanjut',
+            'totalWarga'
+        ));
         }
 
+        // Jika bukan admin -> dashboard umum
+        return view('dashboard.index', compact('title', 'user'));
     }
 
     /** ============================
@@ -59,19 +65,15 @@ class DashboardController extends Controller
             'username' => 'required|string|max:255|unique:pengguna,username,' . $user->id,
         ]);
 
-        // Ambil data yang akan diupdate
         $data = $request->only('nama', 'username');
 
-        // Cek apakah ada perubahan
         if ($user->nama !== $data['nama'] || $user->username !== $data['username']) {
             $user->update($data);
             return back()->with('success', 'Profil berhasil diperbarui.');
         }
 
-        // Jika tidak ada perubahan
         return back()->with('info', 'Tidak ada perubahan data.');
     }
-
 
     /** ============================
      *  UPDATE PASSWORD
@@ -109,24 +111,17 @@ class DashboardController extends Controller
         $data = [];
 
         if ($request->hasFile('foto')) {
-            // Hapus foto lama jika ada
             if ($user->foto && Storage::disk('public')->exists($user->foto)) {
                 Storage::disk('public')->delete($user->foto);
             }
 
-            // Simpan foto baru ke folder 'foto_user' di storage/public
             $data['foto'] = $request->file('foto')->store('foto_user', 'public');
         }
 
-        // Update data foto ke user
-
-
         if ($user->update($data)) {
             return back()->with('success', 'Foto profil berhasil diperbarui.');
-        } else {
-            return back()->with('error', 'Foto tidak berhasil diperbarui');
         }
+
+        return back()->with('error', 'Foto tidak berhasil diperbarui');
     }
-
-
 }

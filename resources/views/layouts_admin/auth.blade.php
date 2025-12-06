@@ -1,27 +1,28 @@
 <!doctype html>
-<html lang="en">
+<html lang="id">
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Bina Desa | {{ $title }}</title>
+    <title>Bina Desa | {{ $title ?? 'Login' }}</title>
 
-    {{-- start css --}}
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    {{-- CSS Bawaan Template (Bootstrap, FontAwesome, dll) --}}
     @include('layouts_admin.css')
-    {{-- end css --}}
-    <!-- loader Start -->
+</head>
+
+<body>
     <div id="loading">
-        <div id="loading-center">
-        </div>
-    </div>
-    <!-- loader END -->
-
-    <div class="wrapper">
-        <section class="login-content">
-            @yield('konten')
-        </section>
+        <div id="loading-center"></div>
     </div>
 
-    {{-- start js --}}
+    {{-- Konten Login akan dimuat di sini --}}
+    @yield('konten')
+
+    {{-- JS Bawaan --}}
     @include('layouts_admin.js')
-    {{-- end js --}}
+</body>
+
+</html>

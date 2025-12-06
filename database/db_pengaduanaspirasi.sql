@@ -78,7 +78,7 @@ CREATE TABLE `media` (
   `media_id` bigint UNSIGNED NOT NULL,
   `ref_table` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Nama tabel referensi',
   `ref_id` bigint UNSIGNED DEFAULT NULL COMMENT 'ID data referensi',
-  `file_url` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Path atau URL file media',
+  `file_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Path atau URL file media',
   `caption` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Keterangan file',
   `mime_type` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Tipe MIME file, contoh: image/jpeg',
   `sort_order` int NOT NULL DEFAULT '0' COMMENT 'Urutan tampilan media',
@@ -90,7 +90,7 @@ CREATE TABLE `media` (
 -- Dumping data for table `media`
 --
 
-INSERT INTO `media` (`media_id`, `ref_table`, `ref_id`, `file_url`, `caption`, `mime_type`, `sort_order`, `created_at`, `updated_at`) VALUES
+INSERT INTO `media` (`media_id`, `ref_table`, `ref_id`, `file_name`, `caption`, `mime_type`, `sort_order`, `created_at`, `updated_at`) VALUES
 (1, 'pengaduan', 1, 'pengaduan_lampiran/uDExzFqhzhPwRLpen6PM4FNlIOUHumJBl1G0bd9R.jpg', NULL, 'image/jpeg', 0, '2025-11-09 15:18:06', '2025-11-09 15:18:06'),
 (2, 'pengaduan', 2, 'pengaduan_lampiran/wYjrPwvnpNFzurOlGx1MphBLzMcgnc3CUBh6SYuN.jpg', NULL, 'image/jpeg', 0, '2025-11-09 15:19:12', '2025-11-09 15:19:12');
 

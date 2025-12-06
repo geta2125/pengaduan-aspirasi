@@ -21,13 +21,13 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'username' => 'required|unique:user,username|max:255',
+            'email' => 'required|unique:user,email|max:255',
             'nama' => 'required|string|max:255',
             'role' => ['required', Rule::in(['admin', 'guest'])],
             'password' => 'required|min:6',
             'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ], [
-            'username.unique' => 'Username sudah digunakan.',
+            'email.unique' => 'email sudah digunakan.',
             'foto.max' => 'Ukuran file foto maksimal 2MB.',
         ]);
 
@@ -56,7 +56,7 @@ class UserController extends Controller
         $user = User::findOrFail($id);
 
         $rules = [
-            'username' => ['required', 'max:255', Rule::unique('user')->ignore($user->id)],
+            'email' => ['required', 'max:255', Rule::unique('user')->ignore($user->id)],
             'nama' => 'required|string|max:255',
             'role' => ['required', Rule::in(['admin', 'guest'])],
             'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',

@@ -22,7 +22,7 @@ class WargaController extends Controller
             $query->where(function ($q) use ($search) {
                 $q->where('nama', 'like', "%$search%")
                     ->orWhereHas('user', function ($u) use ($search) {
-                        $u->where('username', 'like', "%$search%");
+                        $u->where('email', 'like', "%$search%");
                     });
             });
         }
@@ -50,7 +50,7 @@ class WargaController extends Controller
         $request->validate([
             // USER
             'nama' => 'required|string|max:100',
-            'username' => 'required|string|max:50|unique:user,username',
+            'email' => 'required|string|max:50|unique:user,email',
             'password' => 'required|string|min:6|confirmed',
 
             // WARGA
@@ -65,7 +65,7 @@ class WargaController extends Controller
         // Buat USER
         $user = User::create([
             'nama' => $request->nama,
-            'username' => $request->username,
+            'email' => $request->email,
             'password' => Hash::make($request->password),
             'role' => 'guest',
             'foto' => null,
@@ -110,8 +110,8 @@ class WargaController extends Controller
             'pekerjaan' => 'required',
             'telp' => 'required|numeric',
 
-            // Jika edit username, validasi unik kecuali username dia sendiri
-            'username' => 'nullable|string|max:50|unique:user,username,'
+            // Jika edit email, validasi unik kecuali email dia sendiri
+            'email' => 'nullable|string|max:50|unique:user,email,'
                 . ($warga->user->id ?? 'NULL'),
         ]);
 
@@ -130,7 +130,7 @@ class WargaController extends Controller
         if ($warga->user) {
             $warga->user->update([
                 'nama' => $request->nama,
-                'username' => $request->username ?? $warga->user->username,
+                'email' => $request->email ?? $warga->user->email,
             ]);
         }
 

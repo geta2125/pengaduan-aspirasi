@@ -120,7 +120,7 @@
 
                     <div class="form-group mt-3">
                         <label>Lampiran (opsional)</label>
-                        <input type="file" name="file_url" class="form-control">
+                        <input type="file" name="file_name" class="form-control">
                         <small class="text-muted">Bisa berupa gambar atau PDF</small>
                     </div>
 
@@ -146,13 +146,13 @@
     {{-- MODAL DETAIL --}}
     @foreach ($pengaduan as $p)
         @php
-            $statusClass = match (strtolower($p->status)) {
-                'baru' => 'badge-secondary',
-                'proses' => 'badge-warning',
-                'ditindaklanjuti' => 'badge-info',
-                'selesai' => 'badge-success',
-                default => 'badge-dark',
-            };
+    $statusClass = match (strtolower($p->status)) {
+        'baru' => 'badge-secondary',
+        'proses' => 'badge-warning',
+        'ditindaklanjuti' => 'badge-info',
+        'selesai' => 'badge-success',
+        default => 'badge-dark',
+    };
         @endphp
         <div class="modal fade" id="detailModal{{ $p->id }}" tabindex="-1" role="dialog"
             aria-labelledby="detailModalLabel{{ $p->id }}" aria-hidden="true">
@@ -199,8 +199,8 @@
 
                         @if ($p->media)
                             @php
-                                $fileExt = pathinfo($p->media->file_url, PATHINFO_EXTENSION);
-                                $fileUrl = asset('storage/' . $p->media->file_url);
+        $fileExt = pathinfo($p->media->file_name, PATHINFO_EXTENSION);
+        $fileUrl = asset('storage/' . $p->media->file_name);
                             @endphp
                             <h6 class="mt-3">Lampiran:</h6>
                             @if (in_array(strtolower($fileExt), ['jpg', 'jpeg', 'png', 'gif']))

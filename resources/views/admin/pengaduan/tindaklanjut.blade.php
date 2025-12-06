@@ -41,7 +41,7 @@
                         <th>Lampiran</th>
                         <td>
                             @if ($pengaduan->media)
-                                <a href="{{ asset('storage/'. $pengaduan->media->file_url) }}" target="_blank" class="btn btn-sm btn-info">
+                                <a href="{{ asset('storage/' . $pengaduan->media->file_name) }}" target="_blank" class="btn btn-sm btn-info">
                                     Lihat Lampiran
                                 </a>
                             @else

@@ -104,8 +104,8 @@
                         @if ($user)
                             <div class="row">
                                 <div class="col-md-6 mb-3">
-                                    <label class="form-label fw-semibold text-muted">Username</label>
-                                    <p class="form-control-static fw-bold text-primary">{{ $user->username }}</p>
+                                    <label class="form-label fw-semibold text-muted">email</label>
+                                    <p class="form-control-static fw-bold text-primary">{{ $user->email }}</p>
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label fw-semibold text-muted">Role Akun</label>

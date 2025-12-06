@@ -21,7 +21,7 @@
                                         alt="image">
                                 </div>
                                 <div>
-                                    <p class="mb-2">Total Sales</p>
+                                    <p class="mb-2">Total Kategori Pengaduan</p>
                                     <h4>31.50</h4>
                                 </div>
                             </div>

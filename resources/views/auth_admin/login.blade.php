@@ -1,126 +1,98 @@
 @extends('layouts_admin.auth')
 
 @section('konten')
-{{-- start css --}}
-@include('auth_admin.logincss')
-{{-- end css --}}
+    @include('auth_admin.logincss')
+
     <div class="auth-page">
-        <div class="auth-card">
-            <div class="auth-grid">
-                <!-- Left: Form Section -->
-                <div class="auth-form">
-                    <div class="brand">
-                        <div class="brand-logo">
-                            <img src="{{ asset('template/assets/images/login/logo.png') }}" alt="Logo">
-                        </div>
-                        <h1 class="brand-title">Sistem Pengaduan</h1>
-                        <p class="brand-subtitle">Platform Aspirasi Masyarakat</p>
-                    </div>
+        <div class="login-container">
 
-                    <div class="form-header">
-                        <h2 class="form-title">Selamat Datang Kembali</h2>
-                        <p class="form-subtitle">Silakan masuk ke akun Anda untuk melanjutkan</p>
-                    </div>
+            {{-- Bagian Kiri: Form --}}
+            <div class="left-section">
 
-                    <form method="POST" action="{{ route('login') }}">
-                        @csrf
-
-                        <!-- Username -->
-                        <div class="form-field">
-                            <label class="form-label">Username</label>
-                            <div class="input-wrapper">
-                                <i class="fa fa-user input-icon"></i>
-                                <input
-                                    type="text"
-                                    name="username"
-                                    class="form-control with-icon @error('username') is-invalid @enderror"
-                                    placeholder="Masukkan username"
-                                    value="{{ old('username') }}"
-                                    required
-                                    autofocus>
-                            </div>
-                            @error('username')
-                                <div class="error-message">
-                                    <i class="fa fa-exclamation-circle"></i>
-                                    <span>{{ $message }}</span>
-                                </div>
-                            @enderror
-                        </div>
-
-                        <!-- Password -->
-                        <div class="form-field">
-                            <label class="form-label">Password</label>
-                            <div class="input-wrapper">
-                                <i class="fa fa-lock input-icon"></i>
-                                <input
-                                    id="password"
-                                    type="password"
-                                    name="password"
-                                    class="form-control with-icon @error('password') is-invalid @enderror"
-                                    placeholder="Masukkan password"
-                                    required>
-                                <span class="toggle-password" id="togglePassword">
-                                    <i class="fa fa-eye"></i>
-                                </span>
-                            </div>
-                            @error('password')
-                                <div class="error-message">
-                                    <i class="fa fa-exclamation-circle"></i>
-                                    <span>{{ $message }}</span>
-                                </div>
-                            @enderror
-                        </div>
-
-                        <!-- Remember Me -->
-                        <div class="form-options">
-                            <div class="checkbox-wrapper">
-                                <input
-                                    type="checkbox"
-                                    name="remember"
-                                    id="remember"
-                                    {{ old('remember') ? 'checked' : '' }}>
-                                <label class="checkbox-label" for="remember">Ingat saya</label>
-                            </div>
-                        </div>
-
-                        <!-- Submit Button -->
-                        <button type="submit" class="btn-primary">
-                            <i class="fa fa-sign-in-alt"></i>
-                            <span>Masuk ke Dashboard</span>
-                        </button>
-                    </form>
+                {{-- LOGO AREA: Penting agar terlihat resmi seperti dashboard --}}
+                <div class="brand-logo-container">
+                    {{-- Ganti src dengan path logo dashboard Anda (biasanya di public/assets/...) --}}
+                    {{-- <img src="{{ asset('template/assets/images/logo-icon.png') }}" class="brand-logo" alt="Logo"> --}}
+                    {{-- Jika belum ada gambar logo, gunakan text ini dulu: --}}
+                    <div class="brand-text">Bina Desa</div>
                 </div>
 
-                <!-- Right: Visual Section -->
-                <div class="auth-visual">
-                    <div class="visual-content">
-                        <img src="{{ asset('template/assets/images/login/loginpengaduan.png') }}"
-                            alt="Ilustrasi" class="visual-image">
-                        <div class="visual-text">
-                            <h3 class="visual-title">Kelola Pengaduan dengan Mudah</h3>
-                            <p class="visual-desc">
-                                Sistem terintegrasi untuk mengelola<br>
-                                pengaduan dan aspirasi masyarakat
-                            </p>
-                        </div>
+                <div class="header">
+                    <h1>Selamat Datang!</h1>
+                    <p>Masuk untuk mengelola data warga dan layanan desa.</p>
+                </div>
+
+                <form method="POST" action="{{ route('login') }}">
+                    @csrf
+
+                    <div class="input-group">
+                        {{-- Tambahkan autocomplete username --}}
+                        <input type="text" id="email" name="email" class="input-field @error('email') is-invalid @enderror"
+                            value="{{ old('email') }}" placeholder=" " required autofocus autocomplete="username">
+
+                        {{-- Label kapital agar rapi --}}
+                        <label for="email">Email</label>
+
+                        @error('email')
+                            <span class="text-danger">
+                                <i class="fa fa-exclamation-circle"></i> {{ $message }}
+                            </span>
+                        @enderror
                     </div>
+
+                    <div class="input-group">
+                        {{-- Tambahkan autocomplete current-password --}}
+                        <input type="password" id="password" name="password"
+                            class="input-field @error('password') is-invalid @enderror" placeholder=" " required
+                            autocomplete="current-password">
+                        <label for="password">Password</label>
+
+                        @error('password')
+                            <span class="text-danger">
+                                <i class="fa fa-exclamation-circle"></i> {{ $message }}
+                            </span>
+                        @enderror
+                    </div>
+
+                    <div class="options">
+                        <label for="remember" class="remember-me">
+                            <input type="checkbox" id="remember" name="remember" {{ old('remember') ? 'checked' : '' }}>
+                            <span>Ingat saya</span>
+                        </label>
+
+                        @if (Route::has('password.request'))
+                            <a href="{{ route('password.request') }}" class="forgot-pass">Lupa Password?</a>
+                        @endif
+                    </div>
+
+                    <button type="submit" class="btn-submit">
+                        Masuk Dashboard
+                    </button>
+                </form>
+            </div>
+
+            {{-- Bagian Kanan: Gambar --}}
+            <div class="right-section">
+                {{-- Gambar background desa yang asri/modern --}}
+                <div class="bg-image"
+                    style="background-image: url('{{ asset('storage/pengaduanaspirasi/pengaduanaspirasi.jpg') }}');">
+                </div>
+                <div class="overlay-gradient"></div>
+
+                <div class="caption">
+
+                    <h2>Ubah Masalah Jadi Solusi</h2>
+
+                    <p>Jangan biarkan aspirasi hanya tersimpan. Mari berkolaborasi membangun lingkungan yang lebih baik.
+                        Karena setiap suara Anda sangat berarti.</p>
                 </div>
             </div>
+
         </div>
     </div>
 
+    {{-- Script SweetAlert --}}
     <script>
-        // Toggle Password
-        const togglePassword = document.getElementById('togglePassword');
-        const passwordInput = document.getElementById('password');
-
-        togglePassword?.addEventListener('click', function() {
-            const type = passwordInput.type === 'password' ? 'text' : 'password';
-            passwordInput.type = type;
-            this.querySelector('i').className = type === 'password' ? 'fa fa-eye' : 'fa fa-eye-slash';
-        });
-
-        // SweetAlert Success
         @if (session('success'))
             Swal.fire({
                 icon: 'success',
@@ -131,11 +103,11 @@
                 toast: true,
                 position: 'top-end',
                 background: '#10b981',
-                color: '#fff'
+                color: '#fff',
+                iconColor: '#fff'
             });
         @endif
 
-        // SweetAlert Error
         @if (session('error'))
             Swal.fire({
                 icon: 'error',
@@ -146,7 +118,8 @@
                 toast: true,
                 position: 'top-end',
                 background: '#ef4444',
-                color: '#fff'
+                color: '#fff',
+                iconColor: '#fff'
             });
         @endif
     </script>

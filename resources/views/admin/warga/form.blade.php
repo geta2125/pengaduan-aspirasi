@@ -69,11 +69,11 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="username" class="form-label">Username <span class="text-danger">*</span></label>
-                                <input type="text" name="username" id="username" class="form-control"
-                                    value="{{ old('username', $warga->user->username ?? '') }}" required
-                                    placeholder="Username untuk login">
-                                @error('username')
+                                <label for="email" class="form-label">email <span class="text-danger">*</span></label>
+                                <input type="text" name="email" id="email" class="form-control"
+                                    value="{{ old('email', $warga->user->email ?? '') }}" required
+                                    placeholder="email untuk login">
+                                @error('email')
                                     <div class="text-danger small">{{ $message }}</div>
                                 @enderror
                             </div>
