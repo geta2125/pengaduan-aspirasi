@@ -14,7 +14,7 @@
                     {{-- Ganti src dengan path logo dashboard Anda (biasanya di public/assets/...) --}}
                     {{-- <img src="{{ asset('template/assets/images/logo-icon.png') }}" class="brand-logo" alt="Logo"> --}}
                     {{-- Jika belum ada gambar logo, gunakan text ini dulu: --}}
-                    <div class="brand-text">Bina Desa</div>
+                    <div class="brand-text">SiPAWA</div>
                 </div>
 
                 <div class="header">

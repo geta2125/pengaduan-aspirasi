@@ -63,5 +63,113 @@
         text-shadow: 0 0 10px #fff;
         transform: translateY(-3px);
     }
+
+    <style>
+    /* CSS Reset Minimal untuk memastikan posisi akurat */
+
+    .floating-whatsapp-btn {
+        position: fixed;
+        bottom: 25px;
+        right: 25px;
+        width: 60px;
+        height: 60px;
+        background-color: #25D366;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        z-index: 999;
+    }
+
+    .floating-whatsapp-btn img {
+        width: 35px;
+        height: 35px;
+    }
+
+    .floating-whatsapp-btn:hover {
+        transform: scale(1.1);
+        transition: 0.2s;
+    }
+
+    /* ------------------------------------------- */
+    /* START: Gaya CSS untuk Loader Bouncing Dots (Full Screen, Centered) */
+    /* ------------------------------------------- */
+
+    /* 1. Pengaturan Kontainer Utama (Menutupi Seluruh Layar & Pemusatan) */
+    #custom-loader {
+        background-color: #f8f8f8;
+        height: 100vh;
+        width: 100%;
+        /* Kunci 1: Memastikan kontainer menutupi seluruh layar */
+        position: fixed;
+        top: 0;
+        left: 0;
+        /* Tambahkan top: 0 dan left: 0 untuk memastikan dimulai dari sudut kiri atas */
+        z-index: 1000;
+
+        /* Kunci 2: Teknik Pemusatan Flexbox */
+        display: flex;
+        justify-content: center;
+        /* Pemusatan Horizontal */
+        align-items: center;
+        /* Pemusatan Vertikal */
+
+        transition: opacity 0.5s ease, visibility 0.5s ease;
+    }
+
+    /* 2. Pengaturan Wrapper Titik */
+    #custom-loader-center {
+        display: flex;
+        gap: 15px;
+        /* Jarak antara titik-titik */
+        /* Pastikan wrapper ini tidak memiliki lebar tetap yang dapat mengganggu pemusatan */
+    }
+
+    /* 3. Pengaturan Setiap Titik */
+    .dot {
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
+        animation: bounce 1.4s infinite ease-in-out both;
+    }
+
+    /* 4. Penundaan dan Warna Animasi untuk Setiap Titik */
+    #custom-loader-center .dot:nth-child(1) {
+        background-color: #f39c12;
+        /* Warna Warning */
+        animation-delay: -0.32s;
+    }
+
+    #custom-loader-center .dot:nth-child(2) {
+        background-color: #3498db;
+        /* Warna Primary */
+        animation-delay: -0.16s;
+    }
+
+    #custom-loader-center .dot:nth-child(3) {
+        background-color: #f39c12;
+        /* Warna Warning */
+        animation-delay: 0s;
+    }
+
+    /* 5. Keyframes untuk Animasi Pantulan */
+    @keyframes bounce {
+
+        0%,
+        80%,
+        100% {
+            transform: scale(0);
+        }
+
+        40% {
+            transform: scale(1.0);
+        }
+    }
+
+    /* ------------------------------------------- */
+    /* END: Gaya CSS untuk Loader Bouncing Dots */
+    /* ------------------------------------------- */
+</style>
 </style>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />

@@ -1,5 +1,5 @@
 <style>
-    /* --- VARIABEL WARNA (Disesuaikan dengan Dashboard Bina Desa) --- */
+    /* --- VARIABEL WARNA (Disesuaikan dengan Dashboard SiPAWA) --- */
     :root {
         --primary-gradient: linear-gradient(135deg, #2dd4bf 0%, #3b82f6 100%);
         --primary-solid: #3b82f6;
@@ -66,7 +66,7 @@
             0 8px 10px -6px rgba(0, 0, 0, 0.01);
     }
 
-    /* --- LOGO BINA DESA (Atas Tengah) --- */
+    /* --- LOGO SiPAWA (Atas Tengah) --- */
     .bina-desa-logo {
         font-family: 'Nunito', sans-serif;
         font-weight: 800;

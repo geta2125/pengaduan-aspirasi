@@ -12,7 +12,7 @@ return new class extends Migration {
             $table->string('email')->unique();
             $table->string('nama');
             $table->string('password');
-            $table->enum('role', ['admin', 'guest']);
+            $table->enum('role', ['super admin','admin','petugas', 'guest']);
             $table->string('foto')->nullable();
             $table->timestamp('last_login')->nullable(); // Kolom untuk mencatat waktu login terakhir
             $table->rememberToken();

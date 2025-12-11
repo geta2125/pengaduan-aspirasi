@@ -20,64 +20,107 @@ Route::get('/', function () {
 
 
 // ====================================================================
-// LOGIN
+// LOGIN (TANPA AUTH / CHECKROLE)
 // ====================================================================
-// Login Admin
 Route::get('/login', [LoginController::class, 'login'])->name('login');
 Route::post('/login', [LoginController::class, 'authenticate'])->name('login.process');
+
 
 // ====================================================================
 // AREA SETELAH LOGIN (AUTH)
 // ====================================================================
-Route::middleware('auth')->group(function () {
+Route::middleware(['checkislogin'])->group(function () {
 
-    // Logout
+    // ----------------------------------------------------------------
+    // LOGOUT (boleh semua role yang sudah login)
+    // ----------------------------------------------------------------
     Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
-
-    // ====================================================================
-    // DASHBOARD
-    // ====================================================================
+    // ----------------------------------------------------------------
+    // DASHBOARD (hanya admin)
+    // ----------------------------------------------------------------
     Route::prefix('dashboard')->group(function () {
-        // Rute utama (View)
-        Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+        Route::get('/', [DashboardController::class, 'index'])
+            ->name('dashboard')
+            ->middleware('checkrole:admin');
 
-        // Rute AJAX untuk mengambil data yang difilter
-        Route::get('/data', [DashboardController::class, 'getDashboardData'])->name('dashboard.data');
+        Route::get('/data', [DashboardController::class, 'getDashboardData'])
+            ->name('dashboard.data')
+            ->middleware('checkrole:admin');
 
-        // Rute Profil
-        Route::get('/edit-profile', [DashboardController::class, 'Profile'])->name('dashboard.profile');
-        Route::put('/update-profile', [DashboardController::class, 'updateProfile'])->name('dashboard.updateProfile');
-        Route::put('/update-password', [DashboardController::class, 'updatePassword'])->name('dashboard.updatePassword');
-        Route::put('/update-foto', [DashboardController::class, 'updateFoto'])->name('dashboard.updateFoto');
+        Route::get('/edit-profile', [DashboardController::class, 'Profile'])
+            ->name('dashboard.profile')
+            ->middleware('checkrole:admin');
+
+        Route::put('/update-profile', [DashboardController::class, 'updateProfile'])
+            ->name('dashboard.updateProfile')
+            ->middleware('checkrole:admin');
+
+        Route::put('/update-password', [DashboardController::class, 'updatePassword'])
+            ->name('dashboard.updatePassword')
+            ->middleware('checkrole:admin');
+
+        Route::put('/update-foto', [DashboardController::class, 'updateFoto'])
+            ->name('dashboard.updateFoto')
+            ->middleware('checkrole:admin');
     });
 
-
-    // ====================================================================
-    // ADMIN AREA
-    // ====================================================================
+    // ----------------------------------------------------------------
+    // ADMIN AREA (PREFIX: admin, NAME: admin.*)
+    // ----------------------------------------------------------------
     Route::prefix('admin')->as('admin.')->group(function () {
+
+        // ---------------------------
+        // USER (RESOURCE)
+        // ---------------------------
+        Route::resource('user', UserController::class)->middleware([
+            // index, create, store, edit, update, destroy -> hanya admin
+            'checkrole:admin'
+        ]);
+
+        // show juga sekarang cuma admin
+        Route::get('user/{user}', [UserController::class, 'show'])
+            ->name('user.show')
+            ->middleware('checkrole:admin');
+
 
         // ---------------------------
         // WARGA
         // ---------------------------
         Route::prefix('warga')->as('warga.')->group(function () {
 
-            // Index & Form
-            Route::get('/', [WargaController::class, 'index'])->name('index');
-            Route::get('/create', [WargaController::class, 'create'])->name('create');
-            Route::get('/{id}/edit', [WargaController::class, 'edit'])->name('edit');
+            Route::get('/', [WargaController::class, 'index'])
+                ->name('index')
+                ->middleware('checkrole:admin');
 
-            // Step 1 & Step 2 Store
-            Route::post('/store-account', [WargaController::class, 'storeAccount'])->name('storeAccount');
-            Route::post('/store', [WargaController::class, 'store'])->name('store');
+            Route::get('/create', [WargaController::class, 'create'])
+                ->name('create')
+                ->middleware('checkrole:admin');
 
-            // Update & Delete
-            Route::put('/{id}', [WargaController::class, 'update'])->name('update');
-            Route::delete('/{id}', [WargaController::class, 'destroy'])->name('destroy');
+            Route::get('/{id}/edit', [WargaController::class, 'edit'])
+                ->name('edit')
+                ->middleware('checkrole:admin');
 
-            // Detail (LETakkan PALING AKHIR supaya tidak tabrakan dengan route lain!)
-            Route::get('/{id}', [WargaController::class, 'show'])->name('show');
+            Route::post('/store-account', [WargaController::class, 'storeAccount'])
+                ->name('storeAccount')
+                ->middleware('checkrole:admin');
+
+            Route::post('/store', [WargaController::class, 'store'])
+                ->name('store')
+                ->middleware('checkrole:admin');
+
+            Route::put('/{id}', [WargaController::class, 'update'])
+                ->name('update')
+                ->middleware('checkrole:admin');
+
+            Route::delete('/{id}', [WargaController::class, 'destroy'])
+                ->name('destroy')
+                ->middleware('checkrole:admin');
+
+            // Detail → sekarang hanya admin
+            Route::get('/{id}', [WargaController::class, 'show'])
+                ->name('show')
+                ->middleware('checkrole:admin');
         });
 
 
@@ -85,13 +128,34 @@ Route::middleware('auth')->group(function () {
         // KATEGORI PENGADUAN
         // ---------------------------
         Route::prefix('kategori-pengaduan')->as('kategori-pengaduan.')->group(function () {
-            Route::get('/', [KategoriPengaduanController::class, 'index'])->name('index');
-            Route::get('/create', [KategoriPengaduanController::class, 'create'])->name('create');
-            Route::post('/', [KategoriPengaduanController::class, 'store'])->name('store');
-            Route::get('/{id}', [KategoriPengaduanController::class, 'show'])->name('show');
-            Route::get('/{id}/edit', [KategoriPengaduanController::class, 'edit'])->name('edit');
-            Route::put('/{id}', [KategoriPengaduanController::class, 'update'])->name('update');
-            Route::delete('/{id}', [KategoriPengaduanController::class, 'destroy'])->name('destroy');
+            Route::get('/', [KategoriPengaduanController::class, 'index'])
+                ->name('index')
+                ->middleware('checkrole:admin');
+
+            Route::get('/create', [KategoriPengaduanController::class, 'create'])
+                ->name('create')
+                ->middleware('checkrole:admin');
+
+            Route::post('/', [KategoriPengaduanController::class, 'store'])
+                ->name('store')
+                ->middleware('checkrole:admin');
+
+            // show → sekarang hanya admin
+            Route::get('/{id}', [KategoriPengaduanController::class, 'show'])
+                ->name('show')
+                ->middleware('checkrole:admin');
+
+            Route::get('/{id}/edit', [KategoriPengaduanController::class, 'edit'])
+                ->name('edit')
+                ->middleware('checkrole:admin');
+
+            Route::put('/{id}', [KategoriPengaduanController::class, 'update'])
+                ->name('update')
+                ->middleware('checkrole:admin');
+
+            Route::delete('/{id}', [KategoriPengaduanController::class, 'destroy'])
+                ->name('destroy')
+                ->middleware('checkrole:admin');
         });
 
 
@@ -99,22 +163,38 @@ Route::middleware('auth')->group(function () {
         // PENGADUAN ADMIN
         // ---------------------------
         Route::prefix('pengaduan')->as('pengaduan.')->group(function () {
-            Route::get('/', [PengaduanController::class, 'index'])->name('index');
+            Route::get('/', [PengaduanController::class, 'index'])
+                ->name('index')
+                ->middleware('checkrole:admin');
 
-            Route::get('/create', [PengaduanController::class, 'create'])->name('create');
-            Route::post('/', [PengaduanController::class, 'store'])->name('store');
+            Route::get('/create', [PengaduanController::class, 'create'])
+                ->name('create')
+                ->middleware('checkrole:admin');
 
-            // Perhatikan urutan. Route spesifik harus di atas route generik
-            Route::get('/semua', [PengaduanController::class, 'pengaduanSemua'])->name('semua');
+            Route::post('/', [PengaduanController::class, 'store'])
+                ->name('store')
+                ->middleware('checkrole:admin');
 
-            Route::get('/{id}/edit', [PengaduanController::class, 'edit'])->name('edit');
-            Route::get('/{id}', [PengaduanController::class, 'show'])->name('show'); // Pastikan ini di akhir
-            Route::put('/{id}', [PengaduanController::class, 'update'])->name('update');
-            Route::delete('/{id}', [PengaduanController::class, 'destroy'])->name('destroy');
+            Route::get('/semua', [PengaduanController::class, 'pengaduanSemua'])
+                ->name('semua')
+                ->middleware('checkrole:admin');
 
-            // Route untuk Update Status
-            // Jika Anda ingin route update status terpisah, bisa ditambahkan di sini, misal:
-            // Route::put('/{id}/status', [PengaduanController::class, 'updateStatus'])->name('update.status');
+            Route::get('/{id}/edit', [PengaduanController::class, 'edit'])
+                ->name('edit')
+                ->middleware('checkrole:admin');
+
+            // show → sekarang hanya admin
+            Route::get('/{id}', [PengaduanController::class, 'show'])
+                ->name('show')
+                ->middleware('checkrole:admin');
+
+            Route::put('/{id}', [PengaduanController::class, 'update'])
+                ->name('update')
+                ->middleware('checkrole:admin');
+
+            Route::delete('/{id}', [PengaduanController::class, 'destroy'])
+                ->name('destroy')
+                ->middleware('checkrole:admin');
         });
 
 
@@ -122,31 +202,61 @@ Route::middleware('auth')->group(function () {
         // TINDAK LANJUT
         // ---------------------------
         Route::prefix('tindaklanjut')->as('tindaklanjut.')->group(function () {
-            Route::get('/', [TindakLanjutController::class, 'index'])->name('index');
-            Route::get('/{pengaduan_id}/create', [TindakLanjutController::class, 'create'])->name('create');
-            Route::post('/{pengaduan_id}', [TindakLanjutController::class, 'store'])->name('store');
-            Route::get('/{id}/show', [TindakLanjutController::class, 'show'])->name('show');
-            Route::get('/{id}/edit', [TindakLanjutController::class, 'edit'])->name('edit');
-            Route::put('/{id}', [TindakLanjutController::class, 'update'])->name('update');
-            Route::delete('/{id}', [TindakLanjutController::class, 'destroy'])->name('destroy');
+            Route::get('/', [TindakLanjutController::class, 'index'])
+                ->name('index')
+                ->middleware('checkrole:admin');
+
+            Route::get('/{pengaduan_id}/create', [TindakLanjutController::class, 'create'])
+                ->name('create')
+                ->middleware('checkrole:admin');
+
+            Route::post('/{pengaduan_id}', [TindakLanjutController::class, 'store'])
+                ->name('store')
+                ->middleware('checkrole:admin');
+
+            // show → sekarang hanya admin
+            Route::get('/{id}/show', [TindakLanjutController::class, 'show'])
+                ->name('show')
+                ->middleware('checkrole:admin');
+
+            Route::get('/{id}/edit', [TindakLanjutController::class, 'edit'])
+                ->name('edit')
+                ->middleware('checkrole:admin');
+
+            Route::put('/{id}', [TindakLanjutController::class, 'update'])
+                ->name('update')
+                ->middleware('checkrole:admin');
+
+            Route::delete('/{id}', [TindakLanjutController::class, 'destroy'])
+                ->name('destroy')
+                ->middleware('checkrole:admin');
         });
 
-        Route::prefix('/penilaian')->name('penilaian.')->group(function () {
 
-            // LIST + FILTER (yang sekarang dipakai di index.blade.php)
-            Route::get('/', [PenilaianController::class, 'index'])->name('index');
+        // ---------------------------
+        // PENILAIAN
+        // ---------------------------
+        Route::prefix('penilaian')->name('penilaian.')->group(function () {
+            Route::get('/', [PenilaianController::class, 'index'])
+                ->name('index')
+                ->middleware('checkrole:admin');
 
-            // CREATE (simpan penilaian baru)
-            Route::post('/', [PenilaianController::class, 'store'])->name('store');
+            Route::post('/', [PenilaianController::class, 'store'])
+                ->name('store')
+                ->middleware('checkrole:admin');
 
-            // SHOW (opsional, kalau mau lihat detail satu penilaian)
-            Route::get('/{penilaian}', [PenilaianController::class, 'show'])->name('show');
+            // show → sekarang hanya admin
+            Route::get('/{penilaian}', [PenilaianController::class, 'show'])
+                ->name('show')
+                ->middleware('checkrole:admin');
 
-            // UPDATE (edit penilaian yang sudah ada)
-            Route::put('/{penilaian}', [PenilaianController::class, 'update'])->name('update');
+            Route::put('/{penilaian}', [PenilaianController::class, 'update'])
+                ->name('update')
+                ->middleware('checkrole:admin');
 
-            // DELETE (hapus penilaian)
-            Route::delete('/{penilaian}', [PenilaianController::class, 'destroy'])->name('destroy');
+            Route::delete('/{penilaian}', [PenilaianController::class, 'destroy'])
+                ->name('destroy')
+                ->middleware('checkrole:admin');
         });
     });
 });

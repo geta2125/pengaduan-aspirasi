@@ -15,7 +15,7 @@
  <!-- app JavaScript -->
  <script src="{{ asset('template/assets/js/app.js') }}"></script>
  @stack('scripts')
-<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 
  <script>
      $(document).ready(function() {
@@ -51,7 +51,7 @@
                                  showConfirmButton: false
                              }).then(() => {
                                  location
-                             .reload(); // reload halaman otomatis
+                                     .reload(); // reload halaman otomatis
                              });
                          },
                          error: function(error) {
@@ -89,4 +89,28 @@
              showConfirmButton: false
          });
      @endif
+ </script>
+ <!-- JavaScript untuk menyembunyikan Loader setelah halaman dimuat -->
+ <script>
+     document.addEventListener("DOMContentLoaded", function(event) {
+         // ID Diubah dari 'loading' menjadi 'custom-loader'
+         const loader = document.getElementById('custom-loader');
+         if (loader) {
+             // Gunakan event 'load' untuk memastikan semua aset (gambar, css, js) telah selesai dimuat
+             window.addEventListener('load', function() {
+                 // Berikan sedikit jeda waktu (misalnya 100ms) untuk memastikan transisi visual
+                 setTimeout(function() {
+                     // 1. Atur opacity menjadi 0 (memulai transisi fade out)
+                     loader.style.opacity = '0';
+
+                     // 2. Setelah transisi selesai (500ms, sesuai transisi CSS), sembunyikan sepenuhnya elemen tersebut
+                     setTimeout(() => {
+                         loader.style.visibility = 'hidden';
+                         loader.style.display = 'none';
+                     }, 500);
+
+                 }, 100); // Jeda kecil sebelum fade out dimulai
+             });
+         }
+     });
  </script>
