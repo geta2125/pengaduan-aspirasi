@@ -9,7 +9,7 @@
                         class="img-fluid rounded-normal light-logo" style="width: 60px; height: 60px;" alt="logo">
                     <h5 class="logo-title light-logo mb-0"
                         style="font-size: 22px; font-weight: 600; line-height: 1; white-space: nowrap;">
-                        Bina Desa
+                        SiPAWA
                     </h5>
                 </a>
             </div>

@@ -23,7 +23,6 @@ class DatabaseSeeder extends Seeder
             CreateWargaDummy::class,
             CreateKategoriPengaduan::class,
             CreatePengaduan::class,
-            CreateTindakLanjut::class
         ]);
     }
 }

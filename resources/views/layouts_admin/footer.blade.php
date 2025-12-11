@@ -27,7 +27,7 @@
                         document.write(new Date().getFullYear())
                     </script> ©
                 </span>
-                <strong>Bina Desa</strong>
+                <strong>SiPAWA</strong>
                 <small class="d-block text-light">Membangun Desa, Menginspirasi Negeri</small>
             </div>
 
