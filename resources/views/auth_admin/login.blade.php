@@ -19,7 +19,7 @@
 
                 <div class="header">
                     <h1>Selamat Datang!</h1>
-                    <p>Masuk untuk mengelola data warga dan layanan desa.</p>
+                    <p>Masuk untuk mengelola data warga.</p>
                 </div>
 
                 <form method="POST" action="{{ route('login') }}">

@@ -57,22 +57,22 @@
                                 </div>
 
                                 <div class="col-md-6 mb-3">
-                                    <label for="email" class="form-label">Email <span
+                                    <label for="Nama Panggilan" class="form-label">Nama Panggilan <span
                                             class="text-danger">*</span></label>
-                                    <input type="email" name="email" id="email" class="form-control"
-                                        value="{{ old('email', $warga->email ?? '') }}" required
-                                        placeholder="contoh@domain.com">
-                                    @error('email')
+                                    <input type="Nama Panggilan" name="Nama Panggilan" id="Nama Panggilan" class="form-control"
+                                        value="{{ old('Nama_Panggilan', $warga->Nama_Panggilan ?? '') }}" required
+                                        placeholder="Nama Panggilan">
+                                    @error('Nama Panggilan')
                                         <div class="text-danger small">{{ $message }}</div>
                                     @enderror
                                 </div>
                             </div>
 
                             <div class="mb-3">
-                                <label for="email" class="form-label">email <span class="text-danger">*</span></label>
+                                <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
                                 <input type="text" name="email" id="email" class="form-control"
                                     value="{{ old('email', $warga->user->email ?? '') }}" required
-                                    placeholder="email untuk login">
+                                    placeholder="contoh@domain.com">
                                 @error('email')
                                     <div class="text-danger small">{{ $message }}</div>
                                 @enderror
@@ -115,7 +115,7 @@
                             @else
                                 <div class="alert alert-info small" role="alert">
                                     <i class="la la-info-circle me-1"></i>
-                                    **Catatan:** Kosongkan kolom password jika tidak ingin menggantinya.
+                                    *Catatan:* Kosongkan kolom password jika tidak ingin menggantinya.
                                 </div>
 
                                 <div class="mb-3">

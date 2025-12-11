@@ -2,16 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Pengguna;
-use App\Models\DaftarAkun;
-use App\Models\Jurnal;
-use App\Models\JurnalDetail;
-use App\Models\BukuBesar;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
+use App\Models\Warga;
+use App\Models\Jurnal;
+use App\Models\Pengguna;
+use App\Models\BukuBesar;
+use App\Models\Pengaduan;
+use App\Models\Penilaian;
+use App\Models\DaftarAkun;
+use App\Models\JurnalDetail;
+use Illuminate\Http\Request;
+use App\Models\KategoriPengaduan;
+use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
 class DashboardController extends Controller
@@ -25,32 +30,110 @@ class DashboardController extends Controller
         return view('dashboard.profile', compact('user', 'title'));
     }
 
-    public function index()
-    {
-        $title = 'Dashboard';
-        $user = Auth::user();
+    /**
+     * Menampilkan dashboard dengan data statistik.
+     */
 
-        // Jika admin -> dashboard admin
-        if ($user->role == 'admin') {
-            // Hitung total data
-            $totalPengaduan = \App\Models\Pengaduan::count();
-            $totalKategori = \App\Models\KategoriPengaduan::count();
-            $totalPenilaian = \App\Models\Penilaian::count();
-            $totalTindaklanjut = \App\Models\Tindak_Lanjut::count();
-            $totalWarga = \App\Models\Warga::count();
-            return view('admin.dashboard', compact(
-            'title',
-            'user',
-            'totalPengaduan',
-            'totalKategori',
-            'totalPenilaian',
-            'totalTindaklanjut',
-            'totalWarga'
-        ));
+    public function index(Request $request)
+    {
+        // Tetapkan filter default (bulan dan tahun saat ini)
+        $month = $request->input('month', Carbon::now()->month);
+        $year = $request->input('year', Carbon::now()->year);
+
+        // Ambil semua data dashboard berdasarkan filter default
+        $data = $this->getFilteredData($month, $year);
+
+        $title = 'Dashboard';
+
+        // Menggabungkan data yang difilter dengan variabel view
+        return view('admin.dashboard', array_merge($data, compact('title')));
+    }
+
+    public function getDashboardData(Request $request)
+    {
+        // 1. Ambil Bulan/Tahun dari request, default ke bulan/tahun sekarang
+        $month = $request->input('month');
+        $year = $request->input('year');
+
+        if (!$month || !$year) {
+            $month = Carbon::now()->month;
+            $year = Carbon::now()->year;
         }
 
-        // Jika bukan admin -> dashboard umum
-        return view('dashboard.index', compact('title', 'user'));
+        // 2. Panggil metode pengumpul data utama
+        $data = $this->getFilteredData($month, $year);
+
+        // 3. Kirim data sebagai JSON
+        return response()->json($data);
+    }
+
+    /**
+     * Mengambil semua data yang dibutuhkan oleh dashboard, difilter berdasarkan bulan dan tahun.
+     *
+     * @param int $month Bulan yang dipilih.
+     * @param int $year Tahun yang dipilih.
+     * @return array
+     */
+    private function getFilteredData($month, $year)
+    {
+        // 1. DATA PENGADUAN BERDASARKAN KATEGORI (Horizontal Bar Chart)
+        $kategoriData = Pengaduan::getPengaduanPerKategori($month, $year);
+        $labelsKategori = $kategoriData->pluck('nama')->toArray();
+        $dataKategori = $kategoriData->pluck('total')->toArray();
+
+        // 2. DATA PENILAIAN (Donut Chart)
+        $ratingData = Pengaduan::getPengaduanPerRating($month, $year);
+        // ASUMSI: Kolom 'rating' atau 'penilaian' di database sudah diconvert/dipetakan ke 'label'
+        $labelsRating = $ratingData->pluck('label')->toArray();
+        $dataRating = $ratingData->pluck('total')->toArray();
+
+        // 3. DATA STATUS / TINDAK LANJUT (Bar Chart - memerlukan data Year, Month, Week)
+
+        // **PERBAIKAN ERROR 'TOO FEW ARGUMENTS'**:
+        // Sekarang mengirimkan $month, $year ke semua pemanggilan, termasuk 'year'.
+        $statusDataYear = Pengaduan::getPengaduanStatus('year', $month, $year);
+        $statusDataMonth = Pengaduan::getPengaduanStatus('month', $month, $year);
+        $statusDataWeek = Pengaduan::getPengaduanStatus('week', $month, $year);
+
+        // Label yang ramah pengguna untuk sumbu X chart status
+        $readableLabels = ['Menunggu', 'Diproses', 'Selesai'];
+
+        $labelsStatus = [
+            'year' => $readableLabels,
+            'month' => $readableLabels,
+            'week' => $readableLabels,
+        ];
+        $dataStatus = [
+            'year' => $statusDataYear,
+            'month' => $statusDataMonth,
+            'week' => $statusDataWeek,
+        ];
+
+        // 4. DATA RINGKASAN & TABEL
+        $totalWarga = Pengaduan::getTotalWarga($month, $year);
+        $totalKategoriPengaduan = Pengaduan::getTotalKategoriCount($month, $year);
+        $totalPengaduan = Pengaduan::getTotalPengaduanCount($month, $year);
+        $wargaTeratas = Pengaduan::getWargaTeratas($month, $year);
+
+        return [
+            // Data untuk Grafik Kategori (Horizontal Bar)
+            'labelsKategori' => $labelsKategori,
+            'dataKategori' => $dataKategori,
+
+            // Data untuk Grafik Penilaian (Donut Chart)
+            'labelsRating' => $labelsRating,
+            'dataRating' => $dataRating,
+
+            // Data untuk Grafik Status Tindak Lanjut (Bar Chart)
+            'labelsStatus' => $labelsStatus,
+            'dataStatus' => $dataStatus,
+
+            // Data untuk Ringkasan & Tabel
+            'totalWarga' => $totalWarga,
+            'totalKategoriPengaduan' => $totalKategoriPengaduan,
+            'totalPengaduan' => $totalPengaduan,
+            'wargaTeratas' => $wargaTeratas,
+        ];
     }
 
     /** ============================

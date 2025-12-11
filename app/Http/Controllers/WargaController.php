@@ -9,6 +9,7 @@ use App\Models\Warga;
 
 class WargaController extends Controller
 {
+    protected $primaryKey = 'warga_id';
     public function index(Request $request)
     {
         $title = "Data Warga";
@@ -111,7 +112,7 @@ class WargaController extends Controller
             'telp' => 'required|numeric',
 
             // Jika edit email, validasi unik kecuali email dia sendiri
-            'email' => 'nullable|string|max:50|unique:user,email,'
+            'email' => 'nullable|string|max:50|unique:email,'
                 . ($warga->user->id ?? 'NULL'),
         ]);
 

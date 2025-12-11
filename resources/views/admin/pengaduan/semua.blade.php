@@ -84,7 +84,8 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label>Judul Pengaduan *</label>
-                        <input type="text" name="judul" class="form-control" placeholder="Masukkan judul pengaduan" required>
+                        <input type="text" name="judul" class="form-control" placeholder="Masukkan judul pengaduan"
+                            required>
                     </div>
 
                     <div class="form-group">
@@ -99,7 +100,8 @@
 
                     <div class="form-group">
                         <label>Deskripsi *</label>
-                        <textarea name="deskripsi" class="form-control" rows="4" placeholder="Tuliskan deskripsi pengaduan" required></textarea>
+                        <textarea name="deskripsi" class="form-control" rows="4" placeholder="Tuliskan deskripsi pengaduan"
+                            required></textarea>
                     </div>
 
                     <div class="form-group">
@@ -120,7 +122,7 @@
 
                     <div class="form-group mt-3">
                         <label>Lampiran (opsional)</label>
-                        <input type="file" name="file_name" class="form-control">
+                        <input type="file" name="file_url" class="form-control">
                         <small class="text-muted">Bisa berupa gambar atau PDF</small>
                     </div>
 
@@ -146,13 +148,13 @@
     {{-- MODAL DETAIL --}}
     @foreach ($pengaduan as $p)
         @php
-    $statusClass = match (strtolower($p->status)) {
-        'baru' => 'badge-secondary',
-        'proses' => 'badge-warning',
-        'ditindaklanjuti' => 'badge-info',
-        'selesai' => 'badge-success',
-        default => 'badge-dark',
-    };
+            $statusClass = match (strtolower($p->status)) {
+                'baru' => 'badge-secondary',
+                'proses' => 'badge-warning',
+                'ditindaklanjuti' => 'badge-info',
+                'selesai' => 'badge-success',
+                default => 'badge-dark',
+            };
         @endphp
         <div class="modal fade" id="detailModal{{ $p->id }}" tabindex="-1" role="dialog"
             aria-labelledby="detailModalLabel{{ $p->id }}" aria-hidden="true">
@@ -199,13 +201,12 @@
 
                         @if ($p->media)
                             @php
-        $fileExt = pathinfo($p->media->file_name, PATHINFO_EXTENSION);
-        $fileUrl = asset('storage/' . $p->media->file_name);
+                                $fileExt = pathinfo($p->media->file_url, PATHINFO_EXTENSION);
+                                $fileUrl = asset('storage/' . $p->media->file_url);
                             @endphp
                             <h6 class="mt-3">Lampiran:</h6>
                             @if (in_array(strtolower($fileExt), ['jpg', 'jpeg', 'png', 'gif']))
-                                <img src="{{ $fileUrl }}" alt="Lampiran" class="img-fluid img-thumbnail mb-3"
-                                    style="max-height:200px;">
+                                <img src="{{ $fileUrl }}" alt="Lampiran" class="img-fluid img-thumbnail mb-3" style="max-height:200px;">
                             @elseif (strtolower($fileExt) == 'pdf')
                                 <a href="{{ $fileUrl }}" target="_blank" class="btn btn-sm btn-info mb-3"><i
                                         class="ri-file-pdf-line me-1"></i> Lihat PDF</a>

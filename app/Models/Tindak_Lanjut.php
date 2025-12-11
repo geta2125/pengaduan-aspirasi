@@ -26,13 +26,10 @@ class Tindak_Lanjut extends Model
         return $this->belongsTo(Pengaduan::class, 'pengaduan_id', 'pengaduan_id');
     }
 
-    // Boot method untuk otomatis mengisi petugas
-    protected static function booted()
+    public function media()
     {
-        static::creating(function ($tindak) {
-            if (auth()->check()) {
-                $tindak->petugas = auth()->user()->nama;
-            }
-        });
+        // Mengubah hasOne menjadi hasMany
+        return $this->hasMany(Media::class, 'ref_id', 'tindak_id')
+            ->where('ref_table', 'tindak_lanjut');
     }
 }

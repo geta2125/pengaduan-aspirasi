@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class KategoriPengaduan extends Model
 {
     protected $table = 'kategori_pengaduan'; // pastikan nama tabel sesuai di database
+    protected $primaryKey = 'id';
 
     protected $fillable = [
         'nama',

@@ -48,7 +48,7 @@
                                     <th>No</th>
                                     <th>Foto</th>
                                     <th>email</th>
-                                    <th>Nama</th>
+                                    <th>Nama Lengkap</th>
                                     <th>Jenis Kelamin</th> {{-- Tambahan baru --}}
                                     <th>Role</th>
                                     <th class="text-center">Aksi</th>

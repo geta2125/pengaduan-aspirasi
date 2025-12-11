@@ -114,7 +114,7 @@
                             </div>
                         @else
                             <div class="alert alert-warning text-center border-0" role="alert">
-                                <i class="ri-error-warning-line me-2"></i> **Peringatan:** Akun user untuk warga ini belum
+                                <i class="ri-error-warning-line me-2"></i> Peringatan: Akun user untuk warga ini belum
                                 terdaftar.
                             </div>
                         @endif

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Media extends Model
 {
@@ -24,5 +25,10 @@ class Media extends Model
     public function pengaduan()
     {
         return $this->belongsTo(Pengaduan::class, 'ref_id', 'pengaduan_id');
+    }
+
+    public function tindak_lanjut()
+    {
+        return $this->belongsTo(Tindak_Lanjut::class, 'ref_id', 'tindak_id');
     }
 }
