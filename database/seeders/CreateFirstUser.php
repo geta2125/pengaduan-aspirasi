@@ -2,10 +2,9 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use App\Models\User;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash; // jangan lupa ini
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class CreateFirstUser extends Seeder
 {
@@ -14,11 +13,61 @@ class CreateFirstUser extends Seeder
      */
     public function run(): void
     {
-       User::create([
-            'nama' => 'Geta',
-            'email' => 'geta@gmail.com',
-            'role' => 'admin',
-            'password' => Hash::make('geta2125'), // password default
-        ]);
+        $users = [
+            // Super admin
+            [
+                'nama' => 'Geta Dewi Artika Sari',
+                'email' => 'getadewiartikasari@gmail.com',
+                'role' => 'super_admin',
+                'password' => 'Geta Dewi Artika Sari',
+            ],
+
+            // Admin
+            [
+                'nama' => 'Geta',
+                'email' => 'geta@gmail.com',
+                'role' => 'admin',
+                'password' => 'geta2125',
+            ],
+            [
+                'nama' => 'Muhammad Harlan Setiawan',
+                'email' => 'harlan@gmail.com',
+                'role' => 'admin',
+                'password' => 'Muhammad Harlan Setiawan',
+            ],
+
+            // Petugas
+            [
+                'nama' => 'Petugas',
+                'email' => 'petugas@gmail.com',
+                'role' => 'petugas',
+                'password' => 'petugas',
+            ],
+
+            // Guest
+            [
+                'nama' => 'Geta Dewi',
+                'email' => 'getadewi@gmail.com',
+                'role' => 'guest',
+                'password' => 'Geta Dewi',
+            ],
+            [
+                'nama' => 'Geta Dewi AS',
+                'email' => 'getadewias@gmail.com',
+                'role' => 'guest',
+                'password' => '1234567890',
+            ],
+        ];
+
+        foreach ($users as $u) {
+            User::updateOrCreate(
+                ['email' => $u['email']], // patokan unik
+                [
+                    'nama' => $u['nama'],
+                    'role' => $u['role'],
+                    'password' => Hash::make($u['password']),
+                ]
+            );
+        }
     }
 }
