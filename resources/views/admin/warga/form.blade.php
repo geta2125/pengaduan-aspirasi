@@ -12,7 +12,7 @@
                         <i class="la la-user-plus me-2"></i>
                         {{ isset($warga) ? 'Edit Data Warga' : 'Tambah Data Warga Baru' }}
                     </h4>
-                    <a href="{{ route('admin.warga.index') }}" class="btn btn-light btn-sm">
+                    <a href="{{ route('warga.index') }}" class="btn btn-light btn-sm">
                         <i class="ri-arrow-left-line"></i> Kembali
                     </a>
                 </div>
@@ -30,7 +30,7 @@
                         </div>
                     </div>
                     <form method="POST"
-                        action="{{ isset($warga) ? route('admin.warga.update', $warga->warga_id) : route('admin.warga.store') }}"
+                        action="{{ isset($warga) ? route('warga.update', $warga->warga_id) : route('warga.store') }}"
                         id="wizardForm">
 
                         @csrf

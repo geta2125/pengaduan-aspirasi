@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
 use Illuminate\Support\Str; // Tambahkan ini untuk fungsi Str::afterLast
+use Illuminate\Support\Facades\Auth;
 
 class PengaduanController extends Controller
 {
@@ -22,17 +23,30 @@ class PengaduanController extends Controller
     // ==============================
     // INDEX 📊
     // ==============================
+
     public function index(Request $request)
     {
         $title = 'Data Pengaduan';
 
         $query = Pengaduan::with(['warga', 'kategori', 'media']);
 
-        // Filtering & Searching (Logika sudah benar, mencari berdasarkan kolom)
+        // =====================================================
+        // 🔐 FILTER ROLE GUEST (HANYA DATA MILIK USER LOGIN)
+        // =====================================================
+        if (Auth::check() && Auth::user()->role === 'guest') {
+            $query->where('warga_id', Auth::user()->warga?->warga_id ?? 0);
+        }
+
+        // =====================================================
+        // 🔍 FILTER STATUS
+        // =====================================================
         if ($request->status) {
             $query->where('status', $request->status);
         }
 
+        // =====================================================
+        // 🔎 SEARCH (JUDUL / NAMA WARGA)
+        // =====================================================
         if ($request->search) {
             $query->where(function ($q) use ($request) {
                 $q->where('judul', 'like', "%{$request->search}%")
@@ -42,55 +56,54 @@ class PengaduanController extends Controller
             });
         }
 
-        $pengaduan = $query->latest('created_at')->paginate(10)->withQueryString();
+        // =====================================================
+        // 📄 PAGINATION
+        // =====================================================
+        $pengaduan = $query->latest('created_at')
+            ->paginate(10)
+            ->withQueryString();
 
-        // --- Mapping data untuk kebutuhan tampilan (View) ---
+        // =====================================================
+        // 🧠 TRANSFORM DATA UNTUK VIEW
+        // =====================================================
         $pengaduan->getCollection()->transform(function ($item) {
             $tgl = Carbon::parse($item->created_at);
 
-            // Logika pembersihan nama file unik (sesuai permintaan sebelumnya)
-            $fullUniqueName = Str::afterLast($item->media->first()->file_name ?? '', '/');
-            $nameParts = explode('_', $fullUniqueName, 2);
-            $cleanedName = count($nameParts) > 1 ? $nameParts[1] : $fullUniqueName;
-
             return (object) [
-                'pengaduan_id' => $item->{$this->primaryKey},
-                'nomor_tiket' => $item->nomor_tiket,
 
-                'judul' => $item->judul,
-                'deskripsi' => $item->deskripsi,
-                'status' => $item->status,
+                'pengaduan_id' => $item->pengaduan_id,
+                'nomor_tiket'  => $item->nomor_tiket,
+                'judul'        => $item->judul,
+                'deskripsi'    => $item->deskripsi,
+                'status'       => $item->status,
 
-                // Data turunan dari relasi
-                'pelapor' => $item->warga->nama ?? 'Anonim',
-                'nama_kategori' => $item->kategori->nama_kategori ?? '-',
-                'lokasi_text' => $item->lokasi_text ?? '-',
-                'rt' => $item->rt ?? '-',
-                'rw' => $item->rw ?? '-',
+                // Relasi
+                'pelapor'       => $item->warga->nama ?? 'Anonim',
+                'nama_kategori' => $item->kategori->nama ?? '-',
+                'lokasi_text'   => $item->lokasi_text ?? '-',
+                'rt'            => $item->rt ?? '-',
+                'rw'            => $item->rw ?? '-',
 
-                // Data Format Waktu
+                // Format waktu
                 'tgl_format_tabel' => $tgl->translatedFormat('d M Y'),
-                'jam_format' => $tgl->format('H:i'),
-                'tgl_format_full' => $tgl->translatedFormat('d F Y, H:i'),
-                'statusClass' => $this->getStatusClass($item->status),
+                'jam_format'       => $tgl->format('H:i'),
+                'tgl_format_full'  => $tgl->translatedFormat('d F Y, H:i'),
+                'statusClass'      => $this->getStatusClass($item->status),
 
+                // Media
                 'media' => $item->media->map(function ($mediaItem) {
 
-                    // Dapatkan nama yang akan ditampilkan:
-                    // Jika kolom 'caption' (tempat kita simpan nama asli) tidak kosong, gunakan itu.
-                    // Jika kosong (misal data lama), fallback ke nama unik yang dibersihkan.
                     if (!empty($mediaItem->caption)) {
-                        $nameToShow = $mediaItem->caption; // <-- Menggunakan NAMA ASLI
+                        $nameToShow = $mediaItem->caption;
                     } else {
-                        // Logika Fallback (mengambil nama unik yang dibersihkan)
                         $fullUniqueName = Str::afterLast($mediaItem->file_name, '/');
                         $nameParts = explode('_', $fullUniqueName, 2);
                         $nameToShow = count($nameParts) > 1 ? $nameParts[1] : $fullUniqueName;
                     }
 
                     return (object) [
-                        'name' => $nameToShow, // <-- Sekarang berisi NAMA ASLI
-                        'url' => asset('storage/' . $mediaItem->file_name),
+                        'name'      => $nameToShow,
+                        'url'       => asset('storage/' . $mediaItem->file_name),
                         'mime_type' => $mediaItem->mime_type,
                     ];
                 })->all(),
@@ -99,6 +112,7 @@ class PengaduanController extends Controller
 
         return view('admin.pengaduan.index', compact('title', 'pengaduan'));
     }
+
 
     /**
      * Helper untuk menentukan class badge status
@@ -132,7 +146,7 @@ class PengaduanController extends Controller
         $validated = $request->validate([
             // ... (validasi) ...
             'judul' => 'required|string|max:255',
-            'kategori_id' => 'required|exists:kategori_pengaduan,id',
+            'kategori_id' => 'required|exists:kategori_pengaduan,kategori_id',
             'deskripsi' => 'required|string',
             'warga_id' => 'required|exists:warga,warga_id',
             'lokasi_text' => 'nullable|string|max:255',
@@ -151,7 +165,7 @@ class PengaduanController extends Controller
 
         $this->saveMultipleMedia($request, $pengaduan);
 
-        return redirect()->route('admin.pengaduan.index')->with('success', 'Pengaduan berhasil ditambahkan!');
+        return redirect()->route('pengaduan.index')->with('success', 'Pengaduan berhasil ditambahkan!');
     }
 
     // ==============================
@@ -206,7 +220,7 @@ class PengaduanController extends Controller
         $pengaduan->update($validated);
         $this->saveMultipleMedia($request, $pengaduan);
 
-        return redirect()->route('admin.pengaduan.index')->with('success', 'Data pengaduan berhasil diupdate!');
+        return redirect()->route('pengaduan.index')->with('success', 'Data pengaduan berhasil diupdate!');
     }
 
     // ==============================
@@ -225,7 +239,7 @@ class PengaduanController extends Controller
 
         $pengaduan->delete();
 
-        return redirect()->route('admin.pengaduan.index')->with('success', 'Pengaduan berhasil dihapus!');
+        return redirect()->route('pengaduan.index')->with('success', 'Pengaduan berhasil dihapus!');
     }
 
     // ==============================
@@ -245,10 +259,6 @@ class PengaduanController extends Controller
         return redirect()->back()->with('success', 'Status berhasil diperbarui!');
     }
 
-    // ==============================
-    // MULTIPLE MEDIA UPLOAD 📎
-    // ==============================
-    // ...
     // ==============================
     // MULTIPLE MEDIA UPLOAD 📎
     // ==============================

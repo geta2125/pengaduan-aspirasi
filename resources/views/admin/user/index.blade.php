@@ -7,7 +7,7 @@
                 <div>
                     <h4 class="mb-3">{{ $title ?? 'Manajemen User' }}</h4>
                 </div>
-                <a class="btn btn-primary add-list" href="{{ route('admin.user.create') }}">
+                <a class="btn btn-primary add-list" href="{{ route('user.create') }}">
                     <i class="las la-plus mr-3"></i> Tambah User
                 </a>
             </div>
@@ -15,20 +15,19 @@
 
         {{-- FILTER & SEARCH --}}
         <div class="col-lg-12 mb-3">
-            <form method="GET" action="{{ route('admin.user.index') }}" class="d-flex flex-wrap" style="gap: 10px;"
-                  id="filterFormUser">
+            <form method="GET" action="{{ route('user.index') }}" class="d-flex flex-wrap" style="gap: 10px;"
+                id="filterFormUser">
 
                 {{-- Search --}}
-                <input type="text" name="search" class="form-control"
-                       placeholder="Cari nama / email..."
-                       value="{{ request('search') }}" style="max-width: 250px;"
-                       id="searchInputUser">
+                <input type="text" name="search" class="form-control" placeholder="Cari nama / email..."
+                    value="{{ request('search') }}" style="max-width: 250px;" id="searchInputUser">
 
                 {{-- Role Filter --}}
                 <select name="role" class="form-control" style="max-width: 200px;"
-                        onchange="document.getElementById('filterFormUser').submit()">
+                    onchange="document.getElementById('filterFormUser').submit()">
                     <option value="">Semua Role</option>
-                    <option value="super admin" {{ request('role') == 'super admin' ? 'selected' : '' }}>Super Admin</option>
+                    <option value="super admin" {{ request('role') == 'super admin' ? 'selected' : '' }}>Super Admin
+                    </option>
                     <option value="admin" {{ request('role') == 'admin' ? 'selected' : '' }}>Admin</option>
                     <option value="petugas" {{ request('role') == 'petugas' ? 'selected' : '' }}>Petugas</option>
                     <option value="guest" {{ request('role') == 'guest' ? 'selected' : '' }}>Guest</option>
@@ -36,21 +35,13 @@
 
                 {{-- Buttons --}}
                 <button type="submit" class="btn btn-primary">Filter</button>
-                <a href="{{ route('admin.user.index') }}" class="btn btn-secondary">Reset</a>
+                <a href="{{ route('user.index') }}" class="btn btn-secondary">Reset</a>
             </form>
         </div>
 
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-body">
-
-                    @if (session('success'))
-                        <div class="alert alert-success alert-dismissible fade show" role="alert">
-                            {{ session('success') }}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                    @endif
-
                     <div class="table-responsive rounded mb-3">
                         <table class="table table-striped">
                             <thead class="bg-white text-uppercase">
@@ -69,7 +60,7 @@
                                 @forelse ($user as $u)
                                     <tr>
                                         {{-- kalau pakai paginate() --}}
-                                        @if(method_exists($user, 'firstItem'))
+                                        @if (method_exists($user, 'firstItem'))
                                             <td>{{ $loop->iteration + $user->firstItem() - 1 }}</td>
                                         @else
                                             {{-- kalau cuma collection biasa --}}
@@ -78,73 +69,101 @@
 
                                         {{-- FOTO --}}
                                         <td class="text-center">
+                                            @php
+                                                $role = strtolower($u->role ?? '');
+
+                                                // Ambil gender, aman walau null
+                                                $jk = strtolower($u->jenis_kelamin ?? '');
+
+                                                // Deteksi laki-laki: asal mengandung kata "laki"
+                                                $isLaki = str_contains($jk, 'laki');
+
+                                                $guestAvatar = $isLaki
+                                                    ? asset('template/assets/images/user/man.png')
+                                                    : asset('template/assets/images/user/woman.png');
+
+                                                $defaultAvatar = asset('template/assets/images/user/default.png');
+                                            @endphp
+
                                             @if ($u->foto)
                                                 <img src="{{ asset('storage/' . $u->foto) }}"
-                                                     class="rounded img-fluid avatar-40"
-                                                     style="object-fit: cover;"
-                                                     alt="Foto {{ $u->nama }}">
+                                                    class="rounded-circle img-fluid avatar-40" style="object-fit: cover;"
+                                                    alt="Foto {{ $u->nama }}">
                                             @else
-                                                <img class="rounded img-fluid avatar-40"
-                                                     src="{{ asset('template/assets/images/user/default.png') }}"
-                                                     alt="Default avatar">
+                                                @if ($role === 'guest')
+                                                    <img src="{{ $guestAvatar }}"
+                                                        class="rounded-circle img-fluid avatar-40"
+                                                        style="object-fit: cover;" alt="Guest avatar {{ $u->nama }}">
+                                                @else
+                                                    <img src="{{ $defaultAvatar }}"
+                                                        class="rounded-circle img-fluid avatar-40"
+                                                        style="object-fit: cover;" alt="Default avatar">
+                                                @endif
                                             @endif
-                                        </td>
+                                            </td>
 
-                                        {{-- NAMA --}}
-                                        <td>{{ $u->nama }}</td>
 
-                                        {{-- EMAIL --}}
-                                        <td>{{ $u->email }}</td>
+                                            {{-- NAMA --}}
+                                            <td>{{ $u->nama }}</td>
 
-                                        {{-- ROLE --}}
-                                        <td>
-                                            @php
-                                                $role = strtolower($u->role);
-                                            @endphp
-                                            @if ($role === 'super admin')
-                                                <span class="badge bg-danger text-white px-3 py-2" style="border-radius: 8px;">
-                                                    Super Admin
-                                                </span>
-                                            @elseif ($role === 'admin')
-                                                <span class="badge bg-primary text-white px-3 py-2" style="border-radius: 8px;">
-                                                    Admin
-                                                </span>
-                                            @elseif ($role === 'petugas')
-                                                <span class="badge bg-success text-white px-3 py-2" style="border-radius: 8px;">
-                                                    Petugas
-                                                </span>
-                                            @else
-                                                <span class="badge bg-secondary text-white px-3 py-2" style="border-radius: 8px;">
-                                                    Guest
-                                                </span>
-                                            @endif
-                                        </td>
+                                            {{-- EMAIL --}}
+                                            <td>{{ $u->email }}</td>
 
-                                        {{-- TANGGAL DIBUAT --}}
-                                        <td>{{ $u->created_at ? $u->created_at->format('d M Y') : '-' }}</td>
+                                            {{-- ROLE --}}
+                                            <td>
+                                                @php
+                                                    $role = strtolower($u->role);
+                                                @endphp
+                                                @if ($role === 'super admin')
+                                                    <span class="badge bg-danger text-white px-3 py-2"
+                                                        style="border-radius: 8px;">
+                                                        Super Admin
+                                                    </span>
+                                                @elseif ($role === 'admin')
+                                                    <span class="badge bg-primary text-white px-3 py-2"
+                                                        style="border-radius: 8px;">
+                                                        Admin
+                                                    </span>
+                                                @elseif ($role === 'petugas')
+                                                    <span class="badge bg-success text-white px-3 py-2"
+                                                        style="border-radius: 8px;">
+                                                        Petugas
+                                                    </span>
+                                                @else
+                                                    <span class="badge bg-secondary text-white px-3 py-2"
+                                                        style="border-radius: 8px;">
+                                                        Guest
+                                                    </span>
+                                                @endif
+                                            </td>
 
-                                        {{-- AKSI --}}
-                                        <td class="text-center">
-                                            <div class="d-flex align-items-center justify-content-center" style="gap: 5px;">
-                                                <a href="{{ route('admin.user.show', $u->id) }}" class="badge badge-info">
-                                                    <i class="ri-eye-line"></i>
-                                                </a>
-                                                <a href="{{ route('admin.user.edit', $u->id) }}" class="badge bg-success">
-                                                    <i class="ri-pencil-line"></i>
-                                                </a>
-                                                <form action="{{ route('admin.user.destroy', $u->id) }}"
-                                                      method="POST"
-                                                      class="d-inline"
-                                                      onsubmit="return confirm('Yakin ingin menghapus user ini?')">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="badge bg-warning border-0"
+                                            {{-- TANGGAL DIBUAT --}}
+                                            <td>{{ $u->created_at ? $u->created_at->format('d M Y') : '-' }}</td>
+
+                                            {{-- AKSI --}}
+                                            <td class="text-center">
+                                                <div class="d-flex align-items-center justify-content-center"
+                                                    style="gap: 5px;">
+                                                    <a href="{{ route('user.show', $u->id) }}"
+                                                        class="badge badge-info">
+                                                        <i class="ri-eye-line"></i>
+                                                    </a>
+                                                    <a href="{{ route('user.edit', $u->id) }}"
+                                                        class="badge bg-success">
+                                                        <i class="ri-pencil-line"></i>
+                                                    </a>
+                                                    <form action="{{ route('user.destroy', $u->id) }}" method="POST"
+                                                        class="d-inline"
+                                                        onsubmit="return confirm('Yakin ingin menghapus user ini?')">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="badge bg-warning border-0"
                                                             style="cursor: pointer;">
-                                                        <i class="ri-delete-bin-line"></i>
-                                                    </button>
-                                                </form>
-                                            </div>
-                                        </td>
+                                                            <i class="ri-delete-bin-line"></i>
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </td>
                                     </tr>
                                 @empty
                                     <tr>
@@ -157,7 +176,7 @@
                     </div>
 
                     {{-- PAGINATION --}}
-                    @if(method_exists($user, 'links'))
+                    @if (method_exists($user, 'links'))
                         <div class="mt-3">
                             {{ $user->links('pagination::custom') }}
                         </div>

@@ -5,7 +5,7 @@
         <div class="col-lg-12">
             <div class="d-flex flex-wrap align-items-center justify-content-between mb-4">
                 <h4 class="mb-3">📊 {{ $title }}</h4>
-                <a class="btn btn-primary add-list" href="{{ route('admin.pengaduan.create') }}">
+                <a class="btn btn-primary add-list" href="{{ route('pengaduan.create') }}">
                     <i class="las la-plus mr-3"></i> Tambah Pengaduan
                 </a>
             </div>
@@ -16,7 +16,7 @@
                 <div class="card-body">
 
                     {{-- Form Filter & Pencarian --}}
-                    <form method="GET" action="{{ route('admin.pengaduan.index') }}" class="mb-4">
+                    <form method="GET" action="{{ route('pengaduan.index') }}" class="mb-4">
                         <div class="row align-items-end">
                             {{-- Input Pencarian --}}
                             <div class="col-md-5 col-lg-6 mb-3 mb-md-0">
@@ -49,7 +49,7 @@
                                 <button type="submit" class="btn btn-secondary mr-2" title="Terapkan Filter">
                                     <i class="las la-filter"></i> Filter
                                 </button>
-                                <a href="{{ route('admin.pengaduan.index') }}" class="btn btn-outline-secondary"
+                                <a href="{{ route('pengaduan.index') }}" class="btn btn-outline-secondary"
                                     title="Reset Filter">
                                     <i class="las la-redo"></i> Reset
                                 </a>
@@ -107,12 +107,13 @@
                                                     <i class="las la-eye"></i>
                                                 </button>
 
-                                                {{-- Tombol Tindak Lanjut (Hanya jika Pending) --}}
+                                                @if (Auth::user()->role != 'guest')
                                                 @if (strtolower($p->status) === 'pending')
-                                                    <a href="{{ route('admin.tindaklanjut.create', $p->pengaduan_id) }}"
+                                                    <a href="{{ route('tindaklanjut.create', $p->pengaduan_id) }}"
                                                         class="btn btn-sm btn-danger" title="Proses Tindak Lanjut">
                                                         <i class="las la-check-circle"></i>
                                                     </a>
+                                                @endif
                                                 @endif
                                             </div>
                                         </td>

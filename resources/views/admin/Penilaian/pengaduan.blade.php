@@ -3,7 +3,7 @@
          <div class="card-body">
 
              {{-- Form Filter & Pencarian --}}
-             <form method="GET" action="{{ route('admin.penilaian.index') }}" class="mb-4">
+             <form method="GET" action="{{ route('penilaian.index') }}" class="mb-4">
                  <div class="row align-items-end">
                      <div class="col-md-7 col-lg-9 mb-3 mb-md-0">
                          <label for="search_query" class="form-label">Cari Pengaduan (Judul/Pelapor)</label>
@@ -16,7 +16,7 @@
                          <button type="submit" class="btn btn-secondary mr-2" title="Terapkan Filter">
                              <i class="las la-filter"></i> Filter
                          </button>
-                         <a href="{{ route('admin.penilaian.index') }}" class="btn btn-outline-secondary"
+                         <a href="{{ route('penilaian.index') }}" class="btn btn-outline-secondary"
                              title="Reset Filter">
                              <i class="las la-redo"></i> Reset
                          </a>
@@ -124,7 +124,7 @@
                                                  data-komentar="{{ $p->penilaian->komentar ?? '' }}"
                                                  data-judul-pengaduan="{{ $p->judul }}"
                                                  data-nomor-tiket="{{ $p->nomor_tiket }}"
-                                                 data-action="{{ route('admin.penilaian.update', $p->penilaian->penilaian_id) }}"
+                                                 data-action="{{ route('penilaian.update', $p->penilaian->penilaian_id) }}"
                                                  data-method="PUT" data-modal-title="Edit Penilaian Layanan">
                                                  <i class="las la-edit"></i> Edit Nilai
                                              </button>
@@ -136,7 +136,7 @@
                                                  data-rating="0" {{-- Ganti ke 0 agar saat tambah nilai, bintang kosong --}} data-komentar=""
                                                  data-judul-pengaduan="{{ $p->judul }}"
                                                  data-nomor-tiket="{{ $p->nomor_tiket }}"
-                                                 data-action="{{ route('admin.penilaian.store') }}" data-method="POST"
+                                                 data-action="{{ route('penilaian.store') }}" data-method="POST"
                                                  data-modal-title="Beri Penilaian Layanan">
                                                  <i class="las la-star"></i> Nilai
                                              </button>

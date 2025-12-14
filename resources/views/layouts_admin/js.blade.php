@@ -16,7 +16,12 @@
  <script src="{{ asset('template/assets/js/app.js') }}"></script>
  @stack('scripts')
  <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
-
+ <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+ @if (session('swal'))
+     <script>
+         Swal.fire(@json(session('swal')));
+     </script>
+ @endif
  <script>
      $(document).ready(function() {
          $('.delete-btn').on('click', function(e) {

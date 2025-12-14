@@ -225,7 +225,7 @@
                             <i class="bi bi-pencil-square me-2"></i> Edit Tindak Lanjut
                         </h4>
 
-                        <form action="{{ route('admin.tindaklanjut.update', $tindaklanjut->tindak_id) }}" method="POST"
+                        <form action="{{ route('tindaklanjut.update', $tindaklanjut->tindak_id) }}" method="POST"
                             enctype="multipart/form-data"> {{-- 🔹 WAJIB untuk upload file --}}
                             @csrf
                             @method('PUT')

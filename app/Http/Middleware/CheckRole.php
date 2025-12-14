@@ -9,16 +9,33 @@ use Symfony\Component\HttpFoundation\Response;
 
 class CheckRole
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
-     */
-    public function handle(Request $request, Closure $next, string $role): Response
+    public function handle(Request $request, Closure $next, ...$roles): Response
     {
-        if (Auth::check() && Auth::user()->role == $role) {
-            return $next($request);
+        // belum login
+        if (!Auth::check()) {
+            return redirect()
+                ->route('login') // sesuaikan kalau route login kamu beda
+                ->with('swal', [
+                    'icon'  => 'warning',
+                    'title' => 'Oops...',
+                    'text'  => 'Anda belum login.',
+                ]);
         }
-        return abort(403);
+
+        $userRole = strtolower(trim(Auth::user()->role ?? ''));
+        $allowed  = array_map(fn($r) => strtolower(trim($r)), $roles);
+
+        // role user tidak termasuk yang diizinkan
+        if (!in_array($userRole, $allowed, true)) {
+            return redirect()
+                ->back()
+                ->with('swal', [
+                    'icon'  => 'error',
+                    'title' => 'Akses ditolak',
+                    'text'  => 'Anda tidak punya akses.',
+                ]);
+        }
+
+        return $next($request);
     }
 }

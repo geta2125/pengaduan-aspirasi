@@ -69,11 +69,11 @@
     /* --- LOGO SiPAWA (Atas Tengah) --- */
     .bina-desa-logo {
         font-family: 'Nunito', sans-serif;
-        font-weight: 800;
+        font-weight: 1000;
         font-size: 42px;
         color: #3BC2EF;
         text-align: center;
-        margin-bottom: 30px;
+        margin-bottom: 50px;
         letter-spacing: -1px;
     }
 
@@ -94,7 +94,7 @@
     }
 
     .brand-logo {
-        height: 40px;
+        height: 50px;
         width: auto;
     }
 

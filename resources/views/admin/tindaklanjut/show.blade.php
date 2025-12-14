@@ -11,7 +11,7 @@
                     Detail Tindak Lanjut
                 </h3>
                 {{-- Tombol Kembali di Kanan --}}
-                <a href="{{ route('admin.tindaklanjut.index') }}"
+                <a href="{{ route('tindaklanjut.index') }}"
                    class="btn btn-light btn-sm shadow-sm d-flex align-items-center">
                     <i class="fas fa-chevron-left mr-2"></i> Kembali
                 </a>

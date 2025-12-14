@@ -12,7 +12,7 @@
                 {{-- LOGO AREA: Penting agar terlihat resmi seperti dashboard --}}
                 <div class="brand-logo-container">
                     {{-- Ganti src dengan path logo dashboard Anda (biasanya di public/assets/...) --}}
-                    {{-- <img src="{{ asset('template/assets/images/logo-icon.png') }}" class="brand-logo" alt="Logo"> --}}
+                    <img src="{{ asset('storage/logosipawa/logosipawa.png') }}" class="brand-logo" alt="Logo">
                     {{-- Jika belum ada gambar logo, gunakan text ini dulu: --}}
                     <div class="brand-text">SiPAWA</div>
                 </div>
@@ -27,8 +27,9 @@
 
                     <div class="input-group">
                         {{-- Tambahkan autocomplete username --}}
-                        <input type="text" id="email" name="email" class="input-field @error('email') is-invalid @enderror"
-                            value="{{ old('email') }}" placeholder=" " required autofocus autocomplete="username">
+                        <input type="text" id="email" name="email"
+                            class="input-field @error('email') is-invalid @enderror" value="{{ old('email') }}"
+                            placeholder=" " required autofocus autocomplete="username">
 
                         {{-- Label kapital agar rapi --}}
                         <label for="email">Email</label>

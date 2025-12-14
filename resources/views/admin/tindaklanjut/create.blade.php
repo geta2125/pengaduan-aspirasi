@@ -190,7 +190,6 @@
                 <hr class="my-4">
 
                 {{-- BAGIAN 4: FORM TINDAK LANJUT BARU --}}
-                {{-- BAGIAN 4: FORM TINDAK LANJUT BARU --}}
                 <div class="row">
                     <div class="col-12">
                         <h4 class="text-primary mb-3">
@@ -198,7 +197,7 @@
                         </h4>
 
                         {{-- 🔹 TAMBAHKAN enctype="multipart/form-data" --}}
-                        <form action="{{ route('admin.tindaklanjut.store', $pengaduan->pengaduan_id) }}" method="POST"
+                        <form action="{{ route('tindaklanjut.store', $pengaduan->pengaduan_id) }}" method="POST"
                             enctype="multipart/form-data">
                             @csrf
 
@@ -208,7 +207,7 @@
                                         Aksi <span class="text-danger">*</span>
                                     </label>
                                     <select name="aksi" id="aksi" class="form-control" required>
-                                        <option value="" disabled selected>-- Pilih Aksi --</option>
+                                        <option value="" disabled selected>Pilih Aksi</option>
                                         <option value="Diterima">Diterima</option>
                                         <option value="Sedang Diproses">Sedang Diproses</option>
                                         <option value="Ditugaskan Petugas">Ditugaskan Petugas</option>

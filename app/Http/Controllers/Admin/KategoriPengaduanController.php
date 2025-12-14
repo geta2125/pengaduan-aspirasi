@@ -53,7 +53,7 @@ class KategoriPengaduanController extends Controller
             'prioritas' => $request->prioritas,
         ]);
 
-        return redirect()->route('admin.kategori-pengaduan.index')
+        return redirect()->route('kategori-pengaduan.index')
             ->with('success', 'Kategori berhasil ditambahkan');
     }
 
@@ -86,7 +86,7 @@ class KategoriPengaduanController extends Controller
             'prioritas' => $request->prioritas,
         ]);
 
-        return redirect()->route('admin.kategori-pengaduan.index')
+        return redirect()->route('kategori-pengaduan.index')
             ->with('success', 'Kategori berhasil diperbarui');
     }
 

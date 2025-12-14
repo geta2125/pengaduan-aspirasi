@@ -15,7 +15,7 @@
                             <h3 class="card-title mb-0 fw-bold">{{ $title }}</h3>
                         </div>
                         {{-- Tombol Kembali --}}
-                        <a href="{{ route('admin.kategori-pengaduan.index') }}"
+                        <a href="{{ route('kategori-pengaduan.index') }}"
                             class="btn btn-light btn-sm shadow-sm d-flex align-items-center">
                             <i class="fas fa-chevron-left mr-2"></i> Kembali
                         </a>
@@ -24,7 +24,7 @@
 
                 {{-- CARD BODY: FORM --}}
                 <div class="card-body p-4 p-md-5">
-                    <form action="{{ route('admin.kategori-pengaduan.store') }}" method="POST"
+                    <form action="{{ route('kategori-pengaduan.store') }}" method="POST"
                         class="custom-form needs-validation" novalidate>
                         @csrf
 

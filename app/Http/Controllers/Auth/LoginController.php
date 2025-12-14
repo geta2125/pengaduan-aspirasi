@@ -18,7 +18,11 @@ class LoginController extends Controller
     public function login()
     {
         if (Auth::check()) {
-            return redirect()->route('dashboard');
+            // kalau sudah login, arahkan sesuai role juga (optional tapi aman)
+            $user = Auth::user();
+            return $user->role === 'guest'
+                ? redirect()->route('pengaduan.index')
+                : redirect()->route('dashboard');
         }
 
         $lastemail = Session::get('last_email');
@@ -54,6 +58,17 @@ class LoginController extends Controller
             // Simpan data user ke session
             Session::put('userData', $user->toArray());
             Session::forget('last_email');
+
+            // redirect sesuai role
+            if ($user->role === 'guest') {
+                return redirect()->route('pengaduan.index')
+                    ->with('success', 'Login berhasil sebagai Guest.');
+            }
+
+            if ($user->role == 'petugas') {
+                return redirect()->route('pengaduan.index')
+                    ->with('success', 'Login berhasil sebagai Petugas.');
+            }
 
             return redirect()->route('dashboard')
                 ->with('success', 'Login berhasil sebagai ' . ucfirst($user->role) . '.');

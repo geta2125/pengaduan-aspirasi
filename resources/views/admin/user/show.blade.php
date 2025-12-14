@@ -20,7 +20,7 @@
                     </div>
 
                     <div class="d-flex gap-2">
-                        <a href="{{ route('admin.user.index') }}" class="btn btn-light btn-sm">
+                        <a href="{{ route('user.index') }}" class="btn btn-light btn-sm">
                             <i class="ri-arrow-left-line"></i> Kembali
                         </a>
                     </div>

@@ -4,13 +4,8 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use App\Models\Warga;
-use App\Models\Jurnal;
-use App\Models\Pengguna;
-use App\Models\BukuBesar;
 use App\Models\Pengaduan;
 use App\Models\Penilaian;
-use App\Models\DaftarAkun;
-use App\Models\JurnalDetail;
 use Illuminate\Http\Request;
 use App\Models\KategoriPengaduan;
 use Illuminate\Routing\Controller;
@@ -21,14 +16,6 @@ use Illuminate\Support\Facades\Storage;
 
 class DashboardController extends Controller
 {
-
-    // Form Edit Profile
-    public function Profile()
-    {
-        $user = Auth::user();
-        $title = 'Edit Profile';
-        return view('dashboard.profile', compact('user', 'title'));
-    }
 
     /**
      * Menampilkan dashboard dengan data statistik.
@@ -47,6 +34,15 @@ class DashboardController extends Controller
 
         // Menggabungkan data yang difilter dengan variabel view
         return view('admin.dashboard', array_merge($data, compact('title')));
+    }
+
+    // Form Edit Profile
+    public function Profile()
+    {
+        $user = Auth::user();
+        $title = 'Profil Saya';
+        // Pastikan view profile.blade.php berada di root view atau sesuai path yang benar
+        return view('profile', compact('user', 'title'));
     }
 
     public function getDashboardData(Request $request)
@@ -137,20 +133,23 @@ class DashboardController extends Controller
     }
 
     /** ============================
-     *  UPDATE PROFIL
-     *  ============================ */
+     * UPDATE PROFIL
+     * ============================ */
     public function updateProfile(Request $request)
     {
         $user = Auth::user();
 
+        // **MODIFIKASI: Tambahkan validasi email**
         $request->validate([
             'nama' => 'required|string|max:255',
-            'username' => 'required|string|max:255|unique:pengguna,username,' . $user->id,
+            'email' => 'required|string|email|max:255|unique:user,email,' . $user->id,
         ]);
 
-        $data = $request->only('nama', 'username');
+        // **MODIFIKASI: Ambil data email**
+        $data = $request->only('nama', 'email');
 
-        if ($user->nama !== $data['nama'] || $user->username !== $data['username']) {
+        // **MODIFIKASI: Cek perubahan nama, username, atau email**
+        if ($user->nama !== $data['nama'] || $user->email !== $data['email']) {
             $user->update($data);
             return back()->with('success', 'Profil berhasil diperbarui.');
         }
@@ -159,8 +158,8 @@ class DashboardController extends Controller
     }
 
     /** ============================
-     *  UPDATE PASSWORD
-     *  ============================ */
+     * UPDATE PASSWORD
+     * ============================ */
     public function updatePassword(Request $request)
     {
         $request->validate([
@@ -181,8 +180,8 @@ class DashboardController extends Controller
     }
 
     /** ============================
-     *  UPDATE FOTO PROFIL
-     *  ============================ */
+     * UPDATE FOTO PROFIL
+     * ============================ */
     public function updateFoto(Request $request)
     {
         $user = Auth::user();

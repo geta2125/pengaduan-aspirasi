@@ -36,9 +36,8 @@ class UserController extends Controller
     public function create()
     {
         $title = 'Tambah User Baru';
-        $user  = null;
 
-        return view('admin.user.form', compact('title', 'user'));
+        return view('admin.user.form', compact('title'));
     }
 
     public function store(Request $request)
@@ -72,7 +71,7 @@ class UserController extends Controller
 
         User::create($data);
 
-        return redirect()->route('admin.user.index')->with('success', 'User baru berhasil ditambahkan.');
+        return redirect()->route('user.index')->with('success', 'User baru berhasil ditambahkan.');
     }
 
     public function show($id)
@@ -132,7 +131,7 @@ class UserController extends Controller
 
         $user->update($data);
 
-        return redirect()->route('admin.user.index')->with('success', 'Data user berhasil diperbarui.');
+        return redirect()->route('user.index')->with('success', 'Data user berhasil diperbarui.');
     }
 
     public function destroy(string $id)
@@ -145,6 +144,6 @@ class UserController extends Controller
 
         $user->delete();
 
-        return redirect()->route('admin.user.index')->with('success', 'User berhasil dihapus.');
+        return redirect()->route('user.index')->with('success', 'User berhasil dihapus.');
     }
 }

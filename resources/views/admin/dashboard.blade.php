@@ -227,7 +227,7 @@
                     </div>
                     {{-- Style `overflow-y: auto;` di Card-body dipertahankan untuk mengelola bar chart yang panjang --}}
                     <div class="card-body" style="overflow-y: auto;">
-                        <div id="kategori-pengaduan-chart" style="min-height: 400px;"></div>
+                        <div kategori_id="kategori-pengaduan-chart" style="min-height: 400px;"></div>
                     </div>
                 </div>
             </div>

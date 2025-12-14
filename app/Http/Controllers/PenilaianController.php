@@ -8,6 +8,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 
 class PenilaianController extends Controller
@@ -38,6 +39,10 @@ class PenilaianController extends Controller
                         $q2->where('nama', 'like', "%{$request->search}%");
                     });
             });
+        }
+
+        if (Auth::check() && Auth::user()->role === 'guest') {
+            $query->where('warga_id', Auth::user()->warga?->warga_id ?? 0);
         }
 
         // Urutkan berdasarkan waktu selesai (updated_at) & paginate
@@ -225,13 +230,13 @@ class PenilaianController extends Controller
     /**
      * Helper function untuk menentukan class badge berdasarkan status.
      */
-    protected function getStatusClass(string $status): string
+    protected function getStatusClass($status)
     {
-        return match ($status) {
-            'Baru' => 'badge-primary',
-            'Proses' => 'badge-warning',
-            'Selesai' => 'badge-success',
-            default => 'badge-secondary',
-        };
+        $statusClass = [
+            'pending' => 'badge-secondary',
+            'proses' => 'badge-warning',
+            'selesai' => 'badge-success'
+        ];
+        return $statusClass[$status] ?? 'badge-light';
     }
 }

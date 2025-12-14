@@ -29,7 +29,7 @@ return new class extends Migration {
                 ->onDelete('cascade');
 
             $table->foreign('kategori_id')
-                ->references('id')
+                ->references('kategori_id')
                 ->on('kategori_pengaduan')
                 ->onDelete('cascade');
         });

@@ -64,7 +64,7 @@
         {{-- ============================= --}}
         <div class="col-12">
             <div class="card shadow-sm mb-4 p-3">
-                <form method="GET" action="{{ route('admin.tindaklanjut.index') }}" class="filter-section">
+                <form method="GET" action="{{ route('tindaklanjut.index') }}" class="filter-section">
 
                     {{-- Search Input --}}
                     <div class="filter-item flex-grow-1" style="min-width: 200px;">
@@ -109,7 +109,7 @@
                         </button>
 
                         @if (request('search') || request('status') || request('date_from') || request('date_to'))
-                            <a href="{{ route('admin.tindaklanjut.index') }}"
+                            <a href="{{ route('tindaklanjut.index') }}"
                                 class="btn btn-outline-secondary btn-sm d-flex align-items-center">
                                 <i class="ri-refresh-line mr-1"></i> Reset Filter
                             </a>
@@ -178,12 +178,12 @@
                                         </td>
                                         <td class="text-center action-cell">
                                             <div class="action-group">
-                                                <a href="{{ route('admin.tindaklanjut.show', $p->tindak_id) }}"
+                                                <a href="{{ route('tindaklanjut.show', $p->tindak_id) }}"
                                                     class="btn btn-sm btn-info text-white" data-bs-toggle="tooltip"
                                                     title="Lihat Detail">
                                                     <i class="ri-eye-line"></i>
                                                 </a>
-                                                <a href="{{ route('admin.tindaklanjut.edit', $p->tindak_id) }}"
+                                                <a href="{{ route('tindaklanjut.edit', $p->tindak_id) }}"
                                                     class="btn btn-sm btn-success" data-bs-toggle="tooltip"
                                                     title="Ubah Status">
                                                     <i class="ri-edit-line"></i>
@@ -254,7 +254,7 @@
             document.addEventListener('DOMContentLoaded', function() {
                 const deleteButtons = document.querySelectorAll('.delete-btn');
                 const deleteForm = document.getElementById('deleteForm');
-                const baseUrl = "{{ route('admin.tindaklanjut.index') }}";
+                const baseUrl = "{{ route('tindaklanjut.index') }}";
 
                 deleteButtons.forEach(button => {
                     button.addEventListener('click', function() {
@@ -278,7 +278,7 @@
                 // ====================================
                 const deleteButtons = document.querySelectorAll('.delete-btn');
                 const deleteForm = document.getElementById('deleteForm');
-                const baseUrl = "{{ route('admin.tindaklanjut.index') }}";
+                const baseUrl = "{{ route('tindaklanjut.index') }}";
 
                 deleteButtons.forEach(button => {
                     button.addEventListener('click', function() {

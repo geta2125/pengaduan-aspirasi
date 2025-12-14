@@ -7,7 +7,7 @@
                 <div>
                     <h4 class="mb-3">{{ $title }}</h4>
                 </div>
-                <a class="btn btn-primary add-list" href="{{ route('admin.warga.create') }}">
+                <a class="btn btn-primary add-list" href="{{ route('warga.create') }}">
                     <i class="las la-plus mr-3"></i> Tambah Warga
                 </a>
             </div>
@@ -15,7 +15,7 @@
 
         {{-- FILTER & SEARCH --}}
         <div class="col-lg-12 mb-3">
-            <form method="GET" action="{{ route('admin.warga.index') }}" class="d-flex flex-wrap" style="gap: 10px;"
+            <form method="GET" action="{{ route('warga.index') }}" class="d-flex flex-wrap" style="gap: 10px;"
                 id="filterFormWarga">
 
                 {{-- Search --}}
@@ -32,7 +32,7 @@
 
                 {{-- Buttons --}}
                 <button type="submit" class="btn btn-primary">Filter</button>
-                <a href="{{ route('admin.warga.index') }}" class="btn btn-secondary">Reset</a>
+                <a href="{{ route('warga.index') }}" class="btn btn-secondary">Reset</a>
             </form>
 
         </div>
@@ -62,69 +62,78 @@
 
                                         <td class="text-center">
                                             @if ($w->user && $w->user->foto)
-                                                <img src="{{ asset('storage/' . $w->user->foto) }}" class="rounded img-fluid avatar-40" alt="profile">
+                                                <img src="{{ asset('storage/' . $w->user->foto) }}"
+                                                    class="rounded img-fluid avatar-40" alt="profile">
                                             @else
-                                                @if($w->jenis_kelamin == 'Laki-laki')
-                                                    <img class="rounded img-fluid avatar-40" src="{{ asset('template/assets/images/user/man.png') }}" alt="profile">
+                                                @if ($w->jenis_kelamin == 'Laki-laki')
+                                                    <img class="rounded img-fluid avatar-40"
+                                                        src="{{ asset('template/assets/images/user/man.png') }}"
+                                                        alt="profile">
                                                 @else
-                                                        <img class="rounded img-fluid avatar-40" src="{{ asset('template/assets/images/user/woman.png') }}" alt="profile">
-                                                    @endif
+                                                    <img class="rounded img-fluid avatar-40"
+                                                        src="{{ asset('template/assets/images/user/woman.png') }}"
+                                                        alt="profile">
+                                                @endif
                                             @endif
-                                                    </td>
+                                        </td>
 
-                                                    <td>{{ $w->user->email ?? '-' }}</td>
-                                                    <td>{{ $w->nama }}</td>
+                                        <td>{{ $w->user->email ?? '-' }}</td>
+                                        <td>{{ $w->nama }}</td>
 
-                                                    {{-- ===========================
+                                        {{-- ===========================
                                                     Kolom Jenis Kelamin baru
                                                     =========================== --}}
-                                                    <td class="text-center">
-                                                        @if ($w->jenis_kelamin == 'Laki-laki')
-                                                            <span class="badge bg-primary-light text-primary px-3 py-2" style="border-radius: 8px;">
-                                                                Laki-laki
-                                                            </span>
-                                                        @else
-                                                            <span class="badge bg-pink-light text-danger px-3 py-2" style="border-radius: 8px;">
-                                                                Perempuan
-                                                            </span>
-                                                        @endif
-                                                    </td>
+                                        <td class="text-center">
+                                            @if ($w->jenis_kelamin == 'Laki-laki')
+                                                <span class="badge bg-primary-light text-primary px-3 py-2"
+                                                    style="border-radius: 8px;">
+                                                    Laki-laki
+                                                </span>
+                                            @else
+                                                <span class="badge bg-pink-light text-danger px-3 py-2"
+                                                    style="border-radius: 8px;">
+                                                    Perempuan
+                                                </span>
+                                            @endif
+                                        </td>
 
-                                                    <td>
-                                                        <span class="badge {{ ($w->user && $w->user->role == 'admin') ? 'bg-primary' : 'bg-secondary' }}">
-                                                            {{ $w->user->role ?? 'guest' }}
-                                                        </span>
-                                                    </td>
+                                        <td>
+                                            <span
+                                                class="badge {{ $w->user && $w->user->role == 'admin' ? 'bg-primary' : 'bg-secondary' }}">
+                                                {{ $w->user->role ?? 'guest' }}
+                                            </span>
+                                        </td>
 
-                                                    <td class="text-center">
-                                                        <div class="d-flex align-items-center justify-content-center" style="gap: 5px;">
-                                                            <a href="{{ route('admin.warga.show', $w->warga_id) }}" class="badge badge-info">
-                                                                <i class="ri-eye-line"></i>
-                                                            </a>
-                                                            <a href="{{ route('admin.warga.edit', $w->warga_id) }}" class="badge bg-success">
-                                                                <i class="ri-pencil-line"></i>
-                                                            </a>
-                                                            <a href="{{ route('admin.warga.destroy', $w->warga_id) }}" class="badge bg-warning delete-btn"
-                                                                data-id="{{ $w->warga_id }}">
-                                                                <i class="ri-delete-bin-line"></i>
-                                                            </a>
-                                                        </div>
-                                                    </td>
-                                                    </tr>
+                                        <td class="text-center">
+                                            <div class="d-flex align-items-center justify-content-center" style="gap: 5px;">
+                                                <a href="{{ route('warga.show', $w->warga_id) }}"
+                                                    class="badge badge-info">
+                                                    <i class="ri-eye-line"></i>
+                                                </a>
+                                                <a href="{{ route('warga.edit', $w->warga_id) }}"
+                                                    class="badge bg-success">
+                                                    <i class="ri-pencil-line"></i>
+                                                </a>
+                                                <a href="{{ route('warga.destroy', $w->warga_id) }}"
+                                                    class="badge bg-warning delete-btn" data-id="{{ $w->warga_id }}">
+                                                    <i class="ri-delete-bin-line"></i>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
                                 @empty
-                                                        <tr>
-                                                            <td colspan="7" class="text-center">Tidak ada data ditemukan.</td>
-                                                        </tr>
-                                                    @endforelse
-                                                    </tbody>
+                                    <tr>
+                                        <td colspan="7" class="text-center">Tidak ada data ditemukan.</td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
 
-                                                    </table>
-                                                    </div>
-
-                                                    {{-- PAGINATION --}}
-                                                    <div class="mt-3">
-                                                        {{ $warga->links('pagination::custom') }}
-                                                    </div>
+                    {{-- PAGINATION --}}
+                    <div class="mt-3">
+                        {{ $warga->links('pagination::custom') }}
+                    </div>
 
                 </div>
             </div>

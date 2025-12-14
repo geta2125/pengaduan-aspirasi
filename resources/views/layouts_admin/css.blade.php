@@ -92,6 +92,55 @@
         transition: 0.2s;
     }
 
+    /* Select role biar kelihatan premium */
+    .role-select {
+        position: relative;
+    }
+
+    .role-select .form-select {
+        border: 1.5px solid #e2e8f0;
+        box-shadow: none;
+        transition: all .2s ease;
+    }
+
+    .role-select .form-select:focus {
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 4px rgba(59, 130, 246, .12);
+    }
+
+    /* bikin icon dropdown lebih rapih + ada ruang */
+    .role-select .form-select {
+        padding-right: 3.25rem;
+        background-position: right 1.25rem center;
+        background-size: 16px 16px;
+    }
+
+    /* optional: kalau invalid */
+    .role-select .form-select.is-invalid {
+        border-color: #ef4444;
+        box-shadow: none;
+    }
+
+
+    .avatar-preview {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 2px solid #3b82f6;
+        background: #e9ecef;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .avatar-preview img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 50%;
+        display: block;
+    }
+
+
     /* ------------------------------------------- */
     /* START: Gaya CSS untuk Loader Bouncing Dots (Full Screen, Centered) */
     /* ------------------------------------------- */

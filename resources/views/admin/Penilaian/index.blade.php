@@ -42,7 +42,7 @@
                 <div class="card-body">
 
                     {{-- FILTER --}}
-                    <form method="GET" action="{{ route('admin.penilaian.index') }}" class="mb-4">
+                    <form method="GET" action="{{ route('penilaian.index') }}" class="mb-4">
                         <div class="row align-items-end">
                             <div class="col-md-7 col-lg-9 mb-3 mb-md-0">
                                 <label class="form-label">Cari Pengaduan (Judul/Pelapor)</label>
@@ -51,7 +51,7 @@
                             </div>
                             <div class="col-md-5 col-lg-3">
                                 <button class="btn btn-secondary mr-2"><i class="las la-filter"></i> Filter</button>
-                                <a href="{{ route('admin.penilaian.index') }}" class="btn btn-outline-secondary">
+                                <a href="{{ route('penilaian.index') }}" class="btn btn-outline-secondary">
                                     <i class="las la-redo"></i> Reset
                                 </a>
                             </div>
@@ -297,7 +297,7 @@
             document.querySelectorAll('.beri-nilai-btn').forEach(btn => {
                 btn.addEventListener('click', function() {
 
-                    form.action = "{{ route('admin.penilaian.store') }}";
+                    form.action = "{{ route('penilaian.store') }}";
                     methodInput.value = "POST";
 
                     modalTitle.innerHTML = "<i class='las la-star mr-2'></i>Beri Penilaian";

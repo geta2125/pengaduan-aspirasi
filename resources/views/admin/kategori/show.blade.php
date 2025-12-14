@@ -9,7 +9,7 @@
                         <h4 class="card-title mb-0">Detail Kategori Pengaduan</h4>
                     </div>
                     <div class="invoice-btn">
-                        <a href="{{ route('admin.kategori-pengaduan.index') }}" class="btn btn-light">
+                        <a href="{{ route('kategori-pengaduan.index') }}" class="btn btn-light">
                             <i class="las la-arrow-left"></i> Kembali
                         </a>
                     </div>
@@ -18,7 +18,7 @@
                 <div class="card-body">
                     <div class="row mb-4">
                         <div class="col-sm-12 text-center">
-                            <img src="{{ asset('template/assets/images/logo.png') }}" class="logo-invoice img-fluid mb-3"
+                            <img src="{{ asset('template/assets/images/logosipawa.png') }}" class="logo-invoice img-fluid mb-3"
                                 alt="Logo">
 
                             <h5 class="mb-3 text-primary">Informasi Kategori Pengaduan</h5>
@@ -65,11 +65,11 @@
 
                     <div class="row mt-4">
                         <div class="col text-center">
-                            <a href="{{ route('admin.kategori-pengaduan.edit', $kategori->id) }}" class="btn btn-primary">
+                            <a href="{{ route('kategori-pengaduan.edit', $kategori->kategori_id) }}" class="btn btn-primary">
                                 <i class="las la-edit"></i> Edit Kategori
                             </a>
-                            <a href="{{ route('admin.kategori-pengaduan.destroy', $kategori->id) }}"
-                                class="btn btn-danger delete-btn" data-id="{{ $kategori->id }}">
+                            <a href="{{ route('kategori-pengaduan.destroy', $kategori->kategori_id) }}"
+                                class="btn btn-danger delete-btn" data-kategori_id="{{ $kategori->kategori_id }}">
                                 <i class="las la-trash"></i> Hapus
                             </a>
 

@@ -120,7 +120,7 @@
     {{-- start js --}}
     @include('layouts_admin.js')
     {{-- end js --}}
-    
+
     @stack('scripts')
 
 </body>

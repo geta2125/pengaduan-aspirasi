@@ -11,8 +11,7 @@
                         </h4>
                     </div>
                     {{-- Tombol Kembali --}}
-                    <a href="{{ route('admin.pengaduan.index') }}"
-                        class="btn btn-light btn-sm shadow-sm d-flex align-items-center">
+                    <a href="{{ route('pengaduan.index') }}" class="btn btn-light btn-sm shadow-sm d-flex align-items-center">
                         <i class="fas fa-chevron-left mr-2"></i> Kembali
                     </a>
                 </div>
@@ -21,7 +20,7 @@
             <div class="card-body p-4 p-md-5">
                 {{-- Form ditujukan ke tombol submit tersembunyi yang akan dipicu oleh JS setelah konfirmasi --}}
                 <form
-                    action="{{ isset($pengaduan) ? route('admin.pengaduan.update', $pengaduan->pengaduan_id) : route('admin.pengaduan.store') }}"
+                    action="{{ isset($pengaduan) ? route('pengaduan.update', $pengaduan->pengaduan_id) : route('pengaduan.store') }}"
                     method="POST" enctype="multipart/form-data">
 
                     @csrf
@@ -30,28 +29,60 @@
                     @endif
 
                     <div class="row g-4 mb-4">
+                        @php
+                            $isGuest = Auth::check() && (Auth::user()->role ?? null) === 'guest';
+
+                            // Ambil warga milik user login (sesuaikan kalau relasinya beda)
+                            $authWargaId = optional(Auth::user()->warga)->warga_id;
+                            $authWargaNama = optional(Auth::user()->warga)->nama;
+                        @endphp
+
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label class="form-label font-weight-bold" for="nama_warga">Warga Pelapor <span
-                                        class="text-danger">*</span></label>
+                                <label class="form-label font-weight-bold" for="nama_warga">
+                                    Warga Pelapor <span class="text-danger">*</span>
+                                </label>
+
                                 <div class="input-group">
-                                    {{-- Tambahkan is-invalid jika ada error untuk visual feedback --}}
                                     <input type="text" id="nama_warga"
                                         class="form-control @error('warga_id') is-invalid @enderror"
                                         placeholder="Pilih Pelapor..."
-                                        value="{{ isset($pengaduan) ? $pengaduan->warga->nama : '' }}" readonly required>
+                                        value="{{ old(
+                                            'nama_warga',
+                                            $isGuest ? $authWargaNama ?? '' : (isset($pengaduan) ? $pengaduan->warga->nama ?? '' : ''),
+                                        ) }}"
+                                        readonly required>
+
                                     <input type="hidden" name="warga_id" id="warga_id"
-                                        value="{{ old('warga_id', $pengaduan->warga_id ?? '') }}" required>
-                                    <button type="button" class="btn btn-outline-primary" data-toggle="modal"
-                                        data-target="#modalWarga">
-                                        Pilih Warga
-                                    </button>
+                                        value="{{ old('warga_id', $isGuest ? $authWargaId ?? '' : $pengaduan->warga_id ?? '') }}"
+                                        required>
+
+                                    {{-- Tombol pilih warga hanya untuk non-guest --}}
+                                    @if (!$isGuest)
+                                        <button type="button" class="btn btn-outline-primary" data-toggle="modal"
+                                            data-target="#modalWarga">
+                                            Pilih Warga
+                                        </button>
+                                    @else
+                                        <button type="button" class="btn btn-outline-secondary" disabled
+                                            title="Guest otomatis menggunakan data akun">
+                                            Otomatis
+                                        </button>
+                                    @endif
                                 </div>
+
+                                @if ($isGuest && empty($authWargaId))
+                                    <small class="text-danger d-block mt-1">
+                                        Data warga untuk akun ini belum terhubung. Hubungi admin.
+                                    </small>
+                                @endif
+
                                 @error('warga_id')
                                     <div class="text-danger mt-1">{{ $message }}</div>
                                 @enderror
                             </div>
                         </div>
+
 
                         <div class="col-md-6">
                             <div class="form-group">
@@ -62,8 +93,8 @@
                                     required>
                                     <option value="">- Pilih Kategori -</option>
                                     @foreach ($kategori as $k)
-                                        <option value="{{ $k->id }}"
-                                            {{ old('kategori_id', $pengaduan->kategori_id ?? '') == $k->id ? 'selected' : '' }}>
+                                        <option value="{{ $k->kategori_id }}"
+                                            {{ old('kategori_id', $pengaduan->kategori_id ?? '') == $k->kategori_id ? 'selected' : '' }}>
                                             {{ $k->nama }}
                                         </option>
                                     @endforeach

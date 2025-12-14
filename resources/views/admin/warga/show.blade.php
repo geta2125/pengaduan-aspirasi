@@ -8,7 +8,7 @@
                 <div
                     class="card-header bg-primary text-white d-flex justify-content-between align-items-center p-3 rounded-top-4">
                     <h4 class="mb-0 fw-bold">Informasi Detail Warga</h4>
-                    <a href="{{ route('admin.warga.index') }}" class="btn btn-light btn-sm">
+                    <a href="{{ route('warga.index') }}" class="btn btn-light btn-sm">
                         <i class="ri-arrow-left-line"></i> Kembali
                     </a>
                 </div>

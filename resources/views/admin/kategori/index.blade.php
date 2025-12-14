@@ -49,7 +49,7 @@
                     <h3 class="mb-0 fw-bold">{{ $title }}</h3>
                 </div>
 
-                <a href="{{ route('admin.kategori-pengaduan.create') }}" class="btn btn-primary add-list shadow-sm">
+                <a href="{{ route('kategori-pengaduan.create') }}" class="btn btn-primary add-list shadow-sm">
                     <i class="las la-plus me-2"></i> Tambah Kategori
                 </a>
             </div>
@@ -57,7 +57,7 @@
 
         <div class="col-12 mb-4">
             {{-- FILTER & SEARCH --}}
-            <form method="GET" action="{{ route('admin.kategori-pengaduan.index') }}" id="filterForm">
+            <form method="GET" action="{{ route('kategori-pengaduan.index') }}" kategori_id="filterForm">
                 <div class="row g-2 align-items-end">
 
                     {{-- Search --}}
@@ -73,7 +73,7 @@
                     {{-- Filter Prioritas --}}
                     <div class="col-lg-3 col-md-6">
                         <label for="prioritasFilter" class="form-label text-muted mb-1">Filter Prioritas</label>
-                        <select name="prioritas" id="prioritasFilter" class="form-control"
+                        <select name="prioritas" kategori_id="prioritasFilter" class="form-control"
                             onchange="document.getElementById('filterForm').submit()">
                             <option value="">Semua Prioritas</option>
                             <option value="tinggi" {{ request('prioritas') == 'tinggi' ? 'selected' : '' }}>Tinggi</option>
@@ -89,7 +89,7 @@
                             <button class="btn btn-primary w-50" type="submit">
                                 <i class="ri-filter-line me-1"></i> Filter
                             </button>
-                            <a href="{{ route('admin.kategori-pengaduan.index') }}" class="btn btn-outline-secondary w-50">
+                            <a href="{{ route('kategori-pengaduan.index') }}" class="btn btn-outline-secondary w-50">
                                 <i class="ri-refresh-line me-1"></i> Reset
                             </a>
                         </div>
@@ -145,20 +145,20 @@
                                 {{-- AKSI --}}
                                 <div class="row row-cols-3 g-2">
                                     <div class="col">
-                                        <a href="{{ route('admin.kategori-pengaduan.show', $k->id) }}"
+                                        <a href="{{ route('kategori-pengaduan.show', $k->kategori_id) }}"
                                             class="btn btn-outline-info btn-sm w-100">
                                             <i class="ri-eye-line d-md-none d-lg-inline me-lg-1"></i> Detail
                                         </a>
                                     </div>
                                     <div class="col">
-                                        <a href="{{ route('admin.kategori-pengaduan.edit', $k->id) }}"
+                                        <a href="{{ route('kategori-pengaduan.edit', $k->kategori_id) }}"
                                             class="btn btn-outline-success btn-sm w-100">
                                             <i class="ri-pencil-line d-md-none d-lg-inline me-lg-1"></i> Edit
                                         </a>
                                     </div>
                                     <div class="col">
-                                        <a href="{{ route('admin.kategori-pengaduan.destroy', $k->id) }}"
-                                            class="btn btn-outline-danger btn-sm w-100 delete-btn" data-id="{{ $k->id }}">
+                                        <a href="{{ route('kategori-pengaduan.destroy', $k->kategori_id) }}"
+                                            class="btn btn-outline-danger btn-sm w-100 delete-btn" data-kategori_id="{{ $k->kategori_id }}">
                                             <i class="ri-delete-bin-line d-md-none d-lg-inline me-lg-1"></i> Hapus
                                         </a>
                                     </div>

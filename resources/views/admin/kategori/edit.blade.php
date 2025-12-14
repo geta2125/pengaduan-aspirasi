@@ -14,7 +14,7 @@
                             <h3 class="card-title mb-0 fw-bold">{{ $title }}</h3>
                         </div>
                         {{-- Tombol Kembali --}}
-                        <a href="{{ route('admin.kategori-pengaduan.index') }}"
+                        <a href="{{ route('kategori-pengaduan.index') }}"
                             class="btn btn-light btn-sm shadow-sm d-flex align-items-center">
                             <i class="fas fa-chevron-left mr-2"></i> Kembali
                         </a>
@@ -23,7 +23,7 @@
 
                 {{-- CARD BODY: FORM --}}
                 <div class="card-body p-4 p-md-5">
-                    <form action="{{ route('admin.kategori-pengaduan.update', $kategori->id) }}" method="POST"
+                    <form action="{{ route('kategori-pengaduan.update', $kategori->kategori_id) }}" method="POST"
                         class="custom-form needs-validation" novalidate>
                         @csrf
                         @method('PUT') {{-- PENTING: Menggunakan method PUT untuk update --}}
@@ -39,13 +39,13 @@
                                 <div class="input-group input-group-lg">
                                     {{-- Icon Prefix --}}
                                     <span class="input-group-text bg-light text-primary border-primary"><i class="fas fa-tag"></i></span>
-                                    <input type="text" id="nama_kategori" name="nama"
+                                    <input type="text" kategori_id="nama_kategori" name="nama"
                                         class="form-control border-start-0 border-primary @error('nama') is-invalid @enderror"
                                         placeholder="Contoh: Pelayanan Publik / Infrastruktur" maxlength="200" required
                                         value="{{ old('nama', $kategori->nama) }}"> {{-- Menggunakan nilai lama atau data kategori --}}
 
                                     {{-- Char Counter (Suffix) --}}
-                                    <span id="charCount" class="input-group-text bg-light text-secondary small"
+                                    <span kategori_id="charCount" class="input-group-text bg-light text-secondary small"
                                         style="min-width: 60px;">0/200</span>
 
                                     @error('nama')
@@ -68,7 +68,7 @@
                                 <div class="input-group input-group-lg">
                                     {{-- Icon Prefix --}}
                                     <span class="input-group-text bg-light text-success border-success"><i class="fas fa-calendar-alt"></i></span>
-                                    <input type="number" id="sla_hari" name="sla_hari"
+                                    <input type="number" kategori_id="sla_hari" name="sla_hari"
                                         class="form-control border-start-0 border-success @error('sla_hari') is-invalid @enderror"
                                         placeholder="Minimal 1 hari" min="1" required
                                         value="{{ old('sla_hari', $kategori->sla_hari) }}"> {{-- Menggunakan nilai lama atau data kategori --}}
@@ -95,7 +95,7 @@
                                 <div class="input-group input-group-lg">
                                     {{-- Icon Prefix --}}
                                     <span class="input-group-text bg-light text-danger border-danger"><i class="fas fa-exclamation-triangle"></i></span>
-                                    <select id="prioritas" name="prioritas"
+                                    <select kategori_id="prioritas" name="prioritas"
                                         class="form-control border-start-0 border-danger @error('prioritas') is-invalid @enderror"
                                         required>
                                         <option value="" disabled>Pilih Tingkat Prioritas</option>

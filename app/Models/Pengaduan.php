@@ -42,8 +42,7 @@ class Pengaduan extends Model
 
     public function kategori()
     {
-        return $this->belongsTo(KategoriPengaduan::class, 'kategori_id', 'id');
-    }
+        return $this->belongsTo(KategoriPengaduan::class, 'kategori_id', 'kategori_id');    }
 
     public function media()
     {
@@ -88,7 +87,7 @@ class Pengaduan extends Model
             // 2. Hitung total pengaduan
             DB::raw('COUNT(pengaduan.pengaduan_id) as total')
         )
-            ->join('kategori_pengaduan', 'pengaduan.kategori_id', '=', 'kategori_pengaduan.id')
+            ->join('kategori_pengaduan', 'pengaduan.kategori_id', '=', 'kategori_pengaduan.kategori_id')
 
             // Filter periode (sudah diperbaiki dengan nama tabel)
             ->whereYear('pengaduan.created_at', $year)

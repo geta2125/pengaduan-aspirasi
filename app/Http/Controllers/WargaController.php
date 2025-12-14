@@ -84,7 +84,7 @@ class WargaController extends Controller
             'telp' => $request->telp,
         ]);
 
-        return redirect()->route('admin.warga.index')
+        return redirect()->route('warga.index')
             ->with('success', 'Data warga berhasil ditambahkan.');
     }
 
@@ -135,7 +135,7 @@ class WargaController extends Controller
             ]);
         }
 
-        return redirect()->route('admin.warga.index')
+        return redirect()->route('warga.index')
             ->with('success', 'Data warga & user berhasil diperbarui.');
     }
 
@@ -151,7 +151,7 @@ class WargaController extends Controller
         // Hapus Warga
         $warga->delete();
 
-        return redirect()->route('admin.warga.index')
+        return redirect()->route('warga.index')
             ->with('success', 'Data warga & user berhasil dihapus.');
     }
 

@@ -167,7 +167,7 @@ class TindakLanjutController extends Controller
         }
         $pengaduan->save();
 
-        return redirect()->route('admin.tindaklanjut.index')->with('success', 'Tindak lanjut berhasil ditambahkan.');
+        return redirect()->route('tindaklanjut.index')->with('success', 'Tindak lanjut berhasil ditambahkan.');
     }
 
 
@@ -216,7 +216,7 @@ class TindakLanjutController extends Controller
         $pengaduan->status = ($request->aksi === 'Selesai') ? 'selesai' : 'proses';
         $pengaduan->save();
 
-        return redirect()->route('admin.tindaklanjut.index')->with('success', 'Tindak lanjut berhasil diperbarui.');
+        return redirect()->route('tindaklanjut.index')->with('success', 'Tindak lanjut berhasil diperbarui.');
     }
 
 
