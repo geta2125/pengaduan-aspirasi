@@ -6,13 +6,15 @@
 
                 <a href="{{ route('dashboard') }}" class="header-logo d-flex align-items-center"
                     style="gap: 6px; text-decoration: none;">
-                    <img src="{{ asset('storage/logosipawa/logosipawa.png') }}"
-                        class="img-fluid rounded-normal light-logo" style="width: 60px; height: 60px; flex-shrink: 0;"
+                    <img src="{{ asset('storage/logo/logo.png') }}" class="img-fluid light-logo"
+                        style="
+                                height: 90px;        /* BESARIN */
+                                width: auto;         /* biar proporsi aman */
+                                object-fit: contain;
+                                flex-shrink: 0;
+                                "
                         alt="logo">
-                    <h5 class="logo-title light-logo mb-0"
-                        style="font-size: 22px; font-weight: 600; line-height: 1; white-space: nowrap;">
-                        SiPAWA
-                    </h5>
+
                 </a>
             </div>
 

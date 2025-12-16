@@ -1,18 +1,17 @@
-<div class="iq-sidebar  sidebar-default ">
-    <div class="iq-sidebar-logo d-flex align-items-center justify-content-between">
-        {{-- Tautan menuju Dashboard --}}
-        <a href="{{ route('dashboard') }}" class="header-logo d-flex align-items-center"
-            style="gap: 10px; text-decoration: none;">
+<div class="iq-sidebar sidebar-default">
+    <div class="iq-sidebar-logo d-flex align-items-center justify-content-between position-relative">
 
-            {{-- Gambar Logo --}}
-            <img src="{{ asset('storage/logosipawa/logosipawa.png') }}" class="img-fluid rounded-normal light-logo"
-                style="width: 40px; height: 40px;" alt="Logo SiPAWA">
-
-            {{-- Judul Aplikasi --}}
-            <h5 class="logo-title light-logo mb-0"
-                style="font-size: 22px; font-weight: 600; line-height: 1; white-space: nowrap;">
-                SiPAWA
-            </h5>
+        <a href="{{ route('dashboard') }}" class="header-logo">
+            <img src="{{ asset('storage/logo/logo.png') }}" alt="Logo SiPAWA"
+                style="
+                        position: absolute;
+                        left: 40%;
+                        top: 58%;
+                        transform: translate(-50%, -50%);
+                        height: 100px;     /* <-- BESARIN DI SINI */
+                        width: auto;
+                        object-fit: contain;
+         ">
         </a>
 
         {{-- Tombol untuk mengontrol Menu Sidebar --}}
@@ -20,9 +19,11 @@
             <i class="las la-bars wrapper-menu"></i>
         </div>
     </div>
+
     <div class="data-scrollbar" data-scroll="1">
         <nav class="iq-sidebar-menu">
             <ul id="iq-sidebar-toggle" class="iq-menu">
+
                 @if (Auth::user()->role == 'super admin' || Auth::user()->role == 'admin')
                     {{-- DASHBOARD --}}
                     <li class="{{ Request::is('dashboard') ? 'active' : '' }}">
@@ -40,6 +41,7 @@
                         </a>
                     </li>
                 @endif
+
                 @if (Auth::user()->role == 'super admin' || Auth::user()->role == 'admin')
                     {{-- MANAJEMEN USER --}}
                     <li class="{{ Request::is('user*') ? 'active' : '' }}">
@@ -66,48 +68,41 @@
                                 <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
                             </svg>
                             <span class="ml-4">Manajemen Warga</span>
-
                         </a>
-
                     </li>
 
                     {{-- KATEGORI PENGADUAN (Dropdown) --}}
                     @php
-                        // Cek apakah URL saat ini diawali dengan kategori-pengaduan*
                         $isKategori = Request::is('kategori-pengaduan*');
-                        // Tentukan apakah submenu harus terbuka (show)
                         $isKategoriShow = $isKategori ? 'show' : '';
-                        // Tentukan class untuk link utama (collapsed atau tidak)
                         $isKategoriCollapsed = $isKategori ? '' : 'collapsed';
                     @endphp
+
                     <li class="{{ $isKategori ? 'active' : '' }}">
                         <a href="#category" class="{{ $isKategoriCollapsed }}" data-toggle="collapse"
                             aria-expanded="{{ $isKategori ? 'true' : 'false' }}">
                             <svg class="svg-icon" id="p-dash3" width="20" height="20"
                                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
                                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2">
-                                </rect>
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
                                 <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
                             </svg>
                             <span class="ml-4">Kategori Pengaduan</span>
                             <svg class="svg-icon iq-arrow-right arrow-active" width="20" height="20"
                                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round">
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <polyline points="10 15 15 20 20 15"></polyline>
                                 <path d="M4 4h7a4 4 0 0 1 4 4v12"></path>
                             </svg>
                         </a>
+
                         <ul id="category" class="iq-submenu collapse {{ $isKategoriShow }}"
                             data-parent="#iq-sidebar-toggle">
-                            {{-- Item Dropdown: Daftar Kategori --}}
                             <li class="{{ Request::is('kategori-pengaduan') ? 'active' : '' }}">
                                 <a href="{{ route('kategori-pengaduan.index') }}">
                                     <i class="las la-minus"></i><span>Daftar</span>
                                 </a>
                             </li>
-                            {{-- Item Dropdown: Tambah Kategori --}}
                             <li class="{{ Request::is('kategori-pengaduan/create') ? 'active' : '' }}">
                                 <a href="{{ route('kategori-pengaduan.create') }}">
                                     <i class="las la-minus"></i><span>Tambah</span>
@@ -131,8 +126,7 @@
                         </svg>
                         <span class="ml-4">Pengaduan</span>
                     </a>
-                    <ul id="reports" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                    </ul>
+                    <ul id="reports" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle"></ul>
                 </li>
 
                 @if (Auth::user()->role == 'super admin' || Auth::user()->role == 'admin' || Auth::user()->role == 'petugas')
@@ -149,11 +143,10 @@
                                 <line x1="3" y1="21" x2="10" y2="14"></line>
                             </svg>
                             <span class="ml-4">Tindak Lanjut</span>
-
                         </a>
-
                     </li>
                 @endif
+
                 @if (Auth::user()->role == 'super admin' || Auth::user()->role == 'admin' || Auth::user()->role == 'guest')
                     {{-- PENILAIAN LAYANAN --}}
                     <li class="{{ Request::is('penilaian*') ? 'active' : '' }}">
@@ -171,8 +164,39 @@
                         </a>
                     </li>
                 @endif
+
             </ul>
         </nav>
+
+        {{-- ========================= IDENTITAS PENGEMBANG (SPECIAL) ========================= --}}
+        @php
+            $dev = [
+                'nama' => 'Geta Dewi Artika Sari',
+                'foto' => asset('storage/developer/geta.jpeg'), // foto asli
+                'role' => 'Developer',
+            ];
+        @endphp
+
+        <div class="sidebar-dev-wrapper mt-4">
+            <a href="{{ route('developer.index') }}" class="sidebar-dev-item">
+
+                <div class="dev-avatar">
+                    <img src="{{ $dev['foto'] }}" alt="Developer">
+                    <span class="dev-status"></span>
+                </div>
+
+                <div class="dev-info">
+                    <div class="dev-title">Developer Profile</div>
+                    <div class="dev-subtitle">
+                        {{ $dev['nama'] }}
+                        {{ $dev['role'] }}
+                    </div>
+                </div>
+                <i class="ri-arrow-right-s-line dev-arrow"></i>
+            </a>
+        </div>
+
+
 
     </div>
 </div>

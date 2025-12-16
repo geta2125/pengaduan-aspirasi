@@ -5,19 +5,21 @@
             <div class="col-lg-6">
                 <ul class="list-inline mb-2 mb-lg-0 footer-links">
                     <li class="list-inline-item">
-                        <a href="{{ asset('template/backend/privacy-policy.html') }}">Privacy Policy</a>
+                        <a href="{{ route('privacy.policy') }}">Privacy Policy</a>
                     </li>
                     <li class="list-inline-item">
-                        <a href="{{ asset('template/backend/terms-of-service.html') }}">Terms of Use</a>
+                        <a href="{{ route('terms.use') }}">Terms of Use</a>
                     </li>
                 </ul>
-
                 <!-- Social Media -->
                 <div class="mt-3 social-icons">
-                    <a href="#"><i class="fab fa-facebook"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                    <a href="#"><i class="fab fa-youtube"></i></a>
+                    <!-- Instagram -->
+                    <a href="https://instagram.com/getadewiartikasari_" target="_blank" aria-label="Instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a> <!-- YouTube -->
+                    <a href="https://www.youtube.com/@gtdwatksr" target="_blank" aria-label="YouTube">
+                        <i class="fab fa-youtube"></i>
+                    </a>
                 </div>
             </div>
 
@@ -28,7 +30,7 @@
                     </script> ©
                 </span>
                 <strong>SiPAWA</strong>
-                <small class="d-block text-light">Membangun Desa, Menginspirasi Negeri</small>
+                <small class="d-block text-light">Sistem Pengaduan dan Aspirasi Warga</small>
             </div>
 
         </div>

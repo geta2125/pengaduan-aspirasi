@@ -1,14 +1,14 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\Admin\UserController;
-use App\Http\Controllers\Admin\KategoriPengaduanController;
 use App\Http\Controllers\WargaController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PengaduanController;
 use App\Http\Controllers\PenilaianController;
+use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\TindakLanjutController;
+use App\Http\Controllers\Admin\KategoriPengaduanController;
 
 // =====================================================
 // Redirect awal
@@ -82,19 +82,19 @@ Route::middleware(['checkislogin'])->group(function () {
 
         // static routes dulu
         Route::get('/', [WargaController::class, 'index'])
-                ->name('index')
+            ->name('index')
             ->middleware(['role:admin,super admin']);
 
-            Route::get('/create', [WargaController::class, 'create'])
-                ->name('create')
+        Route::get('/create', [WargaController::class, 'create'])
+            ->name('create')
             ->middleware(['role:admin']);
 
-            Route::post('/store-account', [WargaController::class, 'storeAccount'])
-                ->name('storeAccount')
+        Route::post('/store-account', [WargaController::class, 'storeAccount'])
+            ->name('storeAccount')
             ->middleware(['role:admin']);
 
-            Route::post('/store', [WargaController::class, 'store'])
-                ->name('store')
+        Route::post('/store', [WargaController::class, 'store'])
+            ->name('store')
             ->middleware(['role:admin']);
 
         // dynamic routes belakangan
@@ -106,14 +106,14 @@ Route::middleware(['checkislogin'])->group(function () {
             ->name('edit')
             ->middleware(['role:admin']);
 
-            Route::put('/{id}', [WargaController::class, 'update'])
-                ->name('update')
+        Route::put('/{id}', [WargaController::class, 'update'])
+            ->name('update')
             ->middleware(['role:admin']);
 
-            Route::delete('/{id}', [WargaController::class, 'destroy'])
-                ->name('destroy')
+        Route::delete('/{id}', [WargaController::class, 'destroy'])
+            ->name('destroy')
             ->middleware(['role:admin']);
-        });
+    });
 
 
     // =================================================
@@ -126,34 +126,34 @@ Route::middleware(['checkislogin'])->group(function () {
 
         // static routes dulu
         Route::get('/', [KategoriPengaduanController::class, 'index'])
-                ->name('index')
+            ->name('index')
             ->middleware(['role:admin,super admin']);
 
-            Route::get('/create', [KategoriPengaduanController::class, 'create'])
-                ->name('create')
+        Route::get('/create', [KategoriPengaduanController::class, 'create'])
+            ->name('create')
             ->middleware(['role:admin']);
 
-            Route::post('/', [KategoriPengaduanController::class, 'store'])
-                ->name('store')
+        Route::post('/', [KategoriPengaduanController::class, 'store'])
+            ->name('store')
             ->middleware(['role:admin']);
 
         // dynamic routes belakangan
         Route::get('/{id}', [KategoriPengaduanController::class, 'show'])
-                ->name('show')
+            ->name('show')
             ->middleware(['role:admin,super admin']);
 
-            Route::get('/{id}/edit', [KategoriPengaduanController::class, 'edit'])
-                ->name('edit')
+        Route::get('/{id}/edit', [KategoriPengaduanController::class, 'edit'])
+            ->name('edit')
             ->middleware(['role:admin']);
 
-            Route::put('/{id}', [KategoriPengaduanController::class, 'update'])
-                ->name('update')
+        Route::put('/{id}', [KategoriPengaduanController::class, 'update'])
+            ->name('update')
             ->middleware(['role:admin']);
 
-            Route::delete('/{id}', [KategoriPengaduanController::class, 'destroy'])
-                ->name('destroy')
+        Route::delete('/{id}', [KategoriPengaduanController::class, 'destroy'])
+            ->name('destroy')
             ->middleware(['role:admin']);
-        });
+    });
 
 
     // =================================================
@@ -171,25 +171,25 @@ Route::middleware(['checkislogin'])->group(function () {
         Route::get('/semua', [PengaduanController::class, 'pengaduanSemua'])
             ->name('semua');
 
-            Route::get('/create', [PengaduanController::class, 'create'])
+        Route::get('/create', [PengaduanController::class, 'create'])
             ->name('create');
 
-            Route::post('/', [PengaduanController::class, 'store'])
+        Route::post('/', [PengaduanController::class, 'store'])
             ->name('store');
 
         // dynamic routes belakangan
         Route::get('/{id}', [PengaduanController::class, 'show'])
             ->name('show');
 
-            Route::get('/{id}/edit', [PengaduanController::class, 'edit'])
+        Route::get('/{id}/edit', [PengaduanController::class, 'edit'])
             ->name('edit');
 
-            Route::put('/{id}', [PengaduanController::class, 'update'])
+        Route::put('/{id}', [PengaduanController::class, 'update'])
             ->name('update');
 
-            Route::delete('/{id}', [PengaduanController::class, 'destroy'])
+        Route::delete('/{id}', [PengaduanController::class, 'destroy'])
             ->name('destroy');
-        });
+    });
 
 
     // =================================================
@@ -202,7 +202,7 @@ Route::middleware(['checkislogin'])->group(function () {
 
         // static routes dulu
         Route::get('/', [TindakLanjutController::class, 'index'])
-                ->name('index')
+            ->name('index')
             ->middleware(['role:admin,super admin,petugas']);
 
         // CATATAN: show kamu pakai /{id}/show -> itu static "show" di belakang, aman
@@ -212,26 +212,26 @@ Route::middleware(['checkislogin'])->group(function () {
 
         // create/store menggunakan pengaduan_id (dynamic) tapi route-nya spesifik, aman
         Route::get('/{pengaduan_id}/create', [TindakLanjutController::class, 'create'])
-                ->name('create')
+            ->name('create')
             ->middleware(['role:admin']);
 
-            Route::post('/{pengaduan_id}', [TindakLanjutController::class, 'store'])
-                ->name('store')
+        Route::post('/{pengaduan_id}', [TindakLanjutController::class, 'store'])
+            ->name('store')
             ->middleware(['role:admin']);
 
         // edit/update/delete untuk tindak lanjut
         Route::get('/{id}/edit', [TindakLanjutController::class, 'edit'])
-                ->name('edit')
+            ->name('edit')
             ->middleware(['role:admin,petugas']);
 
-            Route::put('/{id}', [TindakLanjutController::class, 'update'])
-                ->name('update')
+        Route::put('/{id}', [TindakLanjutController::class, 'update'])
+            ->name('update')
             ->middleware(['role:admin,petugas']);
 
-            Route::delete('/{id}', [TindakLanjutController::class, 'destroy'])
-                ->name('destroy')
+        Route::delete('/{id}', [TindakLanjutController::class, 'destroy'])
+            ->name('destroy')
             ->middleware(['role:admin']);
-        });
+    });
 
 
     // =================================================
@@ -244,26 +244,29 @@ Route::middleware(['checkislogin'])->group(function () {
 
         // static routes dulu
         Route::get('/', [PenilaianController::class, 'index'])
-                ->name('index')
+            ->name('index')
             ->middleware(['role:admin,super admin, guest']);
 
-            Route::post('/', [PenilaianController::class, 'store'])
-                ->name('store')
+        Route::post('/', [PenilaianController::class, 'store'])
+            ->name('store')
             ->middleware(['role:admin,super admin, guest']);
 
         // dynamic belakangan
         Route::get('/{penilaian}', [PenilaianController::class, 'show'])
-                ->name('show')
+            ->name('show')
             ->middleware(['role:admin,super admin, guest']);
 
         Route::put('/{penilaian}', [PenilaianController::class, 'update'])
-                ->name('update')
+            ->name('update')
             ->middleware(['role:admin,super admin, guest']);
 
         Route::delete('/{penilaian}', [PenilaianController::class, 'destroy'])
-                ->name('destroy')
+            ->name('destroy')
             ->middleware(['role:admin,super admin, guest']);
     });
+    Route::view('/developer', 'admin.developer.index')->name('developer.index');
+    Route::view('/privacy-policy', 'privacy-policy')->name('privacy.policy');
+    Route::view('/terms-of-use', 'terms-of-use')->name('terms.use');
 });
 
 // 1. super admin : bisa liat dashboard hanya bisa melihat semua table (index dan show) tidak bisa edit,tidak bisa hapus

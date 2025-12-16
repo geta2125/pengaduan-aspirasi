@@ -2,54 +2,28 @@
 <html lang="en">
 
 <head>
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="{{ asset('template/assets/images/favicon.ico') }}" />
+
+    <!-- Core CSS -->
+    <link rel="stylesheet" href="{{ asset('template/assets/css/backend-plugin.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('template/assets/css/backend.css?v=1.0.0') }}">
+
+    <!-- Icon Libraries -->
+    <link rel="stylesheet" href="{{ asset('template/assets/vendor/@fortawesome/fontawesome-free/css/all.min.css') }}">
+    <link rel="stylesheet"
+        href="{{ asset('template/assets/vendor/line-awesome/dist/line-awesome/css/line-awesome.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('template/assets/vendor/remixicon/fonts/remixicon.css') }}">
+
+    <!-- Select2 -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>SiPAWA | {{ $title }}</title>
 
     {{-- start css --}}
     @include('layouts_admin.css')
     {{-- end css --}}
-
-    <style>
-        .floating-whatsapp-btn {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background-color: #25D366;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
-            z-index: 1050;
-            text-decoration: none;
-            transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
-            opacity: 0.9;
-        }
-
-        .floating-whatsapp-btn:hover {
-            transform: translateY(-2px) scale(1.05);
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
-            opacity: 1;
-        }
-
-        .floating-whatsapp-btn img {
-            width: 60%;
-            height: 60%;
-            object-fit: contain;
-        }
-
-        @media (max-width: 576px) {
-            .floating-whatsapp-btn {
-                bottom: 15px;
-                right: 15px;
-                width: 55px;
-                height: 55px;
-            }
-        }
-    </style>
 </head>
 
 <body class="">
@@ -65,6 +39,7 @@
 
     <!-- Wrapper Start -->
     <div class="wrapper">
+
         {{-- start sidebar --}}
         @include('layouts_admin.sidebar')
         {{-- end sidebar --}}
@@ -107,11 +82,10 @@
 
     <!-- Floating WhatsApp Button -->
     <a href="https://wa.me/6285979229792?text=Halo%20Admin,%20saya%20ingin%20bertanya%20tentang%20SiPAWA"
-       target="_blank"
-       aria-label="Hubungi Admin via WhatsApp"
-       class="floating-whatsapp-btn">
-        <img src="https://cdn-icons-png.flaticon.com/512/124/124034.png" alt="WhatsApp">
+        target="_blank" aria-label="Hubungi Admin via WhatsApp" class="floating-whatsapp-btn">
+        <i class="fab fa-whatsapp"></i>
     </a>
+
 
     {{-- start footer --}}
     @include('layouts_admin.footer')

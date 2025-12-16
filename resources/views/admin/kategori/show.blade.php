@@ -18,7 +18,7 @@
                 <div class="card-body">
                     <div class="row mb-4">
                         <div class="col-sm-12 text-center">
-                            <img src="{{ asset('template/assets/images/logosipawa.png') }}" class="logo-invoice img-fluid mb-3"
+                            <img src="{{ asset('storage/logo/logo.png') }}" class="logo-invoice img-fluid mb-3"
                                 alt="Logo">
 
                             <h5 class="mb-3 text-primary">Informasi Kategori Pengaduan</h5>
