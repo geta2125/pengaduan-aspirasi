@@ -6,7 +6,7 @@
 
                 <a href="{{ route('dashboard') }}" class="header-logo d-flex align-items-center"
                     style="gap: 6px; text-decoration: none;">
-                    <img src="{{ asset('storage/logo/logo.png') }}" class="img-fluid light-logo"
+                    <img src="{{ asset('assets/logo/logo.png') }}" class="img-fluid light-logo"
                         style="
                                 height: 90px;        /* BESARIN */
                                 width: auto;         /* biar proporsi aman */

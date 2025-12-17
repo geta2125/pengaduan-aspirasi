@@ -2,7 +2,7 @@
     <div class="iq-sidebar-logo d-flex align-items-center justify-content-between position-relative">
 
         <a href="{{ route('dashboard') }}" class="header-logo">
-            <img src="{{ asset('storage/logo/logo.png') }}" alt="Logo SiPAWA"
+            <img src="{{ asset('assets/logo/logo.png') }}" alt="Logo SiPAWA"
                 style="
                         position: absolute;
                         left: 40%;

@@ -73,7 +73,7 @@
             <div class="right-section">
                 {{-- Gambar background desa yang asri/modern --}}
                 <div class="bg-image"
-                    style="background-image: url('{{ asset('storage/pengaduanaspirasi/pengaduanaspirasi.jpg') }}');">
+                    style="background-image: url('{{ asset('assets/logo/pengaduanaspirasi.jpg') }}');">
                 </div>
                 <div class="overlay-gradient"></div>
 
