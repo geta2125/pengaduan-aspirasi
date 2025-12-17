@@ -1,5 +1,5 @@
 <style>
-    /* --- VARIABEL WARNA (Disesuaikan dengan Dashboard SiPAWA) --- */
+    /* ================= VARIABEL WARNA ================= */
     :root {
         --primary-gradient: linear-gradient(135deg, #2dd4bf 0%, #3b82f6 100%);
         --primary-solid: #3b82f6;
@@ -15,6 +15,7 @@
         --error: #ef4444;
     }
 
+    /* ================= RESET ================= */
     * {
         margin: 0;
         padding: 0;
@@ -22,30 +23,27 @@
         font-family: 'Inter', sans-serif;
     }
 
+    /* ================= BODY ================= */
     body {
         background-color: var(--bg-body);
         min-height: 100vh;
         display: flex;
-        flex-direction: column;
-        /* dari CSS pertama */
         align-items: center;
         justify-content: center;
         position: relative;
     }
 
-    /* Background Dekoratif */
+    /* Background atas */
     body::before {
         content: '';
         position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
+        inset: 0 0 auto 0;
         height: 50%;
         background: linear-gradient(to bottom, #e0f2fe 0%, transparent 100%);
         z-index: -1;
     }
 
-    /* --- LOGIN CONTAINER --- */
+    /* ================= WRAPPER ================= */
     .auth-page {
         width: 100%;
         padding: 20px;
@@ -53,6 +51,7 @@
         justify-content: center;
     }
 
+    /* ================= CARD LOGIN ================= */
     .login-container {
         width: 100%;
         max-width: 1000px;
@@ -62,53 +61,41 @@
         display: grid;
         grid-template-columns: 1fr 1fr;
         overflow: hidden;
-        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05),
-            0 8px 10px -6px rgba(0, 0, 0, 0.01);
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, .05),
+            0 8px 10px -6px rgba(0, 0, 0, .02);
     }
 
-    /* --- LOGO SiPAWA (Atas Tengah) --- */
-    .bina-desa-logo {
-        font-family: 'Nunito', sans-serif;
-        font-weight: 1000;
-        font-size: 42px;
-        color: #3BC2EF;
-        text-align: center;
-        margin-bottom: 50px;
-        letter-spacing: -1px;
-    }
-
-    /* --- SISI KIRI (FORM) --- */
+    /* ================= SISI KIRI ================= */
     .left-section {
         padding: 60px 50px;
         display: flex;
         flex-direction: column;
         justify-content: center;
-        background: white;
+        background: #fff;
     }
 
+    /* ===== LOGO (TENGAH & GEDE) ===== */
     .brand-logo-container {
-        margin-bottom: 30px;
         display: flex;
+        justify-content: center;
         align-items: center;
-        gap: 10px;
+        margin-bottom: 35px;
     }
 
     .brand-logo {
-        height: 50px;
+        height: 100px;
+        /* GEDE */
         width: auto;
+        transition: transform .3s ease;
     }
 
-    .brand-text {
-        font-size: 24px;
-        font-weight: 700;
-        color: #38CFFE;
+    .brand-logo:hover {
+        transform: scale(1.05);
     }
 
-    .brand-text span {
-        color: #38CFFE;
-    }
-
+    /* ================= HEADER ================= */
     .header {
+        text-align: center;
         margin-bottom: 40px;
     }
 
@@ -117,16 +104,14 @@
         font-weight: 800;
         color: var(--text-main);
         margin-bottom: 10px;
-        letter-spacing: -0.5px;
     }
 
     .header p {
-        color: var(--text-muted);
         font-size: 15px;
-        line-height: 1.5;
+        color: var(--text-muted);
     }
 
-    /* INPUT */
+    /* ================= INPUT ================= */
     .input-group {
         position: relative;
         margin-bottom: 25px;
@@ -135,36 +120,34 @@
     .input-field {
         width: 100%;
         padding: 14px 16px;
-        background: #fff;
         border: 1.5px solid var(--border-color);
         border-radius: 10px;
-        color: var(--text-main);
         font-size: 15px;
         outline: none;
-        transition: all 0.2s ease;
+        transition: .2s;
     }
 
     .input-field:focus {
         border-color: var(--input-focus);
-        box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+        box-shadow: 0 0 0 4px rgba(59, 130, 246, .1);
     }
 
     .input-field.is-invalid {
         border-color: var(--error);
-        background-color: #fef2f2;
+        background: #fef2f2;
     }
 
-    /* Floating Label */
+    /* Floating label */
     .input-group label {
         position: absolute;
         left: 16px;
         top: 50%;
         transform: translateY(-50%);
-        color: var(--text-muted);
         font-size: 14px;
+        color: var(--text-muted);
         pointer-events: none;
-        transition: all 0.2s ease;
-        background-color: transparent;
+        transition: .2s;
+        background: #fff;
         padding: 0 4px;
     }
 
@@ -173,20 +156,16 @@
         top: 0;
         font-size: 12px;
         color: var(--primary-solid);
-        background-color: white;
-        z-index: 2;
     }
 
+    /* Error text */
     .text-danger {
         color: var(--error);
         font-size: 12px;
         margin-top: 5px;
-        display: flex;
-        align-items: center;
-        gap: 5px;
     }
 
-    /* OPTIONS */
+    /* ================= OPTIONS ================= */
     .options {
         display: flex;
         justify-content: space-between;
@@ -199,14 +178,11 @@
         display: flex;
         align-items: center;
         gap: 8px;
-        cursor: pointer;
         color: var(--text-muted);
     }
 
     .remember-me input {
         accent-color: var(--primary-solid);
-        width: 16px;
-        height: 16px;
     }
 
     .forgot-pass {
@@ -215,37 +191,30 @@
         text-decoration: none;
     }
 
-    .forgot-pass:hover {
-        text-decoration: underline;
-    }
-
-    /* BUTTON */
+    /* ================= BUTTON ================= */
     .btn-submit {
         width: 100%;
-        padding: 16px;
+        s padding: 16px;
         background: var(--primary-gradient);
         border: none;
         border-radius: 10px;
-        color: white;
-        font-weight: 600;
+        color: #fff;
         font-size: 16px;
+        font-weight: 600;
         cursor: pointer;
-        transition: transform 0.2s, box-shadow 0.2s;
-        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.25);
+        transition: .2s;
     }
 
     .btn-submit:hover {
         transform: translateY(-2px);
-        box-shadow: 0 8px 20px rgba(59, 130, 246, 0.35);
+        box-shadow: 0 8px 20px rgba(59, 130, 246, .35);
     }
 
-    /* --- SISI KANAN (GAMBAR) --- */
+    /* ================= SISI KANAN ================= */
     .right-section {
         position: relative;
-        background-color: #f8fafc;
         display: flex;
-        flex-direction: column;
-        justify-content: flex-end;
+        align-items: flex-end;
         padding: 40px;
         overflow: hidden;
     }
@@ -255,7 +224,6 @@
         inset: 0;
         background-size: cover;
         background-position: center;
-        filter: brightness(0.9);
         transition: transform 5s ease;
     }
 
@@ -267,31 +235,27 @@
         position: absolute;
         inset: 0;
         background: linear-gradient(to top,
-                rgba(30, 41, 59, 0.8) 0%,
-                rgba(30, 41, 59, 0) 60%);
-        z-index: 1;
+                rgba(30, 41, 59, .85),
+                rgba(30, 41, 59, 0));
     }
 
     .caption {
         position: relative;
-        z-index: 2;
-        color: white;
+        color: #fff;
     }
 
     .caption h2 {
         font-size: 32px;
         font-weight: 800;
         margin-bottom: 12px;
-        line-height: 1.2;
     }
 
     .caption p {
         font-size: 16px;
-        color: rgba(255, 255, 255, 0.9);
-        line-height: 1.6;
+        opacity: .9;
     }
 
-    /* RESPONSIVE */
+    /* ================= RESPONSIVE ================= */
     @media (max-width: 900px) {
         .login-container {
             grid-template-columns: 1fr;
@@ -304,6 +268,11 @@
 
         .left-section {
             padding: 40px 30px;
+        }
+
+        .brand-logo {
+            height: 80px;
+            /* logo mengecil di HP */
         }
     }
 </style>
