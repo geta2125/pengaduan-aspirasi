@@ -13,8 +13,6 @@
                 <div class="brand-logo-container">
                     {{-- Ganti src dengan path logo dashboard Anda (biasanya di public/assets/...) --}}
                     <img src="{{ asset('storage/logo/logologin.png') }}" class="brand-logo" alt="Logo">
-                    {{-- Jika belum ada gambar logo, gunakan text ini dulu: --}}
-                    <div class="brand-text">SiPAWA</div>
                 </div>
 
                 <div class="header">
