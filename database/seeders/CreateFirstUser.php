@@ -18,7 +18,7 @@ class CreateFirstUser extends Seeder
             [
                 'nama' => 'Geta Dewi Artika Sari',
                 'email' => 'getadewiartikasari@gmail.com',
-                'role' => 'super_admin',
+                'role' => 'super admin',
                 'password' => 'Geta Dewi Artika Sari',
             ],
 
