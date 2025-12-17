@@ -11,7 +11,7 @@
 
                 {{-- LOGO AREA: Penting agar terlihat resmi seperti dashboard --}}
                 <div class="brand-logo-container">
-                    <img src="{{ asset('storage/logo/logologin1.png') }}" class="brand-logo" alt="Logo">
+                    <img src="{{ asset('assets/logo/logologin1.png') }}" class="brand-logo" alt="Logo">
                 </div>
 
                 <div class="header">
