@@ -172,7 +172,7 @@
         @php
             $dev = [
                 'nama' => 'Geta Dewi Artika Sari',
-                'foto' => asset('storage/developer/geta.jpeg'), // foto asli
+                'foto' => asset('assets/developer/geta.jpeg'), // foto asli
                 'role' => 'Developer',
             ];
         @endphp
