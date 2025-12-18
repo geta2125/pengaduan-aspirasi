@@ -24,7 +24,7 @@ Route::post('/login', [LoginController::class, 'authenticate'])->name('login.pro
 // ==================================================
 // Area setelah login
 // ==================================================
-Route::middleware(['CheckisLogin'])->group(function () {
+Route::middleware(['checkislogin'])->group(function () {
 
     // logout (semua yang login)
     Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
@@ -36,11 +36,11 @@ Route::middleware(['CheckisLogin'])->group(function () {
 
         Route::get('/', [DashboardController::class, 'index'])
             ->name('dashboard')
-            ->middleware(['CheckRole:super admin,admin,petugas']);
+            ->middleware(['checkrole:super admin,admin,petugas']);
 
         Route::get('/data', [DashboardController::class, 'getDashboardData'])
             ->name('dashboard.data')
-            ->middleware(['CheckRole:super admin,admin,petugas']);
+            ->middleware(['checkrole:super admin,admin,petugas']);
     });
 
     Route::middleware(['auth'])->group(function () {
@@ -63,14 +63,14 @@ Route::middleware(['CheckisLogin'])->group(function () {
 
     // ==================================================
     // USER (static dulu)
-    Route::get('user', [UserController::class, 'index'])->name('user.index')->middleware(['CheckRole:admin,super admin']);
-    Route::get('user/create', [UserController::class, 'create'])->name('user.create')->middleware(['CheckRole:admin']);
-    Route::post('user', [UserController::class, 'store'])->name('user.store')->middleware(['CheckRole:admin']);
+    Route::get('user', [UserController::class, 'index'])->name('user.index')->middleware(['checkrole:admin,super admin']);
+    Route::get('user/create', [UserController::class, 'create'])->name('user.create')->middleware(['checkrole:admin']);
+    Route::post('user', [UserController::class, 'store'])->name('user.store')->middleware(['checkrole:admin']);
 
-    Route::get('user/{user}', [UserController::class, 'show'])->name('user.show')->middleware(['CheckRole:admin,super admin']);
-    Route::get('user/{user}/edit', [UserController::class, 'edit'])->name('user.edit')->middleware(['CheckRole:admin']);
-    Route::put('user/{user}', [UserController::class, 'update'])->name('user.update')->middleware(['CheckRole:admin']);
-    Route::delete('user/{user}', [UserController::class, 'destroy'])->name('user.destroy')->middleware(['CheckRole:admin']);
+    Route::get('user/{user}', [UserController::class, 'show'])->name('user.show')->middleware(['checkrole:admin,super admin']);
+    Route::get('user/{user}/edit', [UserController::class, 'edit'])->name('user.edit')->middleware(['checkrole:admin']);
+    Route::put('user/{user}', [UserController::class, 'update'])->name('user.update')->middleware(['checkrole:admin']);
+    Route::delete('user/{user}', [UserController::class, 'destroy'])->name('user.destroy')->middleware(['checkrole:admin']);
 
     // ==================================================
     // WARGA
@@ -83,36 +83,36 @@ Route::middleware(['CheckisLogin'])->group(function () {
         // static routes dulu
         Route::get('/', [WargaController::class, 'index'])
             ->name('index')
-            ->middleware(['CheckRole:admin,super admin']);
+            ->middleware(['checkrole:admin,super admin']);
 
         Route::get('/create', [WargaController::class, 'create'])
             ->name('create')
-            ->middleware(['CheckRole:admin']);
+            ->middleware(['checkrole:admin']);
 
         Route::post('/store-account', [WargaController::class, 'storeAccount'])
             ->name('storeAccount')
-            ->middleware(['CheckRole:admin']);
+            ->middleware(['checkrole:admin']);
 
         Route::post('/store', [WargaController::class, 'store'])
             ->name('store')
-            ->middleware(['CheckRole:admin']);
+            ->middleware(['checkrole:admin']);
 
         // dynamic routes belakangan
         Route::get('/{id}', [WargaController::class, 'show'])
             ->name('show')
-            ->middleware(['CheckRole:admin,super admin']);
+            ->middleware(['checkrole:admin,super admin']);
 
         Route::get('/{id}/edit', [WargaController::class, 'edit'])
             ->name('edit')
-            ->middleware(['CheckRole:admin']);
+            ->middleware(['checkrole:admin']);
 
         Route::put('/{id}', [WargaController::class, 'update'])
             ->name('update')
-            ->middleware(['CheckRole:admin']);
+            ->middleware(['checkrole:admin']);
 
         Route::delete('/{id}', [WargaController::class, 'destroy'])
             ->name('destroy')
-            ->middleware(['CheckRole:admin']);
+            ->middleware(['checkrole:admin']);
     });
 
     // ==================================================
@@ -126,32 +126,32 @@ Route::middleware(['CheckisLogin'])->group(function () {
         // static routes dulu
         Route::get('/', [KategoriPengaduanController::class, 'index'])
             ->name('index')
-            ->middleware(['CheckRole:admin,super admin']);
+            ->middleware(['checkrole:admin,super admin']);
 
         Route::get('/create', [KategoriPengaduanController::class, 'create'])
             ->name('create')
-            ->middleware(['CheckRole:admin']);
+            ->middleware(['checkrole:admin']);
 
         Route::post('/', [KategoriPengaduanController::class, 'store'])
             ->name('store')
-            ->middleware(['CheckRole:admin']);
+            ->middleware(['checkrole:admin']);
 
         // dynamic routes belakangan
         Route::get('/{id}', [KategoriPengaduanController::class, 'show'])
             ->name('show')
-            ->middleware(['CheckRole:admin,super admin']);
+            ->middleware(['checkrole:admin,super admin']);
 
         Route::get('/{id}/edit', [KategoriPengaduanController::class, 'edit'])
             ->name('edit')
-            ->middleware(['CheckRole:admin']);
+            ->middleware(['checkrole:admin']);
 
         Route::put('/{id}', [KategoriPengaduanController::class, 'update'])
             ->name('update')
-            ->middleware(['CheckRole:admin']);
+            ->middleware(['checkrole:admin']);
 
         Route::delete('/{id}', [KategoriPengaduanController::class, 'destroy'])
             ->name('destroy')
-            ->middleware(['CheckRole:admin']);
+            ->middleware(['checkrole:admin']);
     });
 
     // ==================================================
@@ -200,34 +200,34 @@ Route::middleware(['CheckisLogin'])->group(function () {
         // static routes dulu
         Route::get('/', [TindakLanjutController::class, 'index'])
             ->name('index')
-            ->middleware(['CheckRole:admin,super admin,petugas']);
+            ->middleware(['checkrole:admin,super admin,petugas']);
 
         // CATATAN: show kamu pakai /{id}/show -> itu static "show" di belakang, aman
         Route::get('/{id}/show', [TindakLanjutController::class, 'show'])
             ->name('show')
-            ->middleware(['CheckRole:admin,super admin,petugas']);
+            ->middleware(['checkrole:admin,super admin,petugas']);
 
         // create/store menggunakan pengaduan_id (dynamic) tapi route-nya spesifik, aman
         Route::get('/{pengaduan_id}/create', [TindakLanjutController::class, 'create'])
             ->name('create')
-            ->middleware(['CheckRole:admin']);
+            ->middleware(['checkrole:admin']);
 
         Route::post('/{pengaduan_id}', [TindakLanjutController::class, 'store'])
             ->name('store')
-            ->middleware(['CheckRole:admin']);
+            ->middleware(['checkrole:admin']);
 
         // edit/update/delete untuk tindak lanjut
         Route::get('/{id}/edit', [TindakLanjutController::class, 'edit'])
             ->name('edit')
-            ->middleware(['CheckRole:admin,petugas']);
+            ->middleware(['checkrole:admin,petugas']);
 
         Route::put('/{id}', [TindakLanjutController::class, 'update'])
             ->name('update')
-            ->middleware(['CheckRole:admin,petugas']);
+            ->middleware(['checkrole:admin,petugas']);
 
         Route::delete('/{id}', [TindakLanjutController::class, 'destroy'])
             ->name('destroy')
-            ->middleware(['CheckRole:admin']);
+            ->middleware(['checkrole:admin']);
     });
 
     // ==================================================
@@ -241,24 +241,24 @@ Route::middleware(['CheckisLogin'])->group(function () {
         // static routes dulu
         Route::get('/', [PenilaianController::class, 'index'])
             ->name('index')
-            ->middleware(['CheckRole:admin,super admin, guest']);
+            ->middleware(['checkrole:admin,super admin, guest']);
 
         Route::post('/', [PenilaianController::class, 'store'])
             ->name('store')
-            ->middleware(['CheckRole:admin,super admin, guest']);
+            ->middleware(['checkrole:admin,super admin, guest']);
 
         // dynamic belakangan
         Route::get('/{penilaian}', [PenilaianController::class, 'show'])
             ->name('show')
-            ->middleware(['CheckRole:admin,super admin, guest']);
+            ->middleware(['checkrole:admin,super admin, guest']);
 
         Route::put('/{penilaian}', [PenilaianController::class, 'update'])
             ->name('update')
-            ->middleware(['CheckRole:admin,super admin, guest']);
+            ->middleware(['checkrole:admin,super admin, guest']);
 
         Route::delete('/{penilaian}', [PenilaianController::class, 'destroy'])
             ->name('destroy')
-            ->middleware(['CheckRole:admin,super admin, guest']);
+            ->middleware(['checkrole:admin,super admin, guest']);
     });
 
     Route::view('/developer', 'admin.developer.index')->name('developer.index');
