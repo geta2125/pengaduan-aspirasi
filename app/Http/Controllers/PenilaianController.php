@@ -154,7 +154,6 @@ class PenilaianController extends Controller
         return view('admin.penilaian.index', compact('title', 'pengaduan'));
     }
 
-
     /**
      * Simpan penilaian baru ke database (Create).
      * Route: POST /admin/penilaian
