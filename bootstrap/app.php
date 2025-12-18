@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Middleware\CheckRole;
-use App\Http\Middleware\CheckisLogin;
+use App\Http\Middleware\checkislogin;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 
@@ -13,7 +13,7 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function ($middleware) {
         $middleware->alias([
-        'checkislogin' => \App\Http\Middleware\CheckisLogin::class,
+        'checkislogin' => \App\Http\Middleware\checkislogin::class,
         'checkrole'    => \App\Http\Middleware\CheckRole::class,
         ]);
     })
