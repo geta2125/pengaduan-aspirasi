@@ -13,6 +13,7 @@
                 'SiPAWA (Sistem Pengaduan dan Aspirasi Warga) merupakan platform digital yang dikembangkan untuk memfasilitasi masyarakat dalam menyampaikan pengaduan dan aspirasi secara efektif, transparan, dan terstruktur.',
             'email' => 'geta24si@mahasiswa.pcr.ac.id',
             'wa' => '6285979229792',
+            'alwaysdata' => 'https://getadas-pengaduan-aspirasi.alwaysdata.net',
             'linkedin' => 'https://www.linkedin.com/in/geta-dewi-artika-sari-a7b521390/',
             'github' => 'https://github.com/geta2125',
             'instagram' => 'https://instagram.com/getadewiartikasari_',
@@ -45,23 +46,28 @@
                     <div class="avatar-wrapper mb-4">
                         <img src="{{ $dev['foto'] }}"
                             onerror="this.src='https://ui-avatars.com/api/?name={{ urlencode($dev['nama']) }}&background=0A84FF&color=fff'">
-                        <span class="online-dot"></span>
                     </div>
 
                     <h4 class="fw-bold mb-1">{{ $dev['nama'] }}</h4>
                     <span class="badge role-badge px-3 py-2">{{ $dev['role'] }}</span>
 
                     <div class="mini-meta mt-3">
-                        <span>{{ $dev['nim'] }}</span> <br>
-                        <span>{{ $dev['prodi'] }}</span> <br>
-                        <span>{{ $dev['kampus'] }}</span>
+                        <span>{{ $dev['nim'] }}</span><br>
+                        <span>{{ $dev['prodi'] }}</span><br>
+                        <span>{{ $dev['kampus'] }}</span><br>
+
+                        {{-- 🔹 ALWAYSDATA LINK --}}
+                        <a href="{{ $dev['alwaysdata'] }}" target="_blank" class="alwaysdata-pill pressable">
+                            <i class="ri-global-line"></i>
+                            <span>{{ str_replace(['https://', 'http://'], '', $dev['alwaysdata']) }}</span>
+                        </a>
                     </div>
                 </div>
 
                 {{-- CENTER --}}
                 <div class="dev-col dev-center animate-fade-up">
                     <h5 class="section-title"><i class="ri-file-user-line"></i> About</h5>
-                    <p class="about-desc text-muted fs-6">
+                    <p class="about-desc">
                         {{ $dev['deskripsi'] }}
                     </p>
                 </div>
@@ -70,35 +76,34 @@
                 <div class="dev-col dev-right animate-slide-right">
                     <h5 class="section-title"><i class="ri-contacts-line"></i> Contact</h5>
 
-                    <p class="fs-6 mb-2">
+                    <p>
                         <i class="ri-mail-line"></i>
                         <a href="mailto:{{ $dev['email'] }}">{{ $dev['email'] }}</a>
                     </p>
-                    <p class="fs-6 mb-4">
+
+                    <p>
                         <i class="ri-whatsapp-line text-success"></i>
-                        <a href="https://wa.me/{{ $waOnlyNumber }}" target="_blank">{{ $dev['wa'] }}</a>
+                        <a href="https://wa.me/{{ $waOnlyNumber }}" target="_blank">
+                            {{ $dev['wa'] }}
+                        </a>
                     </p>
 
-                    <div class="social-row mb-4">
-                        <a href="{{ $dev['linkedin'] }}" target="_blank" class="social-btn linkedin pressable"
-                            aria-label="LinkedIn">
+                    <div class="social-row my-4">
+                        <a href="{{ $dev['linkedin'] }}" target="_blank" class="social-btn linkedin pressable">
                             <i class="ri-linkedin-fill"></i>
                         </a>
-
-                        <a href="{{ $dev['github'] }}" target="_blank" class="social-btn github pressable"
-                            aria-label="GitHub">
+                        <a href="{{ $dev['github'] }}" target="_blank" class="social-btn github pressable">
                             <i class="ri-github-fill"></i>
                         </a>
-
-                        <a href="{{ $dev['instagram'] }}" target="_blank" class="social-btn instagram pressable"
-                            aria-label="Instagram">
+                        <a href="{{ $dev['instagram'] }}" target="_blank" class="social-btn instagram pressable">
                             <i class="ri-instagram-fill"></i>
                         </a>
                     </div>
+
                     <h5 class="section-title"><i class="ri-code-box-line"></i> Tech Stack</h5>
                     <div class="stack-grid">
                         @foreach ($dev['stack'] as $tech)
-                            <span class="tech-pill hover-lift pressable">{{ $tech }}</span>
+                            <span class="tech-pill pressable">{{ $tech }}</span>
                         @endforeach
                     </div>
                 </div>
@@ -106,6 +111,7 @@
             </div>
         </div>
     </div>
+
 
     {{-- ================= STYLE ================= --}}
     <style>
@@ -395,6 +401,42 @@
             to {
                 opacity: 0
             }
+        }
+
+        /* ================= ALWAYS DATA PILL (SMALL) ================= */
+        .alwaysdata-pill {
+            margin-top: 10px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+
+            padding: .32rem .75rem;
+            border-radius: 999px;
+
+            font-size: .72rem;
+            font-weight: 600;
+            text-decoration: none;
+
+            color: #0A84FF;
+            background: rgba(10, 132, 255, .10);
+            backdrop-filter: blur(10px);
+
+            box-shadow: 0 4px 10px rgba(10, 132, 255, .22);
+            transition: all .25s ease;
+        }
+
+        .alwaysdata-pill i {
+            font-size: .8rem;
+        }
+
+        .alwaysdata-pill:hover {
+            transform: translateY(-2px) scale(1.02);
+            background: rgba(10, 132, 255, .16);
+            box-shadow: 0 8px 18px rgba(10, 132, 255, .38);
+        }
+
+        .alwaysdata-pill:active {
+            transform: scale(.95);
         }
     </style>
 @endsection
