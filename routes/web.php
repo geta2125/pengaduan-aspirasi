@@ -24,7 +24,7 @@ Route::post('/login', [LoginController::class, 'authenticate'])->name('login.pro
 // ==================================================
 // Area setelah login
 // ==================================================
-Route::middleware(['checkislogin'])->group(function () {
+Route::middleware(['CheckisLogin'])->group(function () {
 
     // logout (semua yang login)
     Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
