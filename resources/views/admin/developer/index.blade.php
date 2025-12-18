@@ -7,7 +7,7 @@
             'nim' => '2457301061',
             'prodi' => 'DIV Sistem Informasi',
             'kampus' => 'Politeknik Caltex Riau',
-            'foto' => asset('storage/developer/geta.jpeg'),
+            'foto' => asset('assets/developer/geta.jpeg'),
             'role' => 'Developer',
             'deskripsi' =>
                 'SiPAWA (Sistem Pengaduan dan Aspirasi Warga) merupakan platform digital yang dikembangkan untuk memfasilitasi masyarakat dalam menyampaikan pengaduan dan aspirasi secara efektif, transparan, dan terstruktur.',
