@@ -13,9 +13,9 @@
                 'SiPAWA (Sistem Pengaduan dan Aspirasi Warga) merupakan platform digital yang dikembangkan untuk memfasilitasi masyarakat dalam menyampaikan pengaduan dan aspirasi secara efektif, transparan, dan terstruktur.',
             'email' => 'geta24si@mahasiswa.pcr.ac.id',
             'wa' => '6285979229792',
-            'alwaysdata' => 'https://getadas-pengaduan-aspirasi.alwaysdata.net',
+            'alwaysdata' => 'https://get-pengaduanaspirasi.alwaysdata.net',
             'linkedin' => 'https://www.linkedin.com/in/geta-dewi-artika-sari-a7b521390/',
-            'github' => 'https://github.com/geta2125',
+            'github' => 'https://github.com/geta2125/pengaduan-aspirasi.git',
             'instagram' => 'https://instagram.com/getadewiartikasari_',
             'stack' => ['Laravel', 'PHP', 'MySQL', 'JavaScript', 'Bootstrap'],
         ];
