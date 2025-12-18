@@ -10,161 +10,257 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\TindakLanjutController;
 use App\Http\Controllers\Admin\KategoriPengaduanController;
 
-// =====================================================
+// ==================================================
 // Redirect awal
-// =====================================================
-Route::redirect('/', '/login');
+// ==================================================
+Route::get('/', fn() => redirect()->route('login'));
 
-// =====================================================
+// ==================================================
 // Login (public)
-// =====================================================
+// ==================================================
 Route::get('/login', [LoginController::class, 'login'])->name('login');
 Route::post('/login', [LoginController::class, 'authenticate'])->name('login.process');
 
-// =====================================================
+// ==================================================
 // Area setelah login
-// =====================================================
-Route::middleware(['checkislogin', 'auth'])->group(function () {
+// ==================================================
+Route::middleware(['checkislogin'])->group(function () {
 
-    // logout
+    // logout (semua yang login)
     Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
-    // =====================================================
+    // ==================================================
     // Dashboard (super admin, admin, petugas)
-    // =====================================================
-    Route::prefix('dashboard')
-        ->middleware('role:super admin,admin,petugas')
-        ->group(function () {
-            Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
-            Route::get('/data', [DashboardController::class, 'getDashboardData'])->name('dashboard.data');
-        });
+    // ==================================================
+    Route::prefix('dashboard')->group(function () {
 
-    // =====================================================
-    // Profile (semua yang login)
-    // =====================================================
-    Route::get('/profile', [DashboardController::class, 'Profile'])->name('profile');
-    Route::put('/profile/update', [DashboardController::class, 'updateProfile'])->name('update.profile');
-    Route::put('/profile/password', [DashboardController::class, 'updatePassword'])->name('update.password');
-    Route::put('/profile/foto', [DashboardController::class, 'updateFoto'])->name('update.foto');
+        Route::get('/', [DashboardController::class, 'index'])
+            ->name('dashboard')
+            ->middleware(['role:super admin,admin,petugas']);
 
-    // =====================================================
-    // USER
-    // super admin: index & show
-    // admin: full
-    // =====================================================
-    Route::middleware('role:admin,super admin')->group(function () {
-        Route::resource('user', UserController::class)->only(['index', 'show']);
+        Route::get('/data', [DashboardController::class, 'getDashboardData'])
+            ->name('dashboard.data')
+            ->middleware(['role:super admin,admin,petugas']);
     });
 
-    Route::middleware('role:admin')->group(function () {
-        Route::resource('user', UserController::class)->except(['index', 'show']);
+    Route::middleware(['auth'])->group(function () {
+        // Route untuk menampilkan halaman profil
+        Route::get('/profile', [DashboardController::class, 'Profile'])->name('profile');
+
+        // Route untuk update nama, username, email
+        Route::put('/profile/update', [DashboardController::class, 'updateProfile'])->name('update.profile');
+
+        // Route untuk update password
+        Route::put('/profile/password', [DashboardController::class, 'updatePassword'])->name('update.password');
+
+        // Route untuk update foto profil
+        Route::put('/profile/foto', [DashboardController::class, 'updateFoto'])->name('update.foto');
     });
 
-    // =====================================================
+    // ==================================================
+    // ADMIN PREFIX
+    // ==================================================
+
+    // ==================================================
+    // USER (static dulu)
+    Route::get('user', [UserController::class, 'index'])->name('user.index')->middleware(['role:admin,super admin']);
+    Route::get('user/create', [UserController::class, 'create'])->name('user.create')->middleware(['role:admin']);
+    Route::post('user', [UserController::class, 'store'])->name('user.store')->middleware(['role:admin']);
+
+    Route::get('user/{user}', [UserController::class, 'show'])->name('user.show')->middleware(['role:admin,super admin']);
+    Route::get('user/{user}/edit', [UserController::class, 'edit'])->name('user.edit')->middleware(['role:admin']);
+    Route::put('user/{user}', [UserController::class, 'update'])->name('user.update')->middleware(['role:admin']);
+    Route::delete('user/{user}', [UserController::class, 'destroy'])->name('user.destroy')->middleware(['role:admin']);
+
+    // ==================================================
     // WARGA
-    // super admin: index & show
-    // admin: full (+storeAccount)
-    // =====================================================
-    Route::middleware('role:admin,super admin')->group(function () {
-        Route::resource('warga', WargaController::class)
-            ->only(['index', 'show'])
-            ->parameters(['warga' => 'id']);
+    // super admin: index & show saja
+    // admin: full
+    // petugas: tidak boleh akses
+    // ==================================================
+    Route::prefix('warga')->as('warga.')->group(function () {
+
+        // static routes dulu
+        Route::get('/', [WargaController::class, 'index'])
+            ->name('index')
+            ->middleware(['role:admin,super admin']);
+
+        Route::get('/create', [WargaController::class, 'create'])
+            ->name('create')
+            ->middleware(['role:admin']);
+
+        Route::post('/store-account', [WargaController::class, 'storeAccount'])
+            ->name('storeAccount')
+            ->middleware(['role:admin']);
+
+        Route::post('/store', [WargaController::class, 'store'])
+            ->name('store')
+            ->middleware(['role:admin']);
+
+        // dynamic routes belakangan
+        Route::get('/{id}', [WargaController::class, 'show'])
+            ->name('show')
+            ->middleware(['role:admin,super admin']);
+
+        Route::get('/{id}/edit', [WargaController::class, 'edit'])
+            ->name('edit')
+            ->middleware(['role:admin']);
+
+        Route::put('/{id}', [WargaController::class, 'update'])
+            ->name('update')
+            ->middleware(['role:admin']);
+
+        Route::delete('/{id}', [WargaController::class, 'destroy'])
+            ->name('destroy')
+            ->middleware(['role:admin']);
     });
 
-    Route::middleware('role:admin')->group(function () {
-        Route::post('warga/store-account', [WargaController::class, 'storeAccount'])->name('warga.storeAccount');
-
-        Route::resource('warga', WargaController::class)
-            ->except(['index', 'show'])
-            ->parameters(['warga' => 'id']);
-    });
-
-    // =====================================================
+    // ==================================================
     // KATEGORI PENGADUAN
-    // super admin: index & show
+    // super admin: index & show saja
     // admin: full
-    // =====================================================
-    Route::middleware('role:admin,super admin')->group(function () {
-        Route::resource('kategori-pengaduan', KategoriPengaduanController::class)
-            ->only(['index', 'show'])
-            ->parameters(['kategori-pengaduan' => 'id']);
+    // petugas: tidak boleh akses
+    // ==================================================
+    Route::prefix('kategori-pengaduan')->as('kategori-pengaduan.')->group(function () {
+
+        // static routes dulu
+        Route::get('/', [KategoriPengaduanController::class, 'index'])
+            ->name('index')
+            ->middleware(['role:admin,super admin']);
+
+        Route::get('/create', [KategoriPengaduanController::class, 'create'])
+            ->name('create')
+            ->middleware(['role:admin']);
+
+        Route::post('/', [KategoriPengaduanController::class, 'store'])
+            ->name('store')
+            ->middleware(['role:admin']);
+
+        // dynamic routes belakangan
+        Route::get('/{id}', [KategoriPengaduanController::class, 'show'])
+            ->name('show')
+            ->middleware(['role:admin,super admin']);
+
+        Route::get('/{id}/edit', [KategoriPengaduanController::class, 'edit'])
+            ->name('edit')
+            ->middleware(['role:admin']);
+
+        Route::put('/{id}', [KategoriPengaduanController::class, 'update'])
+            ->name('update')
+            ->middleware(['role:admin']);
+
+        Route::delete('/{id}', [KategoriPengaduanController::class, 'destroy'])
+            ->name('destroy')
+            ->middleware(['role:admin']);
     });
 
-    Route::middleware('role:admin')->group(function () {
-        Route::resource('kategori-pengaduan', KategoriPengaduanController::class)
-            ->except(['index', 'show'])
-            ->parameters(['kategori-pengaduan' => 'id']);
-    });
-
-    // =====================================================
+    // ==================================================
     // PENGADUAN
-    // super admin: read-only
+    // super admin: index/show/semua (read-only)
     // admin: full
-    // petugas: read + edit/update
-    // guest: create/store + show (sesuai catatan kamu)
-    // =====================================================
+    // petugas: index/show/semua + edit/update
+    // ==================================================
+    Route::prefix('pengaduan')->as('pengaduan.')->group(function () {
 
-    // IMPORTANT: taruh route static dulu biar nggak ketangkep {id}
-    Route::middleware('role:super admin,admin,petugas,guest')->group(function () {
-        Route::get('pengaduan/semua', [PengaduanController::class, 'pengaduanSemua'])->name('pengaduan.semua');
+        // static routes dulu
+        Route::get('/', [PengaduanController::class, 'index'])
+            ->name('index');
 
-        Route::resource('pengaduan', PengaduanController::class)
-            ->only(['index', 'show'])
-            ->parameters(['pengaduan' => 'id']);
+        Route::get('/semua', [PengaduanController::class, 'pengaduanSemua'])
+            ->name('semua');
+
+        Route::get('/create', [PengaduanController::class, 'create'])
+            ->name('create');
+
+        Route::post('/', [PengaduanController::class, 'store'])
+            ->name('store');
+
+        // dynamic routes belakangan
+        Route::get('/{id}', [PengaduanController::class, 'show'])
+            ->name('show');
+
+        Route::get('/{id}/edit', [PengaduanController::class, 'edit'])
+            ->name('edit');
+
+        Route::put('/{id}', [PengaduanController::class, 'update'])
+            ->name('update');
+
+        Route::delete('/{id}', [PengaduanController::class, 'destroy'])
+            ->name('destroy');
     });
 
-    Route::middleware('role:admin,guest')->group(function () {
-        Route::resource('pengaduan', PengaduanController::class)
-            ->only(['create', 'store'])
-            ->parameters(['pengaduan' => 'id']);
-    });
-
-    Route::middleware('role:admin,petugas')->group(function () {
-        Route::resource('pengaduan', PengaduanController::class)
-            ->only(['edit', 'update'])
-            ->parameters(['pengaduan' => 'id']);
-    });
-
-    Route::middleware('role:admin')->group(function () {
-        Route::resource('pengaduan', PengaduanController::class)
-            ->only(['destroy'])
-            ->parameters(['pengaduan' => 'id']);
-    });
-
-    // =====================================================
+    // ==================================================
     // TINDAK LANJUT
-    // (tetap manual karena path-nya custom: /{id}/show dan create/store pakai pengaduan_id)
-    // =====================================================
+    // super admin: index/show (read-only)
+    // admin: full
+    // petugas: index/show + edit/update
+    // ==================================================
     Route::prefix('tindaklanjut')->as('tindaklanjut.')->group(function () {
 
-        Route::middleware('role:admin,super admin,petugas')->group(function () {
-            Route::get('/', [TindakLanjutController::class, 'index'])->name('index');
-            Route::get('/{id}/show', [TindakLanjutController::class, 'show'])->name('show');
-        });
+        // static routes dulu
+        Route::get('/', [TindakLanjutController::class, 'index'])
+            ->name('index')
+            ->middleware(['role:admin,super admin,petugas']);
 
-        Route::middleware('role:admin')->group(function () {
-            Route::get('/{pengaduan_id}/create', [TindakLanjutController::class, 'create'])->name('create');
-            Route::post('/{pengaduan_id}', [TindakLanjutController::class, 'store'])->name('store');
-            Route::delete('/{id}', [TindakLanjutController::class, 'destroy'])->name('destroy');
-        });
+        // CATATAN: show kamu pakai /{id}/show -> itu static "show" di belakang, aman
+        Route::get('/{id}/show', [TindakLanjutController::class, 'show'])
+            ->name('show')
+            ->middleware(['role:admin,super admin,petugas']);
 
-        Route::middleware('role:admin,petugas')->group(function () {
-            Route::get('/{id}/edit', [TindakLanjutController::class, 'edit'])->name('edit');
-            Route::put('/{id}', [TindakLanjutController::class, 'update'])->name('update');
-        });
+        // create/store menggunakan pengaduan_id (dynamic) tapi route-nya spesifik, aman
+        Route::get('/{pengaduan_id}/create', [TindakLanjutController::class, 'create'])
+            ->name('create')
+            ->middleware(['role:admin']);
+
+        Route::post('/{pengaduan_id}', [TindakLanjutController::class, 'store'])
+            ->name('store')
+            ->middleware(['role:admin']);
+
+        // edit/update/delete untuk tindak lanjut
+        Route::get('/{id}/edit', [TindakLanjutController::class, 'edit'])
+            ->name('edit')
+            ->middleware(['role:admin,petugas']);
+
+        Route::put('/{id}', [TindakLanjutController::class, 'update'])
+            ->name('update')
+            ->middleware(['role:admin,petugas']);
+
+        Route::delete('/{id}', [TindakLanjutController::class, 'destroy'])
+            ->name('destroy')
+            ->middleware(['role:admin']);
     });
 
-    // =====================================================
-    // PENILAIAN (admin, super admin, guest)
-    // =====================================================
-    Route::middleware('role:admin,super admin,guest')->group(function () {
-        Route::resource('penilaian', PenilaianController::class)
-            ->only(['index', 'store', 'show', 'update', 'destroy']);
+    // ==================================================
+    // PENILAIAN
+    // super admin: index/show saja
+    // admin: full
+    // petugas: index/show (sesuai yang kamu tulis)
+    // ==================================================
+    Route::prefix('penilaian')->as('penilaian.')->group(function () {
+
+        // static routes dulu
+        Route::get('/', [PenilaianController::class, 'index'])
+            ->name('index')
+            ->middleware(['role:admin,super admin, guest']);
+
+        Route::post('/', [PenilaianController::class, 'store'])
+            ->name('store')
+            ->middleware(['role:admin,super admin, guest']);
+
+        // dynamic belakangan
+        Route::get('/{penilaian}', [PenilaianController::class, 'show'])
+            ->name('show')
+            ->middleware(['role:admin,super admin, guest']);
+
+        Route::put('/{penilaian}', [PenilaianController::class, 'update'])
+            ->name('update')
+            ->middleware(['role:admin,super admin, guest']);
+
+        Route::delete('/{penilaian}', [PenilaianController::class, 'destroy'])
+            ->name('destroy')
+            ->middleware(['role:admin,super admin, guest']);
     });
 
-    // =====================================================
-    // Static pages
-    // =====================================================
     Route::view('/developer', 'admin.developer.index')->name('developer.index');
     Route::view('/privacy-policy', 'privacy-policy')->name('privacy.policy');
     Route::view('/terms-of-use', 'terms-of-use')->name('terms.use');
@@ -173,4 +269,4 @@ Route::middleware(['checkislogin', 'auth'])->group(function () {
 // 1. super admin : bisa liat dashboard hanya bisa melihat semua table (index dan show) tidak bisa edit,tidak bisa hapus
 // 2. admin : bisa semua
 // 3. petugas : bisa lihat dashboard,lihat pengaduan dan tindak lanjut bisa edit
-// 4. guest = hanya bisa mengisi form tambah warga dan form,show -> pengaduan
+// 4. guest : hanya bisa mengisi form tambah warga dan form show -> pengaduan
