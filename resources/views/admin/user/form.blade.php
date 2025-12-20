@@ -13,7 +13,7 @@
                     class="card-header bg-primary text-white d-flex justify-content-between align-items-center py-2 py-3 rounded-top-4">
                     <h4 class="mb-0">
                         <i class="la la-user-plus me-2"></i>
-                        {{ isset($user) ? 'Edit Data Warga' : 'Tambah Data Warga Baru' }}
+                        {{ isset($user) ? 'Edit Data User' : 'Tambah Data Baru' }}
                     </h4>
                     <a href="{{ route('user.index') }}" class="btn btn-light btn-sm">
                         <i class="ri-arrow-left-line"></i> Kembali
