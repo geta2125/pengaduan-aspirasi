@@ -64,7 +64,7 @@
                     </div>
 
                     <button type="submit" class="btn-submit">
-                        Masuk Dashboard
+                        Masuk
                     </button>
                 </form>
             </div>

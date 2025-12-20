@@ -18,7 +18,6 @@ class LoginController extends Controller
     public function login()
     {
         if (Auth::check()) {
-            // kalau sudah login, arahkan sesuai role juga (optional tapi aman)
             $user = Auth::user();
             return $user->role === 'guest'
                 ? redirect()->route('pengaduan.index')
