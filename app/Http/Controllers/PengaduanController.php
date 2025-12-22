@@ -131,7 +131,6 @@ class PengaduanController extends Controller
     // CREATE, STORE, UPDATE, DESTROY (Logika di sini tidak perlu diulang)
     // ==============================
 
-    // ... (Fungsi create() dan store() tidak berubah) ...
     public function create()
     {
         $title = "Tambah Pengaduan";

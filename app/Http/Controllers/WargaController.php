@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use App\Models\Warga;
+use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+use App\Http\Middleware\CheckRole;
+use Illuminate\Support\Facades\Hash;
 
 class WargaController extends Controller
 {
@@ -104,16 +106,25 @@ class WargaController extends Controller
 
         $request->validate([
             'nama' => 'required|string|max:100',
-            'email' => 'required|email|unique:warga,email,' . $id . ',warga_id',
-            'no_ktp' => 'required|numeric|digits:16|unique:warga,no_ktp,' . $id . ',warga_id',
+
+            'email' => [
+                'required',
+                'email',
+                Rule::unique('warga', 'email')->ignore($id, 'warga_id'),
+                Rule::unique('user', 'email')->ignore($warga->user->id ?? null, 'id'),
+            ],
+
+            'no_ktp' => [
+                'required',
+                'numeric',
+                'digits:16',
+                Rule::unique('warga', 'no_ktp')->ignore($id, 'warga_id'),
+            ],
+
             'jenis_kelamin' => 'required',
             'agama' => 'required',
             'pekerjaan' => 'required',
             'telp' => 'required|numeric',
-
-            // Jika edit email, validasi unik kecuali email dia sendiri
-            'email' => 'nullable|string|max:50|unique:email,'
-                . ($warga->user->id ?? 'NULL'),
         ]);
 
         // Update tabel Warga
@@ -131,13 +142,14 @@ class WargaController extends Controller
         if ($warga->user) {
             $warga->user->update([
                 'nama' => $request->nama,
-                'email' => $request->email ?? $warga->user->email,
+                'email' => $request->email,
             ]);
         }
 
         return redirect()->route('warga.index')
             ->with('success', 'Data warga & user berhasil diperbarui.');
     }
+
 
     public function destroy($id)
     {

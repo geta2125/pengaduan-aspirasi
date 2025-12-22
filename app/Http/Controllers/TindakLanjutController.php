@@ -92,7 +92,7 @@ class TindakLanjutController extends Controller
             foreach ($request->file('lampiran') as $index => $file) {
                 if (!$file->isValid()) {
                     continue;
-                }
+    }
 
                 $originalName = $file->getClientOriginalName(); // nama asli file
                 $extension = $file->getClientOriginalExtension();
